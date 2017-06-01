@@ -1,0 +1,45 @@
+/**
+  ******************************************************************************
+  * @file version.txt
+  * @brief Version file for STM8S Firmware Library (FWLib).
+  *        The enclosed firmware and all the related documentation
+  *        are not covered by a License Agreement, if you need such 
+  *        License you can contact your local STMicroelectronics
+  *        office.
+  * @author STMicroelectronics - MCD Application Team
+  * @version V1.0.1
+  * @date 09/22/2008
+  ******************************************************************************
+  *
+  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  *
+  * <h2><center>&copy; COPYRIGHT 2008 STMicroelectronics</center></h2>
+  * @image html logo.bmp
+  ******************************************************************************
+  */
+
+
+* V1.0.1 - 09/22/2008 
+====================
+- I2C driver Update 
+   + stm8s_i2c.c: I2C_ClearFlag, I2C_GetITStatus and I2C_ClearITPendingBit functions updated
+   + stm8s_i2c.h: I2C_IT_TypeDef enumeration updated & new I2C_ITPendingBit_TypeDef enumeration added
+- I2C IAP, SPI IAP, UART3 Lin & TIM3 OCActiveMode examples removed from the package 
+- TIMx_GetCapturex functions updated on TIM1, TIM2 and TIM3
+- CLK driver updated (CLK_AdjustHSICalibrationValue function optimized)
+- Projects template updated 
+- stm8s_map.h file updated (CAN registers structure added)
+- User manual updated: new section added (Usage of STM8S Firmware Library Examples)
+
+* V1.0.0 - 08/15/2008 
+====================
+  Created.
+
+/******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/
+
+

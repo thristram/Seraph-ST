@@ -1,0 +1,34 @@
+================================================================================
+                          STM8 TOUCH SENSING LIBRARY
+                                 Release Notes
+================================================================================
+
+
+V1.2.0 / 24-MAR-2009
+--------------------
+
+ - Add an option in the configuration file to choose the acquisition timer. 
+   This option allows to use the library with any STM8 device.
+
+  - (beta) Add a synchronization capability on an interruption.
+   This option is new and has not been fully validated.
+
+  - (beta) Add Spread spectum capability.
+   This option allows to add a variable delay between acquisitions to reduce noise 
+   sensitivity at specific frequencies.
+   This option is new and has not been fully validated.
+ 
+
+V1.1.0 / 21-FEB-2009
+--------------------
+
+ - New option (NEGDETECT_AUTOCAL) added in the configuration file to enable or
+   disable the autocalibration.
+
+
+V1.0.0 / 22-JAN-2009
+--------------------
+
+  - First official release.
+  
+========================= (c) 2009 STMicroelectronics ==========================
