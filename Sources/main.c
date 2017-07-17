@@ -58,6 +58,14 @@ void Variable_Init(void)
 	st1.st_pad1_status = 0x00;
 	st1.st_pad2_status = 0x00;
 	st1.st_pad3_status = 0x00;
+	st1.st_ges1_ctrl_H = 0x11;//初始化为无效手势
+	st1.st_ges1_ctrl_L = 0x11;
+	st1.st_ges2_ctrl_H = 0x11;
+	st1.st_ges2_ctrl_L = 0x11;
+	st1.st_ges3_ctrl_H = 0x11;
+	st1.st_ges3_ctrl_L = 0x11;
+	st1.st_ges4_ctrl_H = 0x11;
+	st1.st_ges4_ctrl_L = 0x11;
 }
 
 
@@ -166,6 +174,15 @@ loop0:
 	TSL_Init();
 	ExtraCode_Init();	
   for (;;) {
+		
+		if((!receipt_device_info1) && (!device_info_sended) && (rev_bleheartbeat) && (rev_host_mesh))
+		{
+			device_info_sended = 1;
+			rev_bleheartbeat = 0;
+			send_header_payload_init(0x86,ns_host_meshid_H,ns_host_meshid_L,12,0xB4);
+			UART2_Send_Data_Start();
+		}
+		
     Task_2ms();
 		Task_100ms();
 		Task_300ms();
@@ -291,11 +308,11 @@ void ExtraCode_StateMachine(void)
 				st_pad1_confirm = 1;
 				st1.st_ctrl_address = 0x01;
 			}
-			else
-			{
-				st_pad1_confirm = 0;
-				st1.st_ctrl_address = 0x00;
-			}
+			//else
+			//{
+			//	st_pad1_confirm = 0;
+			//	st1.st_ctrl_address = 0x00;
+			//}
 			
 			if (st1.st_pad1_status == 0x00)
 			{
@@ -316,11 +333,11 @@ void ExtraCode_StateMachine(void)
 				st_pad2_confirm = 1;
 				st1.st_ctrl_address = 0x02;
 			}
-			else
-			{
-				st_pad2_confirm = 0;
-				st1.st_ctrl_address = 0x00;
-			}
+			//else
+			//{
+			//	st_pad2_confirm = 0;
+			//	st1.st_ctrl_address = 0x00;
+			//}
 			if (st1.st_pad2_status == 0x00)
 			{
 				st1.st_pad2_status = 0x63;
@@ -340,11 +357,11 @@ void ExtraCode_StateMachine(void)
 				st_pad3_confirm = 1;
 				st1.st_ctrl_address = 0x04;
 			}
-			else
-			{
-				st_pad3_confirm = 0;
-				st1.st_ctrl_address = 0x00;
-			}
+			//else
+			//{
+			//	st_pad3_confirm = 0;
+			//	st1.st_ctrl_address = 0x00;
+			//}
 			if (st1.st_pad3_status == 0x00)
 			{
 				st1.st_pad3_status = 0x63;
@@ -359,7 +376,7 @@ void ExtraCode_StateMachine(void)
 
 void handleGesture(void) {
     if ( isGestureAvailable() ) {
-			send_buf[0] = 0x00;
+			/*send_buf[0] = 0x00;
 			send_buf[1] = 0x00;
 			send_buf[2] = 0x00;
 			send_buf[3] = 0x00;
@@ -368,7 +385,7 @@ void handleGesture(void) {
 			send_buf[6] = 0x00;//ns_own_meshid_H;
 			send_buf[7] = 0x00;//ns_own_meshid_L;
 			send_buf[8] = 0x00;//ns_own_meshid_H;
-			send_buf[9] = 0x00;//ns_own_meshid_L;
+			send_buf[9] = 0x00;//ns_own_meshid_L;*/
 			gest_cnt++;					
     switch ( readGesture() ) {
       case DIR_UP:
@@ -376,18 +393,18 @@ void handleGesture(void) {
 				if(gest_cnt == 1)				st1.st_ges_H |= 0xC0;
 				else if(gest_cnt == 2)	st1.st_ges_H |= 0x0C;
 				else if(gest_cnt == 3)	{st1.st_ges_L |= 0xC0;gest_cnt = 0;gest_detect = 1;}
-				send_buf[0] = 0x01;
+				//send_buf[0] = 0x01;
         break;
       case DIR_DOWN:
         //printf("DOWN\n");
-				send_buf[1] = 0x01;
+				//send_buf[1] = 0x01;
 				if(gest_cnt == 1)				st1.st_ges_H |= 0xD0;
 				else if(gest_cnt == 2)	st1.st_ges_H |= 0x0D;
 				else if(gest_cnt == 3)	{st1.st_ges_L |= 0xD0;gest_cnt = 0;gest_detect = 1;}
         break;
       case DIR_LEFT:
         //printf("LEFT\n");
-				send_buf[2] = 0x01;
+				//send_buf[2] = 0x01;
 				if(gest_cnt == 1)		st1.st_ges_H |= 0xE0;
 				else if(gest_cnt == 2)	st1.st_ges_H |= 0x0E;
 				else if(gest_cnt == 3)	{st1.st_ges_L |= 0xE0;gest_cnt = 0;gest_detect = 1;}
@@ -397,25 +414,25 @@ void handleGesture(void) {
 				if(gest_cnt == 1)		st1.st_ges_H |= 0xF0;
 				else if(gest_cnt == 2)	st1.st_ges_H |= 0x0F;
 				else if(gest_cnt == 3)	{st1.st_ges_L |= 0xF0;gest_cnt = 0;gest_detect = 1;}
-				send_buf[3] = 0x01;
+				//send_buf[3] = 0x01;
         break;
       case DIR_NEAR:
         //printf("NEAR\n");
-				send_buf[6] = 0x01;
+				//send_buf[6] = 0x01;
         break;
       case DIR_FAR:
         //printf("FAR\n");
-				send_buf[7] = 0x01;
+				//send_buf[7] = 0x01;
         break;
       default:
         //printf("NONE\n");
 				//send_buf[8] = 0x01;
 				break;
     }
-		send_buf[8] = st1.st_ges_H;
+		/*send_buf[8] = st1.st_ges_H;
 		send_buf[9] = st1.st_ges_L;
 		send_buf[10] = Check_Sum(send_buf,send_buf[5]+2);
-		UART2_Send_Data_Start();
+		UART2_Send_Data_Start();*/
   }
 }
 
@@ -516,7 +533,7 @@ void LightTest(void)
 				//printf(" R: %d\n",red_light);
 				//printf(" G: %d\n",green_light);
 				//printf(" B: %d\n",blue_light);
-				send_buf[0] = (u8)(ambient_light>>8);
+				/*send_buf[0] = (u8)(ambient_light>>8);
 				send_buf[1] = (u8)ambient_light;
 				send_buf[2] = (u8)(red_light>>8);
 				send_buf[3] = (u8)red_light;
@@ -526,12 +543,12 @@ void LightTest(void)
 				send_buf[7] = (u8)green_light;//ns_own_meshid_L;
 				send_buf[8] = (u8)(blue_light>>8);//ns_own_meshid_H;
 				send_buf[9] = (u8)blue_light;//ns_own_meshid_L;
-				st_ambient_light = (u8)ambient_light;
-				st_color_sense_H = (u8)(red_light/4);
-				st_color_sense_M = (u8)(green_light/4);
-				st_color_sense_L = (u8)(blue_light/4);
+				st1.st_ambient_light = (u8)ambient_light;
+				st1.st_color_sense_H = (u8)(red_light/4);
+				st1.st_color_sense_M = (u8)(green_light/4);
+				st1.st_color_sense_L = (u8)(blue_light/4);
 				send_buf[10] = Check_Sum(send_buf,send_buf[5]+2);
-				UART2_Send_Data_Start();
+				UART2_Send_Data_Start();*/
 			}
 			//delay_ms(500);
 			// Reset flag and clear APDS-9960 interrupt (IMPORTANT!)

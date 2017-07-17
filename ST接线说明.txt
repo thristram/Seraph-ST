@@ -1,0 +1,26 @@
+触控板
+KEY1:   PD2     指示灯：PC3
+KEY2:   PD3     指示灯：PC4
+KEY3:   PD4     指示灯：PC5
+SHILED：PD7
+LOAD:   PB3
+GND:   GND
+
+运行指示灯:PC2
+
+APDS9960：
+INT：  PD0
+SCL:   PB4
+SDA:   PB5
+VCC:   3.3V
+GND:   GND
+
+
+1010烧写器接线
+蓝---CLK
+绿---CS
+灰---MOSI
+橙---3.3V
+黄---GND
+紫---MISO
+ 

@@ -36,6 +36,7 @@ includes\uart.h
 ..\program files (x86)\cosmic\cxstm8\hstm8\math.h
 ..\program files (x86)\cosmic\cxstm8\hstm8\modsl0.h
 ..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h
+..\program files (x86)\cosmic\cxstm8\hstm8\string.h
 stm8s_standard_peripherals_lib\includes\stm8s_adc1.h
 stm8s_standard_peripherals_lib\includes\stm8s_adc2.h
 stm8s_standard_peripherals_lib\includes\stm8s_awu.h

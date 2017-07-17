@@ -10,6 +10,26 @@
 #define MAX              255             //随机数最大值  
 #define MIN              1              //随机数最小值 
 
+
+/* 单向列表 */
+typedef struct slnode_t{
+
+	struct slnode_t *next;
+
+	u16 len;		/* data的数据长度 */
+	u16 hasWrite;	/* data已经发送的数据长度 */
+	char *data;
+
+} slnode_t;
+
+UART_EXT u8 mutex2;
+/* uart发送单项队列SingleList的表头 */
+UART_EXT slnode_t *uart2TxSLHead;
+
+/* uart发送单项队列SingleList的表尾 */
+UART_EXT slnode_t *uart2TxSLLast;
+
+
 typedef struct
 {
 	u8 st_ges_H;//当前检测到手势高8位
@@ -118,6 +138,7 @@ UART_EXT union  FLAG 				UART1Flag1_;
 #define action_ctrlpad_flag	UART1Flag1_._flag_bit.bit4//ST打开或关闭ST开关
 #define ble_data_frame			UART1Flag1_._flag_bit.bit5//收到BLE数据帧,帧头0xEE 0xEE
 #define ble_ctrl_frame			UART1Flag1_._flag_bit.bit6//收到BLE控制帧，帧头0xDD,0xDD
+#define rev_bleheartbeat		UART1Flag1_._flag_bit.bit7//接收到1010心跳包
 
 UART_EXT union  FLAG 			UART1Flag2_;
 #define UART2Flag 				UART1Flag2_._flag_byte;
@@ -128,6 +149,7 @@ UART_EXT union  FLAG 			UART1Flag2_;
 #define gest3_confirm			UART1Flag2_._flag_bit.bit4//检测到预设置指令手势1
 #define gest4_confirm			UART1Flag2_._flag_bit.bit5//检测到预设置指令手势1
 //#define gest_configed			UART1Flag2_._flag_bit.bit6//已经配置手势
+#define rev_host_mesh			UART1Flag2_._flag_bit.bit6
 
 UART_EXT union  FLAG 			UART1Flag3_;
 #define UART3Flag 				UART1Flag3_._flag_byte;
@@ -156,19 +178,19 @@ UART_EXT union  FLAG 			UART1Flag4_;
 UART_EXT union  FLAG 					UART1Flag5_;
 #define UART5Flag 						UART1Flag5_._flag_byte;
 #define receipt_device_info1	UART1Flag5_._flag_bit.bit0//ST收到SS网络状态帧回复Device Info回执
-#define receipt_device_info2  UART1Flag5_._flag_bit.bit0//ST收到SS网络状态帧，但mesh id错误，回复AA 03
-#define receipt_gesture1			UART1Flag5_._flag_bit.bit1//ST上报非预设置指令触发手势给网关，收到回执
-#define receipt_gesture2			UART1Flag5_._flag_bit.bit2//ST发送0x51调光指令给SC，收到回执
-#define receipt_action_notify	UART1Flag5_._flag_bit.bit3//ST发送0x08异步通知给SS,收到回执
-#define receipt_send_failed		UART1Flag5_._flag_bit.bit4//ST发送失败，SS回复丢包，重发
-#define receipt_conf_pad1			UART1Flag5_._flag_bit.bit5//SS配置ST按键1\2\3，SC发送回执AA 01
-#define receipt_conf_pad2			UART1Flag5_._flag_bit.bit6//SS配置ST按键，但不是按键1\2\3，SC发送回执AA 03
+#define receipt_device_info2  UART1Flag5_._flag_bit.bit1//ST收到SS网络状态帧，但mesh id错误，回复AA 03
+#define receipt_gesture1			UART1Flag5_._flag_bit.bit2//ST上报非预设置指令触发手势给网关，收到回执
+#define receipt_gesture2			UART1Flag5_._flag_bit.bit3//ST发送0x51调光指令给SC，收到回执
+#define receipt_action_notify	UART1Flag5_._flag_bit.bit4//ST发送0x08异步通知给SS,收到回执
+#define receipt_send_failed		UART1Flag5_._flag_bit.bit5//ST发送失败，SS回复丢包，重发
+#define receipt_conf_pad1			UART1Flag5_._flag_bit.bit6//SS配置ST按键1\2\3，SC发送回执AA 01
+#define receipt_conf_pad2			UART1Flag5_._flag_bit.bit7//SS配置ST按键，但不是按键1\2\3，SC发送回执AA 03
 
 UART_EXT union  FLAG 					UART1Flag6_;
 #define UART6Flag 						UART1Flag6_._flag_byte;
 #define receipt_conf_gest1		UART1Flag6_._flag_bit.bit0//SS配置ST手势1\2\3\4SC发送回执AA 01
 #define receipt_conf_gest2		UART1Flag6_._flag_bit.bit1//SS配置ST手势,但不是手势1、2、3、4,SC发送回执AA 03
-
+#define receipt_host_mesh			UART1Flag6_._flag_bit.bit2
 /**
 **收到AA 07时重发用
 */
@@ -181,7 +203,7 @@ UART_EXT u8 device_info_message_id;	//ST发送Device Info包给SS的message id
 UART_EXT u8 gesture_noset_message_id;		//ST发送非预设置的指令触发手势message id
 UART_EXT u8 gesture_set_message_id;		//ST发送预设置的指令触发手势message id
 UART_EXT u8 pad_noset_message_id;			//ST发送非预设置按键指令message id给SS
-UART_EXT u8 pad_noset_message_id;			//ST发送预设置按键指令message id给SC
+UART_EXT u8 pad_set_message_id;			//ST发送预设置按键指令message id给SC
 UART_EXT u8 action_notify_message_id;//ST发送action_notify包给SS的message id
 
 /*
@@ -212,6 +234,11 @@ UART_EXT u16 send_failed_count;//收到SS/SC发送失败指令,每秒 重发1次
 UART_EXT u8 send_buf[30];
 UART_EXT u8 rev_buf[30];
 UART_EXT u8 sicp_buf[30];
+
+
+UART_EXT int addNodeToUart2TxSLLast(char *psave, int length);
+UART_EXT int deleteNodeFromUart2TxSLHead(void);
+
 
 UART_EXT void Init_uart2(void);
 @interrupt void UART2_TX_ISR(void);

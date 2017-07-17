@@ -37,6 +37,7 @@ MAIN_EXT union  FLAG 		Flag1_;
 #define f_300ms					Flag1_._flag_bit.bit3
 #define f_1s						Flag1_._flag_bit.bit4
 #define extisr_flag			Flag1_._flag_bit.bit5
+#define device_info_sended	Flag1_._flag_bit.bit6
 
 MAIN_EXT void Task_500us(void);
 MAIN_EXT void Task_2ms(void);

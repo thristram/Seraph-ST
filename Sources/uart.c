@@ -14,6 +14,9 @@
 #include "uart.h"
 #include "stdlib.h"
 #include "stm8s_uart2.h"
+#include <string.h>
+
+extern void Variable_Init(void);
 
 /**
   * @brief  产生随机数 1~255
@@ -174,7 +177,7 @@ void rev_deal(void)
 			if ((temp != 0xEE) && (temp != 0xDD))	rev_count = 0;
 			break;
 		case 2:
-			if ((temp != 0xEE) && (temp != 0xDD)) rev_count = 0;
+			if ((temp != 0xEE) && (temp != 0xDD) && (temp != 0xAA)) rev_count = 0;
 			break;
 		case 3:
 			//if (!temp)				rev_count = 0;
@@ -190,12 +193,12 @@ void rev_deal(void)
 			{
 				rev_count = 0;
 			}
-			if ((rev_buf[0] == 0xEE)&&(rev_buf[1] == 0xEE))
+			if ((rev_buf[0] == 0xEE)&&((rev_buf[1] == 0xEE) ||(rev_buf[1] == 0xAA)))
 			{
 				if (rev_count > rev_buf[5] + 2)//接收数据完成
 				{
 					rev_count = 0;
-					check_sum = Check_Sum(rev_buf,rev_buf[5] + 2);
+					check_sum = Check_Sum((rev_buf+2),rev_buf[5]);
 					
 					if (check_sum == rev_buf[rev_buf[5] + 2])//校验正确	
 					{
@@ -213,7 +216,7 @@ void rev_deal(void)
 			}
 			else if((rev_buf[0] == 0xDD)&&(rev_buf[1] == 0xDD))
 			{
-				if (rev_count > rev_buf[3] + 1)//接收数据完成
+				if (rev_count > rev_buf[3] + 2)//接收数据完成
 				{
 					rev_count = 0;
 					rev_success = 1;
@@ -337,6 +340,71 @@ void pad_confirm(void)
 		}
 	}
 }
+/*   A D D   N O D E   T O   U A R T   T X   S   L   L A S T   */
+/*-------------------------------------------------------------------------
+    此函数与链表can1TxSLHead UartTxSLLast 直接绑定
+    不能作为通用的函数
+    函数不可冲入，因此互斥量需同时锁住链表和函数    
+-------------------------------------------------------------------------*/
+int addNodeToUart2TxSLLast(char *psave, int length)
+{
+	int ret = -1;
+	slnode_t * newNode;
+	char *pdata;
+
+	newNode = (slnode_t *)malloc(sizeof(slnode_t)); if(!newNode){ return -1;}
+	/* 0A 0A */
+	pdata = (char *)malloc(length); if(!pdata){free(newNode); return -1;}
+	mutex2 = 1;
+	if(newNode && pdata){
+		newNode->next = NULL;
+		newNode->len = (u16)length;	
+		newNode->hasWrite = 0;
+		memcpy(pdata, psave, length);
+		//òò?a′?è?μ?psaveóD·????ú′?￡??ú?aà?Dèêí·??ú′?
+		free(psave);
+		//*(pdata+length) = 0x0a;
+		//*(pdata+length+1)= 0x0a;
+		newNode->data = pdata;
+		mutex2 = 0;
+		if(!uart2TxSLLast){	/* á′±í?2ê?·??a??? */
+			uart2TxSLHead = newNode;
+			uart2TxSLLast = newNode;
+			mutex2 = 0;
+		}else{
+			uart2TxSLLast->next = newNode;	/* add node */
+			uart2TxSLLast = newNode;	/* new list end */
+			mutex2 = 0;			
+		}
+		ret = 0;
+	}	
+	return ret;
+}
+/*   D E L E T E   N O D E   F R O M   C A N 1   T X   S   L   H E A D   */
+/*-------------------------------------------------------------------------
+        从链表头删除节点
+-------------------------------------------------------------------------*/
+int deleteNodeFromUart2TxSLHead(void)
+{
+	int ret = -1;
+	slnode_t *newhead;
+
+	if(uart2TxSLHead){	/* 链表头不为空 */	
+		if(!uart2TxSLHead->next){	/* 链表头的next为空，即只有一个节点，链表头和链表尾都指向该节点 */
+			if(uart2TxSLHead->data) {free(uart2TxSLHead->data);}
+			free(uart2TxSLHead);
+			uart2TxSLHead = NULL;
+			uart2TxSLLast = NULL;
+		}else{	/* 链表头的next不为空，即有两个或两个以上的节点 */
+			newhead = uart2TxSLHead->next;
+			if(uart2TxSLHead->data) {free(uart2TxSLHead->data);}
+			free(uart2TxSLHead);
+			uart2TxSLHead = newhead;			
+		}	
+		ret = 0;
+	}
+	return ret;	
+}
 
 /**
   * @brief  send_header_init 
@@ -355,6 +423,7 @@ void send_header_payload_init(u8 id,u8 mesh_id_H,u8 mesh_id_L,u8 len ,u8 cmd)
 	switch(cmd)
 	{
 		case 0x20://回复环境光和环境颜色
+			send_buf[1] = 0xAA;
 			send_buf[6] = cmd;
 			send_buf[7] = st1.st_ambient_light;
 			send_buf[8] = st1.st_color_sense_L;
@@ -362,6 +431,7 @@ void send_header_payload_init(u8 id,u8 mesh_id_H,u8 mesh_id_L,u8 len ,u8 cmd)
 			send_buf[10] = st1.st_color_sense_H;
 			break;
 		case 0x06://回复心跳包，回复背光LED,及3个触控开关的状态
+			send_buf[1] = 0xAA;
 			send_buf[6] = cmd;
 			send_buf[7] = 0x00;//ST Module ID发0x00
 			send_buf[8] = 0x00;
@@ -398,6 +468,7 @@ void send_header_payload_init(u8 id,u8 mesh_id_H,u8 mesh_id_L,u8 len ,u8 cmd)
 			}
 			break;
 		case 0xAA://发送回执
+			send_buf[1] = 0xAA;
 		  if (action_ctrlpad_flag)
 			{
 				action_ctrlpad_flag = 0;
@@ -458,13 +529,19 @@ void send_header_payload_init(u8 id,u8 mesh_id_H,u8 mesh_id_L,u8 len ,u8 cmd)
 				send_buf[6] = cmd;
 				send_buf[7] = 0x03;//代表指令执行失败
 			}
+			else if(receipt_host_mesh)
+			{
+				receipt_host_mesh = 0;
+				send_buf[6] = cmd;
+				send_buf[7] = 0x02;//代表指令接收成功
+			}
 			break;
 		case 0xB4://ST回复设备信息
 			send_buf[6] = cmd;
-			send_buf[7] = 0x11;//UUID
-			send_buf[8] = 0x11;
-			send_buf[9] = 0x11;
-			send_buf[10] = 0x11;
+			send_buf[7] = 0xAA;//UUID
+			send_buf[8] = 0x55;
+			send_buf[9] = 0xAB;
+			send_buf[10] = 0x70;
 			send_buf[11] = 0x63;//设备型号
 			send_buf[12] = 0x00;//固件版本
 			send_buf[13] = st1.st_device_status;
@@ -475,54 +552,57 @@ void send_header_payload_init(u8 id,u8 mesh_id_H,u8 mesh_id_L,u8 len ,u8 cmd)
 			send_buf[8] = st1.st_device_status;
 			break;
 		case 0x51://ST被触发判断需要向SC 发送指令	预设值指令手势
+		case 0x55:
 			send_buf[6] = cmd;
 			if(gest1_confirm)
 			{
 				send_buf[7] = st1.st_ges1_ctrl_boardid;
 				send_buf[8] = st1.st_ges1_ctrl_action_value;
-				send_buf[9] = 0x00;
+				send_buf[9] = 0x1E;
 			}
 			else if(gest2_confirm)
 			{
 				send_buf[7] = st1.st_ges2_ctrl_boardid;
 				send_buf[8] = st1.st_ges2_ctrl_action_value;
-				send_buf[9] = 0x00;
+				send_buf[9] = 0x1E;
 			}
 			else if(gest3_confirm)
 			{
 				send_buf[7] = st1.st_ges3_ctrl_boardid;
 				send_buf[8] = st1.st_ges3_ctrl_action_value;
-				send_buf[9] = 0x00;
+				send_buf[9] = 0x1E;
 			}
 			else if(gest4_confirm)
 			{
 				send_buf[7] = st1.st_ges4_ctrl_boardid;
 				send_buf[8] = st1.st_ges4_ctrl_action_value;
-				send_buf[9] = 0x00;
+				send_buf[9] = 0x1E;
 			}
 			else if(st_pad1_confirm)
 			{
 				send_buf[7] = st1.st_pad1_ctrl_boardid;
-				send_buf[8] = 0x00;
-				send_buf[9] = 0x00;
+				if(cmd == 0x51)	send_buf[8] = st1.st_pad1_ctrl_action_value;//说明是调光
+				else						send_buf[8] = st1.st_pad1_status;
+				send_buf[9] = 0x1E;
 			}
 			else if(st_pad2_confirm)
 			{
 				send_buf[7] = st1.st_pad2_ctrl_boardid;
-				send_buf[8] = 0x00;
-				send_buf[9] = 0x00;
+				if(cmd == 0x51)	send_buf[8] = st1.st_pad2_ctrl_action_value;//说明是调光
+				else						send_buf[8] = st1.st_pad2_status;
+				send_buf[9] = 0x1E;
 			}
 			else if(st_pad3_confirm)
 			{
 				send_buf[7] = st1.st_pad3_ctrl_boardid;
-				send_buf[8] = 0x00;
-				send_buf[9] = 0x00;
+				if(cmd == 0x51)	send_buf[8] = st1.st_pad3_ctrl_action_value;//说明是调光
+				else						send_buf[8] = st1.st_pad3_status;
+				send_buf[9] = 0x1E;
 			}
 			
 			break;
 		case 0x08://ST被触发异步向 SS 推送触发器数值和判断结果
 			send_buf[6] = cmd;
-			
 			if(gest1_confirm)
 			{
 				send_buf[7] = 0x02;//触发器是手势
@@ -575,41 +655,42 @@ void send_header_payload_init(u8 id,u8 mesh_id_H,u8 mesh_id_L,u8 len ,u8 cmd)
 			{
 				send_buf[7] = 0x01;//触发器是按键
 				send_buf[8] = 0x00;
-				send_buf[9] = st1.st_ctrl_address;
+				send_buf[9] = (st1.st_pad1_ctrl_boardid<<4) | st1.st_ctrl_address;
 				send_buf[10] = st1.st_pad1_ctrl_meshid_H;
 				send_buf[11] = st1.st_pad1_ctrl_meshid_L;
 				send_buf[12] = st1.st_pad1_ctrl_action;
 				send_buf[13] = st1.st_pad1_ctrl_boardid;
-				send_buf[14] = 0x00;
+				send_buf[14] = st1.st_pad1_status;
 				send_buf[15] = 0x00;
 			}
 			else if(st_pad2_confirm)
 			{
 				send_buf[7] = 0x01;//触发器是按键
 				send_buf[8] = 0x00;
-				send_buf[9] = st1.st_ctrl_address;
+				send_buf[9] = (st1.st_pad2_ctrl_boardid<<4) |st1.st_ctrl_address;
 				send_buf[10] = st1.st_pad2_ctrl_meshid_H;
 				send_buf[11] = st1.st_pad2_ctrl_meshid_L;
 				send_buf[12] = st1.st_pad2_ctrl_action;
 				send_buf[13] = st1.st_pad2_ctrl_boardid;
-				send_buf[14] = 0x00;
+				send_buf[14] = st1.st_pad2_status;
 				send_buf[15] = 0x00;
 			}
 			else if(st_pad3_confirm)
 			{
 				send_buf[7] = 0x01;//触发器是按键
 				send_buf[8] = 0x00;
-				send_buf[9] = st1.st_ctrl_address;
+				send_buf[9] = (st1.st_pad3_ctrl_boardid<<4) |st1.st_ctrl_address;
 				send_buf[10] = st1.st_pad3_ctrl_meshid_H;
 				send_buf[11] = st1.st_pad3_ctrl_meshid_L;
 				send_buf[12] = st1.st_pad3_ctrl_action;
 				send_buf[13] = st1.st_pad3_ctrl_boardid;
-				send_buf[14] = 0x00;
+				send_buf[14] = st1.st_pad3_status;
 				send_buf[15] = 0x00;
 			}
 			break;
 	}
 	send_buf[len+2] = Check_Sum((send_buf+2),len);
+	//addNodeToUart2TxSLLast(send_buf,len+3);
 }
 
 /**
@@ -630,7 +711,7 @@ void send_payload_init(u8 len,u8 cmd)
   */
 void rev_header_anaylze(u8 *message_id,u8 *mesh_id_H,u8 *mesh_id_L,u8 *message_length)
 {
-	if ((sicp_buf[0] == 0xEE) && (sicp_buf[1]== 0xEE))
+	if ((sicp_buf[0] == 0xEE) && ((sicp_buf[1]== 0xEE) || (sicp_buf[1]== 0xAA)))
 	{
 		ble_data_frame = 1;
 		*message_id = sicp_buf[2];
@@ -672,7 +753,7 @@ bool rev_payload_anaylze(void)
 					{
 						kickout_flag = 0;
 						net_reset_flag = 0;
-						if ((sicp_buf[8] & 0x01) == 0x01)//设置通道1
+						if (sicp_buf[8] == 1)//设置通道1
 						{
 							st1.st_pad1_ctrl_meshid_H = sicp_buf[10];
 							st1.st_pad1_ctrl_meshid_L = sicp_buf[11];
@@ -682,11 +763,11 @@ bool rev_payload_anaylze(void)
 							receipt_conf_pad1 = 1;
 							send_message_length = 6;
 							send_cmd = 0xAA;
-							send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+							send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 							UART2_Send_Data_Start();
 							break;
 						}
-						else if ((sicp_buf[8] & 0x02) == 0x02)//设置通道2
+						else if (sicp_buf[8] == 2)//设置通道2
 						{
 							st1.st_pad2_ctrl_meshid_H = sicp_buf[10];
 							st1.st_pad2_ctrl_meshid_L = sicp_buf[11];
@@ -696,11 +777,11 @@ bool rev_payload_anaylze(void)
 							receipt_conf_pad1 = 1;
 							send_message_length = 6;
 							send_cmd = 0xAA;
-							send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+							send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 							UART2_Send_Data_Start();
 							break;
 						}
-						else if ((sicp_buf[8] & 0x04) == 0x04)//设置通道3
+						else if (sicp_buf[8] == 3)//设置通道3
 						{
 							st1.st_pad3_ctrl_meshid_H = sicp_buf[10];
 							st1.st_pad3_ctrl_meshid_L = sicp_buf[11];
@@ -710,7 +791,7 @@ bool rev_payload_anaylze(void)
 							receipt_conf_pad1 = 1;
 							send_message_length = 6;
 							send_cmd = 0xAA;
-							send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+							send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 							UART2_Send_Data_Start();
 							break;
 						}
@@ -719,18 +800,18 @@ bool rev_payload_anaylze(void)
 							receipt_conf_pad2 = 1;
 							send_message_length = 6;
 							send_cmd = 0xAA;
-							send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+							send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 							UART2_Send_Data_Start();
 							break;
 						}
 						
 					}
-					if (sicp_buf[7] == 0x02)//设置ST手势作用
+					else if (sicp_buf[7] == 0x02)//设置ST手势作用
 					{
 						kickout_flag = 0;
 						net_reset_flag = 0;
 						
-						if((sicp_buf[8] != st1.st_ges1_ctrl_H) && (sicp_buf[9] != st1.st_ges1_ctrl_L))//第一个预设置手势
+						if((st1.st_ges1_ctrl_H == 0x11) && (st1.st_ges1_ctrl_L == 0x11) && (sicp_buf[8] != st1.st_ges1_ctrl_H) && (sicp_buf[9] != st1.st_ges1_ctrl_L))//第一个预设置手势
 						{
 							st1.st_ges1_ctrl_H						= sicp_buf[8];
 							st1.st_ges1_ctrl_L						= sicp_buf[9];
@@ -743,11 +824,11 @@ bool rev_payload_anaylze(void)
 							receipt_conf_gest1 = 1;
 							send_message_length = 6;
 							send_cmd = 0xAA;
-							send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+							send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 							UART2_Send_Data_Start();
 							break;
 						}
-						else if((sicp_buf[8] != st1.st_ges2_ctrl_H) && (sicp_buf[9] != st1.st_ges2_ctrl_L))//第二个预设置手势
+						else if((st1.st_ges2_ctrl_H == 0x11) && (st1.st_ges2_ctrl_L == 0x11) &&(sicp_buf[8] != st1.st_ges2_ctrl_H) && (sicp_buf[9] != st1.st_ges2_ctrl_L))//第二个预设置手势
 						{
 							st1.st_ges2_ctrl_H						= sicp_buf[8];
 							st1.st_ges2_ctrl_L						= sicp_buf[9];
@@ -760,11 +841,11 @@ bool rev_payload_anaylze(void)
 							receipt_conf_gest1 = 1;
 							send_message_length = 6;
 							send_cmd = 0xAA;
-							send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+							send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 							UART2_Send_Data_Start();
 							break;
 						}
-						else if((sicp_buf[8] != st1.st_ges3_ctrl_H) && (sicp_buf[9] != st1.st_ges3_ctrl_L))//第三个预设置手势
+						else if((st1.st_ges3_ctrl_H == 0x11) && (st1.st_ges3_ctrl_L == 0x11) &&(sicp_buf[8] != st1.st_ges3_ctrl_H) && (sicp_buf[9] != st1.st_ges3_ctrl_L))//第三个预设置手势
 						{
 							st1.st_ges3_ctrl_H						= sicp_buf[8];
 							st1.st_ges3_ctrl_L						= sicp_buf[9];
@@ -777,11 +858,11 @@ bool rev_payload_anaylze(void)
 							receipt_conf_gest1 = 1;
 							send_message_length = 6;
 							send_cmd = 0xAA;
-							send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+							send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 							UART2_Send_Data_Start();
 							break;
 						}
-						else if((sicp_buf[8] != st1.st_ges4_ctrl_H) && (sicp_buf[9] != st1.st_ges4_ctrl_L))//第三个预设置手势
+						else if((st1.st_ges4_ctrl_H == 0x11) && (st1.st_ges4_ctrl_L == 0x11) &&(sicp_buf[8] != st1.st_ges4_ctrl_H) && (sicp_buf[9] != st1.st_ges4_ctrl_L))//第三个预设置手势
 						{
 							st1.st_ges4_ctrl_H						= sicp_buf[8];
 							st1.st_ges4_ctrl_L						= sicp_buf[9];
@@ -794,7 +875,7 @@ bool rev_payload_anaylze(void)
 							receipt_conf_gest1 = 1;
 							send_message_length = 6;
 							send_cmd = 0xAA;
-							send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+							send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 							UART2_Send_Data_Start();
 							break;
 						}
@@ -806,7 +887,7 @@ bool rev_payload_anaylze(void)
 							receipt_conf_gest1 = 1;
 							send_message_length = 6;
 							send_cmd = 0xAA;
-							send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+							send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 							UART2_Send_Data_Start();
 							break;
 						}
@@ -815,7 +896,7 @@ bool rev_payload_anaylze(void)
 							receipt_conf_gest2 = 1;
 							send_message_length = 6;
 							send_cmd = 0xAA;
-							send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+							send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 							UART2_Send_Data_Start();
 							break;
 						}
@@ -847,7 +928,7 @@ bool rev_payload_anaylze(void)
 					{
 						send_message_length = 9;
 						send_cmd = 0x20;
-						send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+						send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 						UART2_Send_Data_Start();
 					}
 				}
@@ -856,7 +937,7 @@ bool rev_payload_anaylze(void)
 					cmd_refresh_flag = 1;
 					send_message_length = 6;
 					send_cmd = 0xAA;
-					send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+					send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 					UART2_Send_Data_Start();
 				}
 				if (sicp_buf[7] == 0x03)//获取ST当前设备的状态(灯亮度、开关)
@@ -865,7 +946,7 @@ bool rev_payload_anaylze(void)
 					//rev_module_id = sicp_buf[8];
 					send_message_length = 10;
 					send_cmd = 0x06;
-					send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+					send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 					UART2_Send_Data_Start();
 				}
 				break;
@@ -883,7 +964,7 @@ bool rev_payload_anaylze(void)
 				st1.st_ctrl_value  = sicp_buf[8];
 				send_message_length = 10;
 				send_cmd = 0xAA;
-				send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+				send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 				//send_payload_init(send_message_length,send_cmd);
 				UART2_Send_Data_Start();
 				break;
@@ -903,7 +984,7 @@ bool rev_payload_anaylze(void)
 						st1.st_led_color2_L = sicp_buf[15];
 						send_message_length = 6;
 						send_cmd = 0xAA;
-						send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+						send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 						//send_payload_init(send_message_length,send_cmd);
 						UART2_Send_Data_Start();
 						break;
@@ -921,7 +1002,7 @@ bool rev_payload_anaylze(void)
 						st1.st_led_color2_L = sicp_buf[17];
 						send_message_length = 6;
 						send_cmd = 0xAA;
-						send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+						send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 						//send_payload_init(send_message_length,send_cmd);
 						UART2_Send_Data_Start();
 						break;
@@ -937,7 +1018,7 @@ bool rev_payload_anaylze(void)
 						st1.st_led_color2_L = sicp_buf[15];
 						send_message_length = 6;
 						send_cmd = 0xAA;
-						send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+						send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 						//send_payload_init(send_message_length,send_cmd);
 						UART2_Send_Data_Start();
 						break;
@@ -945,7 +1026,7 @@ bool rev_payload_anaylze(void)
 						st1.st_led_mode = 0x4F;
 						send_message_length = 6;
 						send_cmd = 0xAA;
-						send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+						send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 						//send_payload_init(send_message_length,send_cmd);
 						UART2_Send_Data_Start();
 						break;
@@ -953,7 +1034,7 @@ bool rev_payload_anaylze(void)
 						st1.st_led_mode = 0x5F;
 						send_message_length = 6;
 						send_cmd = 0xAA;
-						send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+						send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 						//send_payload_init(send_message_length,send_cmd);
 						UART2_Send_Data_Start();
 						break;
@@ -964,9 +1045,20 @@ bool rev_payload_anaylze(void)
 				st1.st_load_alert = sicp_buf[7];
 				send_message_length = 6;
 				send_cmd = 0xAA;
-				send_header_payload_init(rev_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+				send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 				//send_payload_init(send_message_length,send_cmd);
 				UART2_Send_Data_Start();
+				break;
+			case 0xB0://Gateway	Mesh	ID	Broadcasting
+				if(sicp_buf[2] == 0x9E){
+					rev_host_mesh = 1;receipt_host_mesh = 1;
+					ns_host_meshid_H = sicp_buf[3];
+					ns_host_meshid_L = sicp_buf[4];
+					send_message_length = 6;
+					send_cmd = 0xAA;
+					send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
+					UART2_Send_Data_Start();
+				}
 				break;
 			default:
 				break;
@@ -980,19 +1072,32 @@ bool rev_payload_anaylze(void)
 		switch(sicp_buf[4])
 		{
 			case 0x01://网络状态帧
+				rev_bleheartbeat = 1;
 				ns_signal = sicp_buf[5];
 				ns_status = sicp_buf[6];
 				ns_phonenum = sicp_buf[7];
 				ns_own_meshid_H = sicp_buf[8];
 				ns_own_meshid_L = sicp_buf[9];
-				ns_host_meshid_H = sicp_buf[10];
-				ns_host_meshid_L = sicp_buf[11];
+				//ns_host_meshid_H = sicp_buf[10];
+				//ns_host_meshid_L = sicp_buf[11];
 				break;
 			case 0x02://重置芯片，清空串口缓存，保留mesh连接
+				Variable_Init();
+				clear_sicp_buf();
 				break;
 			case 0x03://重置芯片和网络，退出mesh连接
+				Variable_Init();
+				clear_sicp_buf();
+				ns_signal = 0x00;
+				ns_status = 0x00;
+				ns_phonenum = 0x00;
+				ns_own_meshid_H = 0x00;
+				ns_own_meshid_L = 0x00;
+				ns_host_meshid_H = 0x80;
+				ns_host_meshid_L = 0xFF;
 				break;
 		}
+		/*
 		generate_messageid = 0x86;//for debug
 		//generate_messageid = random(TIM4->CNTR);
 		device_info_message_id = generate_messageid;
@@ -1006,7 +1111,7 @@ bool rev_payload_anaylze(void)
 				//clear_sicp_buf();
 				send_message_length = 12;
 				send_cmd = 0xB4;
-				send_header_payload_init(device_info_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+				send_header_payload_init(device_info_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 				//send_payload_init(send_message_length,send_cmd);
 				UART2_Send_Data_Start();
 				delay(10);
@@ -1017,10 +1122,10 @@ bool rev_payload_anaylze(void)
 			receipt_device_info2 = 1;
 			send_message_length = 6;
 			send_cmd = 0xAA;
-			send_header_payload_init(device_info_message_id,ns_own_meshid_H,ns_own_meshid_L,send_message_length,send_cmd);
+			send_header_payload_init(device_info_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 			UART2_Send_Data_Start();
 			delay(10);
-		}
+		}*/
 		return TRUE;
 	}
 	else
@@ -1079,26 +1184,30 @@ void reve_analyze_reply(void)
 			st_pad_temp._flag_bit.bit5 = st_pad3_confirm;
 			
 				generate_messageid = random(TIM4->CNTR);
+				pad_set_message_id = generate_messageid;
 				send_message_length = 8;
-				send_cmd = 0x51;
+				
 				if (st_pad1_confirm)//预设置按键1被触发
 				{
+					send_cmd = st1.st_pad1_ctrl_action;
 					st_pad1_ctrl = 0;
-					send_header_payload_init(gesture_noset_message_id,st1.st_pad1_ctrl_meshid_H,st1.st_pad1_ctrl_meshid_L,send_message_length,send_cmd);
+					send_header_payload_init(pad_set_message_id,st1.st_pad1_ctrl_meshid_H,st1.st_pad1_ctrl_meshid_L,send_message_length,send_cmd);
 				}
 				else if (st_pad2_confirm)
 				{
+					send_cmd = st1.st_pad2_ctrl_action;
 					st_pad2_ctrl = 0;
-					send_header_payload_init(gesture_noset_message_id,st1.st_pad2_ctrl_meshid_H,st1.st_pad2_ctrl_meshid_L,send_message_length,send_cmd);
+					send_header_payload_init(pad_set_message_id,st1.st_pad2_ctrl_meshid_H,st1.st_pad2_ctrl_meshid_L,send_message_length,send_cmd);
 				}
 				else if (st_pad3_confirm)
 				{
+					send_cmd = st1.st_pad3_ctrl_action;
 					st_pad3_ctrl = 0;
-					send_header_payload_init(gesture_noset_message_id,st1.st_pad3_ctrl_meshid_H,st1.st_pad3_ctrl_meshid_L,send_message_length,send_cmd);
+					send_header_payload_init(pad_set_message_id,st1.st_pad3_ctrl_meshid_H,st1.st_pad3_ctrl_meshid_L,send_message_length,send_cmd);
 				}
 				//send_payload_init(send_message_length,send_cmd);
 				UART2_Send_Data_Start();
-				delay(10);
+				delay(300);
 				
 				//发送异步通知给SS
 				clear_send_buf();
@@ -1106,40 +1215,44 @@ void reve_analyze_reply(void)
 				send_cmd = 0x08;
 				if (st_pad1_confirm)//预设置按键1被触发
 				{
+					send_header_payload_init(pad_set_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 					st_pad1_confirm = 0;
-					send_header_payload_init(gesture_noset_message_id,st1.st_pad1_ctrl_meshid_H,st1.st_pad1_ctrl_meshid_L,send_message_length,send_cmd);
 				}
 				else if (st_pad2_confirm)
 				{
+					
+					send_header_payload_init(pad_set_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 					st_pad2_confirm = 0;
-					send_header_payload_init(gesture_noset_message_id,st1.st_pad2_ctrl_meshid_H,st1.st_pad2_ctrl_meshid_L,send_message_length,send_cmd);
 				}
 				else if(st_pad3_confirm)
 				{
+					
+					send_header_payload_init(pad_set_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 					st_pad2_confirm = 0;
-					send_header_payload_init(gesture_noset_message_id,st1.st_pad3_ctrl_meshid_H,st1.st_pad3_ctrl_meshid_L,send_message_length,send_cmd);
 				}
 				UART2_Send_Data_Start();
 				delay(10);
 		}
 		else//当检测到触摸按键状态改变时，不属于预设值按键，则通过此指令上报按键
 		{
+			generate_messageid = random(TIM4->CNTR);
+			pad_noset_message_id = generate_messageid;
 			send_message_length = 7;
 			send_cmd = 0x35;
 			if (st_pad1_ctrl)
 			{
 				st_pad1_ctrl = 0;
-				send_header_payload_init(gesture_noset_message_id,st1.st_pad1_ctrl_meshid_H,st1.st_pad1_ctrl_meshid_L,send_message_length,send_cmd);
+				send_header_payload_init(pad_noset_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 			}
 			else if (st_pad2_ctrl)
 			{
 				st_pad2_ctrl = 0;
-				send_header_payload_init(gesture_noset_message_id,st1.st_pad2_ctrl_meshid_H,st1.st_pad2_ctrl_meshid_L,send_message_length,send_cmd);
+				send_header_payload_init(pad_noset_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 			}
 			else if (st_pad3_ctrl)
 			{
 				st_pad3_ctrl = 0;
-				send_header_payload_init(gesture_noset_message_id,st1.st_pad3_ctrl_meshid_H,st1.st_pad3_ctrl_meshid_L,send_message_length,send_cmd);
+				send_header_payload_init(gesture_noset_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 			}
 			UART2_Send_Data_Start();
 			delay(10);
@@ -1179,45 +1292,49 @@ void reve_analyze_reply(void)
 				generate_messageid = random(TIM4->CNTR);
 				gesture_set_message_id = generate_messageid;
 				send_message_length = 8;
-				send_cmd = 0x51;
+				
 				if (gest1_confirm)
 				{
+					send_cmd = st1.st_ges1_ctrl_action_value;
 					send_header_payload_init(gesture_set_message_id,st1.st_ges1_ctrl_meshid_H,st1.st_ges1_ctrl_meshid_L,send_message_length,send_cmd);
 				}
 				else if (gest2_confirm)
 				{
+					send_cmd = st1.st_ges2_ctrl_action_value;
 					send_header_payload_init(generate_messageid,st1.st_ges2_ctrl_meshid_H,st1.st_ges2_ctrl_meshid_L,send_message_length,send_cmd);
 				}
 				else if (gest3_confirm)
 				{
+					send_cmd = st1.st_ges3_ctrl_action_value;
 					send_header_payload_init(generate_messageid,st1.st_ges3_ctrl_meshid_H,st1.st_ges3_ctrl_meshid_L,send_message_length,send_cmd);
 				}
 				else if (gest4_confirm)
 				{
+					send_cmd = st1.st_ges4_ctrl_action_value;
 					send_header_payload_init(generate_messageid,st1.st_ges4_ctrl_meshid_H,st1.st_ges4_ctrl_meshid_L,send_message_length,send_cmd);
 				}
 				//send_payload_init(send_message_length,send_cmd);
 				UART2_Send_Data_Start();
 				//short delay 等待数据发送完成，ST异步向 SS 推送触发器数值和判断结果
-				delay(10);
+				delay(300);
 				clear_send_buf();
 				send_message_length = 14;
 				send_cmd = 0x08;
 				if (gest1_confirm)
 				{
-					send_header_payload_init(gesture_set_message_id,st1.st_ges1_ctrl_meshid_H,st1.st_ges1_ctrl_meshid_L,send_message_length,send_cmd);
+					send_header_payload_init(gesture_set_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 				}
 				else if (gest2_confirm)
 				{
-					send_header_payload_init(generate_messageid,st1.st_ges2_ctrl_meshid_H,st1.st_ges2_ctrl_meshid_L,send_message_length,send_cmd);
+					send_header_payload_init(generate_messageid,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 				}
 				else if (gest3_confirm)
 				{
-					send_header_payload_init(generate_messageid,st1.st_ges3_ctrl_meshid_H,st1.st_ges3_ctrl_meshid_L,send_message_length,send_cmd);
+					send_header_payload_init(generate_messageid,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 				}
 				else if (gest4_confirm)
 				{
-					send_header_payload_init(generate_messageid,st1.st_ges4_ctrl_meshid_H,st1.st_ges4_ctrl_meshid_L,send_message_length,send_cmd);
+					send_header_payload_init(generate_messageid,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 				}
 				//send_payload_init(send_message_length,send_cmd);
 				UART2_Send_Data_Start();
