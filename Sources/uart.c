@@ -478,6 +478,14 @@ void send_header_payload_init(u8 id,u8 mesh_id_H,u8 mesh_id_L,u8 len ,u8 cmd)
 				send_buf[9] = st1.st_pad2_status;
 				send_buf[10] = st1.st_pad3_status;
 				send_buf[11] = st1.st_led_status;
+				//增加控制的SLC和SPC的状态 20170721
+				if((action_ctrl_address & 0x01) == 0x01){//需要回复key1控制SLC或SPC的状态
+					send_buf[12] += 1;
+					send_buf[13] = st1.st_pad1_ctrl_boardid;
+					//for(i = 0; i < 15; i++){
+						
+					//}
+				}
 			}
 			else if(led_ctrl_flag)
 			{
@@ -739,7 +747,7 @@ void rev_header_anaylze(u8 *message_id,u8 *mesh_id_H,u8 *mesh_id_L,u8 *message_l
   */
 bool rev_payload_anaylze(void)
 {
-
+	u8 action_ctrl_num = 0;
 	if (ble_data_frame)
 	{
 		ble_data_frame = 0;
@@ -952,17 +960,18 @@ bool rev_payload_anaylze(void)
 				break;
 			case 0x56://打开或关闭ST开关
 				action_ctrlpad_flag = 1;
-				st1.st_ctrl_address = sicp_buf[7];
-				if((sicp_buf[7] & 0x01) == 0x01)
-					st_pad1_ctrl = 1;
-				if((sicp_buf[7] & 0x02) == 0x02)
-					st_pad2_ctrl = 1;
-				if((sicp_buf[7] & 0x04) == 0x04)
-					st_pad3_ctrl = 1;
+				send_message_length = 10;
+				action_ctrl_address = st1.st_ctrl_address = sicp_buf[7];			
+				if(((sicp_buf[7] & 0x01) == 0x01) && (st1.st_pad1_status != sicp_buf[8]))
+					{st_pad1_ctrl = 1;st_pad1_confirm = 1;st1.st_pad1_status = sicp_buf[8];action_ctrl_num++;send_message_length += 5;}
+				if(((sicp_buf[7] & 0x02) == 0x02) && (st1.st_pad2_status != sicp_buf[8]))
+					{st_pad2_ctrl = 1;st_pad2_confirm = 1;st1.st_pad2_status = sicp_buf[8];action_ctrl_num++;send_message_length += 5;}
+				if(((sicp_buf[7] & 0x04) == 0x04) && (st1.st_pad3_status != sicp_buf[8]))
+					{st_pad3_ctrl = 1;st_pad3_confirm = 1;st1.st_pad3_status = sicp_buf[8];action_ctrl_num++;send_message_length += 5;}
 				if((sicp_buf[7] & 0x08) == 0x08)
 					st_led_ctrl = 1;
 				st1.st_ctrl_value  = sicp_buf[8];
-				send_message_length = 10;
+				send_message_length += (action_ctrl_num+1);//增加发送1个字节表示action_ctrl_num
 				send_cmd = 0xAA;
 				send_header_payload_init(rev_message_id,ns_host_meshid_H,ns_host_meshid_L,send_message_length,send_cmd);
 				//send_payload_init(send_message_length,send_cmd);

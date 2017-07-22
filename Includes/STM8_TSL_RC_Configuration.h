@@ -299,7 +299,7 @@
 #define MIN_MEAS_COEFF             (0x00E6)  /**< Min measure guardband (MSB=integer part, LSB=decimal part) */
 
 // Thresholds
-#define SCKEY_DETECTTHRESHOLD_DEFAULT          (30)  /**< Single channel key detection threshold (value from 1 to 127) */
+#define SCKEY_DETECTTHRESHOLD_DEFAULT          (60)  /**< Single channel key detection threshold (value from 1 to 127) */
 #define SCKEY_ENDDETECTTHRESHOLD_DEFAULT        (18)  /**< Single channel key end detection threshold (value from 1 to 127) */
 #define SCKEY_RECALIBRATIONTHRESHOLD_DEFAULT   (-18)  /**< Single channel key calibration threshold (value from -1 to -128) */
 #define MCKEY_DETECTTHRESHOLD_DEFAULT          (127)  /**< Multi channel key detection threshold (value from 1 to 127) */

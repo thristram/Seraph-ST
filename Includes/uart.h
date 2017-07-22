@@ -235,6 +235,7 @@ UART_EXT u8 send_buf[30];
 UART_EXT u8 rev_buf[30];
 UART_EXT u8 sicp_buf[30];
 
+UART_EXT u8 action_ctrl_address;
 
 UART_EXT int addNodeToUart2TxSLLast(char *psave, int length);
 UART_EXT int deleteNodeFromUart2TxSLHead(void);

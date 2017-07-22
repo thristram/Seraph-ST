@@ -14,7 +14,7 @@
   87  0007 92c700        	ld	[_pKeyStruct.w],a
   88                     ; 53     pKeyStruct->DetectThreshold = SCKEY_DETECTTHRESHOLD_DEFAULT;
   90  000a be00          	ldw	x,_pKeyStruct
-  91  000c a61e          	ld	a,#30
+  91  000c a63c          	ld	a,#60
   92  000e e70c          	ld	(12,x),a
   93                     ; 54     pKeyStruct->EndDetectThreshold = SCKEY_ENDDETECTTHRESHOLD_DEFAULT;
   95  0010 be00          	ldw	x,_pKeyStruct

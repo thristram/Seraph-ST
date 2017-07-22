@@ -949,8 +949,8 @@ ERROR	stm8s_standard_peripherals_lib\includes\stm8s_type.h	82;"	enumerator	enum:
 ERROR_STATE	stm8_ts_lib\includes\stm8_tsl_rc_api.h	58;"	macro
 ESR	stm8s_standard_peripherals_lib\includes\stm8s_map.h	1754;"	member	struct:__anon1::__anon2::__anon8
 ETR	stm8s_standard_peripherals_lib\includes\stm8s_map.h	373;"	member	struct:TIM1_struct
-EXIT_FAILURE	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	7;"	macro
-EXIT_SUCCESS	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	8;"	macro
+EXIT_FAILURE	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	7;"	macro
+EXIT_SUCCESS	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	8;"	macro
 EXTI	stm8s_standard_peripherals_lib\includes\stm8s_map.h	2101;"	macro
 EXTI_BaseAddress	stm8s_standard_peripherals_lib\includes\stm8s_map.h	2019;"	macro
 EXTI_CR1_PAIS	stm8s_standard_peripherals_lib\includes\stm8s_map.h	1047;"	macro
@@ -1272,7 +1272,7 @@ HSITRIMR	stm8s_standard_peripherals_lib\includes\stm8s_map.h	277;"	member	struct
 HSI_VALUE	stm8s_standard_peripherals_lib\includes\stm8s_clk.h	214;"	macro
 HTRH	stm8s_standard_peripherals_lib\includes\stm8s_map.h	75;"	member	struct:ADC1_struct
 HTRL	stm8s_standard_peripherals_lib\includes\stm8s_map.h	76;"	member	struct:ADC1_struct
-HUGE_VAL	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	7;"	macro
+HUGE_VAL	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	7;"	macro
 I2C	stm8s_standard_peripherals_lib\includes\stm8s_map.h	2133;"	macro
 I2C_ACK_CURR	stm8s_standard_peripherals_lib\includes\stm8s_i2c.h	50;"	enumerator	enum:__anon78
 I2C_ACK_NEXT	stm8s_standard_peripherals_lib\includes\stm8s_i2c.h	51;"	enumerator	enum:__anon78
@@ -1823,7 +1823,7 @@ MAX_MEAS_COEFF	includes\stm8_tsl_rc_configuration.h	298;"	macro
 MAX_MEAS_COEFF	stm8_ts_lib\includes\stm8_tsl_rc_configuration_toadapt.h	296;"	macro
 MAX_REJECTED_MEASUREMENTS	includes\stm8_tsl_rc_configuration.h	297;"	macro
 MAX_REJECTED_MEASUREMENTS	stm8_ts_lib\includes\stm8_tsl_rc_configuration_toadapt.h	295;"	macro
-MB_CUR_MAX	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	9;"	macro
+MB_CUR_MAX	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	9;"	macro
 MCKEY1_A	includes\stm8_tsl_rc_configuration.h	202;"	macro
 MCKEY1_A	stm8_ts_lib\includes\stm8_tsl_rc_configuration_toadapt.h	200;"	macro
 MCKEY1_A_PORT_ADDR	includes\stm8_tsl_rc_configuration.h	201;"	macro
@@ -2052,8 +2052,8 @@ NOPT3	stm8s_standard_peripherals_lib\includes\stm8s_map.h	1167;"	member	struct:O
 NOPT4	stm8s_standard_peripherals_lib\includes\stm8s_map.h	1169;"	member	struct:OPT_struct
 NOPT5	stm8s_standard_peripherals_lib\includes\stm8s_map.h	1171;"	member	struct:OPT_struct
 NOPT7	stm8s_standard_peripherals_lib\includes\stm8s_map.h	1175;"	member	struct:OPT_struct
-NULL	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	10;"	macro
-NULL	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	8;"	macro
+NULL	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	10;"	macro
+NULL	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	8;"	macro
 NUMBER_OF_MULTI_CHANNEL_KEYS	includes\stm8_tsl_rc_configuration.h	185;"	macro
 NUMBER_OF_MULTI_CHANNEL_KEYS	stm8_ts_lib\includes\stm8_tsl_rc_configuration_toadapt.h	183;"	macro
 NUMBER_OF_SINGLE_CHANNEL_KEYS	stm8_ts_lib\includes\stm8_tsl_rc_checkconfig.h	55;"	macro
@@ -2114,7 +2114,7 @@ Page	stm8s_standard_peripherals_lib\includes\stm8s_map.h	1783;"	member	struct:__
 Penta_Channel_Complete_Info_T	stm8_ts_lib\includes\stm8_tsl_rc_api.h	157;"	typedef	typeref:struct:__anon22
 Position	stm8_ts_lib\includes\stm8_tsl_rc_api.h	149;"	member	struct:__anon22
 Position	stm8_ts_lib\includes\stm8_tsl_rc_api.h	167;"	member	struct:__anon23
-RAND_MAX	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	11;"	macro
+RAND_MAX	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	11;"	macro
 RCR	stm8s_standard_peripherals_lib\includes\stm8s_map.h	390;"	member	struct:TIM1_struct
 RECALIBRATION_INTEGRATOR_DEFAULT	includes\stm8_tsl_rc_configuration.h	321;"	macro
 RECALIBRATION_INTEGRATOR_DEFAULT	stm8_ts_lib\includes\stm8_tsl_rc_configuration_toadapt.h	319;"	macro
@@ -3935,10 +3935,10 @@ _UART_GLOBAL	sources\uart.c	11;"	macro	file:
 _WWDG	includes\stm8s_conf.h	117;"	macro
 __I2C_OPT_H	includes\i2c_master_poll.h	22;"	macro
 __MAIN_H	includes\main.h	2;"	macro
-__MATH__	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	5;"	macro
-__MODSL0__	..\program files (x86)\cosmic\cxstm8\hstm8\modsl0.h	8;"	macro
-__SIZE_T__	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	14;"	macro
-__STDLIB__	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	5;"	macro
+__MATH__	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	5;"	macro
+__MODSL0__	..\..\program files (x86)\cosmic\cxstm8\hstm8\modsl0.h	8;"	macro
+__SIZE_T__	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	14;"	macro
+__STDLIB__	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	5;"	macro
 __STM8S_ADC1_H	stm8s_standard_peripherals_lib\includes\stm8s_adc1.h	25;"	macro
 __STM8S_ADC2_H	stm8s_standard_peripherals_lib\includes\stm8s_adc2.h	25;"	macro
 __STM8S_AWU_H	stm8s_standard_peripherals_lib\includes\stm8s_awu.h	25;"	macro
@@ -3965,7 +3965,7 @@ __STM8S_UART1_H	stm8s_standard_peripherals_lib\includes\stm8s_uart1.h	24;"	macro
 __STM8S_UART2_H	stm8s_standard_peripherals_lib\includes\stm8s_uart2.h	24;"	macro
 __STM8S_UART3_H	stm8s_standard_peripherals_lib\includes\stm8s_uart3.h	24;"	macro
 __STM8S_WWDG_H	stm8s_standard_peripherals_lib\includes\stm8s_wwdg.h	24;"	macro
-__STRING__	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	6;"	macro
+__STRING__	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	6;"	macro
 __TSL_API__	stm8_ts_lib\includes\stm8_tsl_rc_api.h	26;"	macro
 __TSL_CHECKCONFIG__	stm8_ts_lib\includes\stm8_tsl_rc_checkconfig.h	24;"	macro
 __TSL_CONFIGURATION__	includes\stm8_tsl_rc_configuration.h	25;"	macro
@@ -3974,29 +3974,29 @@ __TSL_INTERNAL__	stm8_ts_lib\includes\stm8_tsl_rc_internal.h	24;"	macro
 __TSL_IODRIVER__	stm8_ts_lib\includes\stm8_tsl_rc_iodriver.h	25;"	macro
 __TSL_TIMERDRIVER__	stm8_ts_lib\includes\stm8_tsl_rc_timerdriver.h	24;"	macro
 __UART_H	includes\uart.h	2;"	macro
-__WCHAR_T__	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	19;"	macro
+__WCHAR_T__	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	19;"	macro
 _flag_bit	stm8s_standard_peripherals_lib\includes\stm8s_type.h	102;"	member	union:FLAG	typeref:struct:FLAG::__anon14
 _flag_byte	stm8s_standard_peripherals_lib\includes\stm8s_type.h	103;"	member	union:FLAG
 _stext	stm8_interrupt_vector.c	26;"	prototype	file:
 _vectab	stm8_interrupt_vector.c	29;"	variable
-abort	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	53;"	macro
-abs	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	33;"	prototype	signature:(int i)
-acos	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	9;"	prototype	signature:(double x)
+abort	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	53;"	macro
+abs	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	33;"	prototype	signature:(int i)
+acos	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	9;"	prototype	signature:(double x)
 action_ctrlpad_flag	includes\uart.h	138;"	macro
 action_notify_message_id	includes\uart.h	207;"	variable
 addNodeToUart2TxSLLast	includes\uart.h	239;"	prototype	signature:(char *psave, int length)
 addNodeToUart2TxSLLast	sources\uart.c	349;"	function	signature:(char *psave, int length)
-asin	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	10;"	prototype	signature:(double x)
+asin	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	10;"	prototype	signature:(double x)
 assert_failed	includes\stm8s_conf.h	142;"	prototype	signature:(void)
 assert_failed	includes\stm8s_conf.h	145;"	prototype	signature:(u8 *file, u16 line)
 assert_param	includes\stm8s_conf.h	143;"	macro
 assert_param	includes\stm8s_conf.h	146;"	macro
 assert_param	includes\stm8s_conf.h	149;"	macro
-atan	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	11;"	prototype	signature:(double x)
-atan2	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	12;"	prototype	signature:(double y, double x)
-atof	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	34;"	prototype	signature:(char *nptr)
-atoi	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	35;"	prototype	signature:(char *nptr)
-atol	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	36;"	prototype	signature:(char *nptr)
+atan	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	11;"	prototype	signature:(double x)
+atan2	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	12;"	prototype	signature:(double y, double x)
+atof	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	34;"	prototype	signature:(char *nptr)
+atoi	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	35;"	prototype	signature:(char *nptr)
+atol	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	36;"	prototype	signature:(char *nptr)
 b	stm8_ts_lib\includes\stm8_tsl_rc_api.h	115;"	member	union:__anon18	typeref:struct:__anon18::__anon19
 b	stm8_ts_lib\includes\stm8_tsl_rc_api.h	98;"	member	union:__anon16	typeref:struct:__anon16::__anon17
 b	stm8_ts_lib\includes\stm8_tsl_rc_timerdriver.h	53;"	member	union:__anon27	typeref:struct:__anon27::__anon28
@@ -4011,8 +4011,8 @@ bit7	stm8s_standard_peripherals_lib\includes\stm8s_type.h	101;"	member	struct:FL
 ble_ctrl_frame	includes\uart.h	140;"	macro
 ble_data_frame	includes\uart.h	139;"	macro
 bool	stm8s_standard_peripherals_lib\includes\stm8s_type.h	65;"	typedef	typeref:enum:__anon10
-calloc	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	37;"	prototype	signature:(unsigned int nelem, unsigned int elsize)
-ceil	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	13;"	prototype	signature:(double x)
+calloc	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	37;"	prototype	signature:(unsigned int nelem, unsigned int elsize)
+ceil	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	13;"	prototype	signature:(double x)
 clearAmbientLightInt	includes\sparkfun_apds9960.h	271;"	prototype	signature:(void)
 clearAmbientLightInt	sources\sparkfun_apds9960.c	2070;"	function	signature:(void)
 clearProximityInt	includes\sparkfun_apds9960.h	272;"	prototype	signature:(void)
@@ -4024,8 +4024,8 @@ clear_sicp_buf	sources\uart.c	91;"	function	signature:(void)
 cmd_data_flag	includes\uart.h	135;"	macro
 cmd_refresh_flag	includes\uart.h	136;"	macro
 cmd_status_flag	includes\uart.h	137;"	macro
-cos	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	14;"	prototype	signature:(double x)
-cosh	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	15;"	prototype	signature:(double x)
+cos	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	14;"	prototype	signature:(double x)
+cosh	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	15;"	prototype	signature:(double x)
 d_data	includes\sparkfun_apds9960.h	208;"	member	struct:gesture_data_type
 data	includes\uart.h	21;"	member	struct:slnode_t
 dead_time	includes\i2c_master_poll.h	68;"	macro
@@ -4048,8 +4048,8 @@ disablePower	includes\sparkfun_apds9960.h	226;"	prototype	signature:(void)
 disablePower	sources\sparkfun_apds9960.c	642;"	function	signature:(void)
 disableProximitySensor	includes\sparkfun_apds9960.h	232;"	prototype	signature:(void)
 disableProximitySensor	sources\sparkfun_apds9960.c	397;"	function	signature:(void)
-div	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	38;"	prototype	signature:(int numer, int denom)
-div_t	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	26;"	typedef	typeref:struct:__anon35
+div	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	38;"	prototype	signature:(int numer, int denom)
+div_t	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	26;"	typedef	typeref:struct:__anon35
 enableGestureSensor	includes\sparkfun_apds9960.h	233;"	prototype	signature:(uint8_t interrupts)
 enableGestureSensor	sources\sparkfun_apds9960.c	415;"	function	signature:(uint8_t interrupts)
 enableInterrupts	stm8s_standard_peripherals_lib\includes\stm8s_macro.h	45;"	macro
@@ -4060,19 +4060,19 @@ enablePower	includes\sparkfun_apds9960.h	225;"	prototype	signature:(void)
 enablePower	sources\sparkfun_apds9960.c	628;"	function	signature:(void)
 enableProximitySensor	includes\sparkfun_apds9960.h	231;"	prototype	signature:(uint8_t interrupts)
 enableProximitySensor	sources\sparkfun_apds9960.c	364;"	function	signature:(uint8_t interrupts)
-exit	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	39;"	prototype	signature:(int status)
-exp	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	16;"	prototype	signature:(double x)
+exit	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	39;"	prototype	signature:(int status)
+exp	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	16;"	prototype	signature:(double x)
 extisr_flag	includes\main.h	39;"	macro
 f_100ms	includes\main.h	36;"	macro
 f_1s	includes\main.h	38;"	macro
 f_2ms	includes\main.h	35;"	macro
 f_300ms	includes\main.h	37;"	macro
 f_500us	includes\main.h	34;"	macro
-fabs	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	17;"	prototype	signature:(double x)
-floor	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	18;"	prototype	signature:(double x)
-fmod	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	19;"	prototype	signature:(double x, double y)
-free	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	40;"	prototype	signature:(void *ptr)
-frexp	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	20;"	prototype	signature:(double x, int *pexp)
+fabs	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	17;"	prototype	signature:(double x)
+floor	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	18;"	prototype	signature:(double x)
+fmod	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	19;"	prototype	signature:(double x, double y)
+free	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	40;"	prototype	signature:(void *ptr)
+frexp	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	20;"	prototype	signature:(double x, int *pexp)
 generate_messageid	includes\uart.h	229;"	variable
 gest1_confirm	includes\uart.h	147;"	macro
 gest2_confirm	includes\uart.h	148;"	macro
@@ -4156,29 +4156,29 @@ interrupt_instruction	stm8_interrupt_vector.c	14;"	member	struct:interrupt_vecto
 interrupt_vector	stm8_interrupt_vector.c	13;"	struct	file:
 isGestureAvailable	includes\sparkfun_apds9960.h	284;"	prototype	signature:(void)
 isGestureAvailable	sources\sparkfun_apds9960.c	488;"	function	signature:(void)
-isqrt	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	50;"	prototype	signature:(unsigned int)
+isqrt	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	50;"	prototype	signature:(unsigned int)
 isr_flag	sources\main.c	31;"	variable
 kickout_flag	includes\uart.h	167;"	macro
 l_data	includes\sparkfun_apds9960.h	209;"	member	struct:gesture_data_type
-labs	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	41;"	prototype	signature:(long l)
-ldexp	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	21;"	prototype	signature:(double x, int exp)
-ldiv	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	42;"	prototype	signature:(long numer, long denom)
-ldiv_t	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	31;"	typedef	typeref:struct:__anon36
+labs	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	41;"	prototype	signature:(long l)
+ldexp	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	21;"	prototype	signature:(double x, int exp)
+ldiv	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	42;"	prototype	signature:(long numer, long denom)
+ldiv_t	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	31;"	typedef	typeref:struct:__anon36
 led_ctrl_flag	includes\uart.h	169;"	macro
 len	includes\uart.h	19;"	member	struct:slnode_t
 load_alert_flag	includes\uart.h	170;"	macro
-log	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	22;"	prototype	signature:(double x)
-log10	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	23;"	prototype	signature:(double x)
-lsqrt	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	51;"	prototype	signature:(unsigned long)
+log	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	22;"	prototype	signature:(double x)
+log10	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	23;"	prototype	signature:(double x)
+lsqrt	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	51;"	prototype	signature:(unsigned long)
 main	sources\main.c	134;"	function	signature:(void)
 main	stm8_interrupt_vector.c	27;"	prototype	file:	signature:(void)
-malloc	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	43;"	prototype	signature:(unsigned int size)
-memchr	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	26;"	prototype	signature:(void *s, char c, unsigned int n)
-memcmp	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	20;"	prototype	signature:(void *s1, void *s2, unsigned int n)
-memcpy	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	27;"	prototype	signature:(void *s1, void *s2, unsigned int n)
-memmove	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	28;"	prototype	signature:(void *s1, void *s2, unsigned int n)
-memset	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	29;"	prototype	signature:(void *s, char c, unsigned int n)
-modf	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	24;"	prototype	signature:(double value, double *pd)
+malloc	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	43;"	prototype	signature:(unsigned int size)
+memchr	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	26;"	prototype	signature:(void *s, char c, unsigned int n)
+memcmp	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	20;"	prototype	signature:(void *s1, void *s2, unsigned int n)
+memcpy	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	27;"	prototype	signature:(void *s1, void *s2, unsigned int n)
+memmove	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	28;"	prototype	signature:(void *s1, void *s2, unsigned int n)
+memset	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	29;"	prototype	signature:(void *s, char c, unsigned int n)
+modf	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	24;"	prototype	signature:(double value, double *pd)
 mutex2	includes\uart.h	25;"	variable
 near_detect	includes\uart.h	146;"	macro
 net_reset_flag	includes\uart.h	168;"	macro
@@ -4204,14 +4204,14 @@ pad_confirm	includes\uart.h	259;"	prototype	signature:(void)
 pad_confirm	sources\uart.c	300;"	function	signature:(void)
 pad_noset_message_id	includes\uart.h	205;"	variable
 pad_set_message_id	includes\uart.h	206;"	variable
-pow	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	25;"	prototype	signature:(double x, double y)
+pow	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	25;"	prototype	signature:(double x, double y)
 processGestureData	sources\sparkfun_apds9960.c	25;"	prototype	file:	signature:(void)
 processGestureData	sources\sparkfun_apds9960.c	811;"	function	signature:(void)
 ptr	sources\main.c	41;"	variable
-quot	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	24;"	member	struct:__anon35
-quot	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	29;"	member	struct:__anon36
+quot	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	24;"	member	struct:__anon35
+quot	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	29;"	member	struct:__anon36
 r_data	includes\sparkfun_apds9960.h	210;"	member	struct:gesture_data_type
-rand	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	44;"	prototype	signature:(void)
+rand	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	44;"	prototype	signature:(void)
 random	includes\uart.h	252;"	prototype	signature:(u8 xxx)
 random	sources\uart.c	26;"	function	signature:(u8 xxx)
 readAmbientLight	includes\sparkfun_apds9960.h	275;"	prototype	signature:(uint16_t *val)
@@ -4226,7 +4226,7 @@ readProximity	includes\sparkfun_apds9960.h	281;"	prototype	signature:(uint8_t *v
 readProximity	sources\sparkfun_apds9960.c	769;"	function	signature:(uint8_t *val)
 readRedLight	includes\sparkfun_apds9960.h	276;"	prototype	signature:(uint16_t *val)
 readRedLight	sources\sparkfun_apds9960.c	687;"	function	signature:(uint16_t *val)
-realloc	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	45;"	prototype	signature:(void *ptr, unsigned int size)
+realloc	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	45;"	prototype	signature:(void *ptr, unsigned int size)
 receipt_action_notify	includes\uart.h	184;"	macro
 receipt_conf_gest1	includes\uart.h	191;"	macro
 receipt_conf_gest2	includes\uart.h	192;"	macro
@@ -4238,8 +4238,8 @@ receipt_gesture1	includes\uart.h	182;"	macro
 receipt_gesture2	includes\uart.h	183;"	macro
 receipt_host_mesh	includes\uart.h	193;"	macro
 receipt_send_failed	includes\uart.h	185;"	macro
-rem	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	25;"	member	struct:__anon35
-rem	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	30;"	member	struct:__anon36
+rem	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	25;"	member	struct:__anon35
+rem	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	30;"	member	struct:__anon36
 report_fault_flag	includes\uart.h	171;"	macro
 resetGestureParameters	sources\sparkfun_apds9960.c	24;"	prototype	file:	signature:(void)
 resetGestureParameters	sources\sparkfun_apds9960.c	788;"	function	signature:(void)
@@ -4249,7 +4249,7 @@ rev_count	includes\uart.h	231;"	variable
 rev_deal	includes\uart.h	251;"	prototype	signature:(void)
 rev_deal	sources\uart.c	167;"	function	signature:(void)
 rev_header_anaylze	includes\uart.h	256;"	prototype	signature:(u8 *message_id,u8 *mesh_id_H,u8 *mesh_id_L,u8 *message_length)
-rev_header_anaylze	sources\uart.c	712;"	function	signature:(u8 *message_id,u8 *mesh_id_H,u8 *mesh_id_L,u8 *message_length)
+rev_header_anaylze	sources\uart.c	713;"	function	signature:(u8 *message_id,u8 *mesh_id_H,u8 *mesh_id_L,u8 *message_length)
 rev_host_mesh	includes\uart.h	152;"	macro
 rev_meshid_H	includes\uart.h	223;"	variable
 rev_meshid_L	includes\uart.h	224;"	variable
@@ -4257,10 +4257,10 @@ rev_message_id	includes\uart.h	220;"	variable
 rev_message_length	includes\uart.h	222;"	variable
 rev_module_id	includes\uart.h	221;"	variable
 rev_payload_anaylze	includes\uart.h	257;"	prototype	signature:(void)
-rev_payload_anaylze	sources\uart.c	740;"	function	signature:(void)
+rev_payload_anaylze	sources\uart.c	741;"	function	signature:(void)
 rev_success	includes\uart.h	134;"	macro
 reve_analyze_reply	includes\uart.h	253;"	prototype	signature:(void)
-reve_analyze_reply	sources\uart.c	1142;"	function	signature:(void)
+reve_analyze_reply	sources\uart.c	1143;"	function	signature:(void)
 rim	stm8s_standard_peripherals_lib\includes\stm8s_macro.h	47;"	macro
 rim	stm8s_standard_peripherals_lib\includes\stm8s_macro.h	56;"	macro
 s16	stm8s_standard_peripherals_lib\includes\stm8s_type.h	29;"	typedef
@@ -4333,9 +4333,9 @@ set_tout_ms	includes\i2c_master_poll.h	71;"	macro
 sicp_buf	includes\uart.h	236;"	variable
 sim	stm8s_standard_peripherals_lib\includes\stm8s_macro.h	48;"	macro
 sim	stm8s_standard_peripherals_lib\includes\stm8s_macro.h	57;"	macro
-sin	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	26;"	prototype	signature:(double x)
-sinh	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	27;"	prototype	signature:(double x)
-size_t	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	15;"	typedef
+sin	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	26;"	prototype	signature:(double x)
+sinh	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	27;"	prototype	signature:(double x)
+size_t	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	15;"	typedef
 slc	includes\uart.h	125;"	member	struct:__anon34
 slc_address	includes\uart.h	124;"	member	struct:__anon34
 slc_device_status	includes\uart.h	113;"	member	struct:__anon32
@@ -4344,8 +4344,8 @@ slnode_t	includes\uart.h	23;"	typedef	typeref:struct:slnode_t
 spc	includes\uart.h	127;"	member	struct:__anon34
 spc_address	includes\uart.h	126;"	member	struct:__anon34
 spc_device_status	includes\uart.h	118;"	member	struct:__anon33
-sqrt	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	28;"	prototype	signature:(double x)
-srand	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	46;"	prototype	signature:(unsigned int seed)
+sqrt	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	28;"	prototype	signature:(double x)
+srand	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	46;"	prototype	signature:(unsigned int seed)
 st1	includes\uart.h	201;"	variable
 st1_st_ges_H_temp	includes\uart.h	197;"	variable
 st1_st_ges_L_temp	includes\uart.h	198;"	variable
@@ -4432,25 +4432,25 @@ st_pad3_ctrl_meshid_L	includes\uart.h	59;"	member	struct:__anon31
 st_pad3_status	includes\uart.h	43;"	member	struct:__anon31
 st_pad_temp	includes\uart.h	199;"	variable	typeref:union:FLAG
 start	stm8_ts_lib\includes\stm8_tsl_rc_api.h	184;"	member	struct:__anon24
-strcat	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	12;"	prototype	signature:(char *s1, char *s2)
-strchr	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	13;"	prototype	signature:(char *s, char c)
-strcmp	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	21;"	prototype	signature:(char *s1, char *s2)
-strcpy	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	14;"	prototype	signature:(char *s1, char *s2)
-strcspn	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	23;"	prototype	signature:(char *s1, char *s2)
-strlen	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	24;"	prototype	signature:(char *s)
-strncat	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	15;"	prototype	signature:(char *s1, char *s2, unsigned int n)
-strncmp	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	22;"	prototype	signature:(char *s1, char *s2, unsigned int n)
-strncpy	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	16;"	prototype	signature:(char *s1, char *s2, unsigned int n)
-strpbrk	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	17;"	prototype	signature:(char *s1, char *s2)
-strrchr	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	18;"	prototype	signature:(char *s, char c)
-strspn	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	25;"	prototype	signature:(char *s1, char *s2)
-strstr	..\program files (x86)\cosmic\cxstm8\hstm8\string.h	19;"	prototype	signature:(char *s1, char *s2)
-strtod	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	47;"	prototype	signature:(char *s, char **endptr)
-strtol	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	48;"	prototype	signature:(char *s, char **endptr, int base)
-strtoul	..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	54;"	macro
+strcat	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	12;"	prototype	signature:(char *s1, char *s2)
+strchr	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	13;"	prototype	signature:(char *s, char c)
+strcmp	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	21;"	prototype	signature:(char *s1, char *s2)
+strcpy	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	14;"	prototype	signature:(char *s1, char *s2)
+strcspn	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	23;"	prototype	signature:(char *s1, char *s2)
+strlen	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	24;"	prototype	signature:(char *s)
+strncat	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	15;"	prototype	signature:(char *s1, char *s2, unsigned int n)
+strncmp	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	22;"	prototype	signature:(char *s1, char *s2, unsigned int n)
+strncpy	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	16;"	prototype	signature:(char *s1, char *s2, unsigned int n)
+strpbrk	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	17;"	prototype	signature:(char *s1, char *s2)
+strrchr	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	18;"	prototype	signature:(char *s, char c)
+strspn	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	25;"	prototype	signature:(char *s1, char *s2)
+strstr	..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h	19;"	prototype	signature:(char *s1, char *s2)
+strtod	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	47;"	prototype	signature:(char *s, char **endptr)
+strtol	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	48;"	prototype	signature:(char *s, char **endptr, int base)
+strtoul	..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h	54;"	macro
 systime_count	includes\main.h	31;"	variable
-tan	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	29;"	prototype	signature:(double x)
-tanh	..\program files (x86)\cosmic\cxstm8\hstm8\math.h	30;"	prototype	signature:(double x)
+tan	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	29;"	prototype	signature:(double x)
+tanh	..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h	30;"	prototype	signature:(double x)
 total_gestures	includes\sparkfun_apds9960.h	212;"	member	struct:gesture_data_type
 tout	includes\i2c_master_poll.h	70;"	macro
 trap	stm8s_standard_peripherals_lib\includes\stm8s_macro.h	50;"	macro
