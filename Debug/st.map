@@ -1,5 +1,5 @@
 
-Map of Debug\st.sm8 from link file Debug\st.lkf - Sat Jul 22 00:04:51 2017
+Map of Debug\st.sm8 from link file Debug\st.lkf - Sat Jul 22 23:48:03 2017
 
 
                                --------
@@ -7,8 +7,8 @@ Map of Debug\st.sm8 from link file Debug\st.lkf - Sat Jul 22 00:04:51 2017
                                --------
 
 start 00008080 end 000080a7 length    39 segment .const
-start 000080d2 end 0000be0e length 15676 segment .text
-start 0000be10 end 0000be40 length    48 segment .TSL_IO_ALCODE
+start 000080d2 end 0000be28 length 15702 segment .text
+start 0000be28 end 0000be58 length    48 segment .TSL_IO_ALCODE
 start 00004000 end 00004000 length     0 segment .eeprom
 start 00000000 end 00000005 length     5 segment .bsct, initialized
 start 000080b9 end 000080be length     5 segment .bsct, from
@@ -146,9 +146,9 @@ start 0000014a end 0000014b length     1 section .bss
 start 00000014 end 00000025 length    17 section .ubsct
 start 00005d6f end 000064e6 length  1911 section .debug
 start 00008098 end 0000809b length     3 section .const
-start 0000be10 end 0000be16 length     6 section .TSL_IO_ALCODE
-start 0000be18 end 0000be2c length    20 section .TSL_IO_ALCODE
-start 0000be2c end 0000be40 length    20 section .TSL_IO_ALCODE
+start 0000be28 end 0000be2e length     6 section .TSL_IO_ALCODE
+start 0000be30 end 0000be44 length    20 section .TSL_IO_ALCODE
+start 0000be44 end 0000be58 length    20 section .TSL_IO_ALCODE
 start 00008700 end 0000871f length    31 section .text
 start 0000871f end 0000873f length    32 section .text
 start 0000873f end 00008754 length    21 section .text
@@ -224,205 +224,205 @@ start 00007a3c end 00008436 length  2554 section .debug
 start 000092a5 end 000092d6 length    49 section .text
 start 000092d6 end 000092f2 length    28 section .text
 start 000092f2 end 000092f9 length     7 section .text
-start 000092f9 end 000093bb length   194 section .text
-start 000093bb end 00009404 length    73 section .text
-start 00009404 end 000094de length   218 section .text
-start 000094de end 000095ff length   289 section .text
-start 000095ff end 00009606 length     7 section .text
-start 00009606 end 00009689 length   131 section .text
+start 000092f9 end 000093c1 length   200 section .text
+start 000093c1 end 0000940a length    73 section .text
+start 0000940a end 000094e4 length   218 section .text
+start 000094e4 end 00009605 length   289 section .text
+start 00009605 end 0000960c length     7 section .text
+start 0000960c end 0000968f length   131 section .text
 start ******** end ******** length     0 section .text *** removed ***
-start 00009689 end 00009698 length    15 section .text
-start 00009698 end 000096a4 length    12 section .text
-start 000096a4 end 000096b0 length    12 section .text
-start 000096b0 end 000096fc length    76 section .text
-start 000096fc end 00009752 length    86 section .text
-start 00009752 end 0000979e length    76 section .text
+start 0000968f end 0000969e length    15 section .text
+start 0000969e end 000096aa length    12 section .text
+start 000096aa end 000096b6 length    12 section .text
+start 000096b6 end 00009702 length    76 section .text
+start 00009702 end 00009758 length    86 section .text
+start 00009758 end 000097a4 length    76 section .text
 start ******** end ******** length     0 section .text *** removed ***
-start 0000979e end 000097ea length    76 section .text
-start 000097ea end 0000980d length    35 section .text
+start 000097a4 end 000097f0 length    76 section .text
+start 000097f0 end 00009813 length    35 section .text
 start ******** end ******** length     0 section .text *** removed ***
-start 0000980d end 00009837 length    42 section .text
+start 00009813 end 0000983d length    42 section .text
 start 000030:0 end 000030:2 length     2 section .bit
 
 Debug\sparkfun_apds9960.o:
 start 0000015c end 00000270 length   276 section .bss
 start 00008436 end 0000a674 length  8766 section .debug
-start 00009837 end 00009858 length    33 section .text
-start 00009858 end 00009a04 length   428 section .text
-start 00009a04 end 00009a1d length    25 section .text
-start 00009a1d end 00009a8a length   109 section .text
-start 00009a8a end 00009ad1 length    71 section .text
+start 0000983d end 0000985e length    33 section .text
+start 0000985e end 00009a0a length   428 section .text
+start 00009a0a end 00009a23 length    25 section .text
+start 00009a23 end 00009a90 length   109 section .text
+start 00009a90 end 00009ad7 length    71 section .text
 start ******** end ******** length     0 section .text *** removed ***
 start ******** end ******** length     0 section .text *** removed ***
 start ******** end ******** length     0 section .text *** removed ***
-start 00009ad1 end 00009b67 length   150 section .text
+start 00009ad7 end 00009b6d length   150 section .text
 start ******** end ******** length     0 section .text *** removed ***
-start 00009b67 end 00009b90 length    41 section .text
-start 00009b90 end 00009cb4 length   292 section .text
-start 00009cb4 end 00009cc4 length    16 section .text
+start 00009b6d end 00009b96 length    41 section .text
+start 00009b96 end 00009cba length   292 section .text
+start 00009cba end 00009cca length    16 section .text
 start ******** end ******** length     0 section .text *** removed ***
-start 00009cc4 end 00009d0f length    75 section .text
-start 00009d0f end 00009d5a length    75 section .text
-start 00009d5a end 00009da5 length    75 section .text
-start 00009da5 end 00009df0 length    75 section .text
+start 00009cca end 00009d15 length    75 section .text
+start 00009d15 end 00009d60 length    75 section .text
+start 00009d60 end 00009dab length    75 section .text
+start 00009dab end 00009df6 length    75 section .text
 start ******** end ******** length     0 section .text *** removed ***
-start 00009df0 end 00009e19 length    41 section .text
-start 00009e19 end 0000a0d0 length   695 section .text
-start 0000a0d0 end 0000a226 length   342 section .text
+start 00009df6 end 00009e1f length    41 section .text
+start 00009e1f end 0000a0d6 length   695 section .text
+start 0000a0d6 end 0000a22c length   342 section .text
 start ******** end ******** length     0 section .text *** removed ***
-start 0000a226 end 0000a235 length    15 section .text
+start 0000a22c end 0000a23b length    15 section .text
 start ******** end ******** length     0 section .text *** removed ***
-start 0000a235 end 0000a244 length    15 section .text
+start 0000a23b end 0000a24a length    15 section .text
 start ******** end ******** length     0 section .text *** removed ***
-start 0000a244 end 0000a285 length    65 section .text
+start 0000a24a end 0000a28b length    65 section .text
 start ******** end ******** length     0 section .text *** removed ***
-start 0000a285 end 0000a2c1 length    60 section .text
+start 0000a28b end 0000a2c7 length    60 section .text
 start ******** end ******** length     0 section .text *** removed ***
-start 0000a2c1 end 0000a2f9 length    56 section .text
+start 0000a2c7 end 0000a2ff length    56 section .text
 start ******** end ******** length     0 section .text *** removed ***
-start 0000a2f9 end 0000a338 length    63 section .text
-start ******** end ******** length     0 section .text *** removed ***
-start ******** end ******** length     0 section .text *** removed ***
-start ******** end ******** length     0 section .text *** removed ***
-start ******** end ******** length     0 section .text *** removed ***
-start ******** end ******** length     0 section .text *** removed ***
-start 0000a338 end 0000a347 length    15 section .text
-start ******** end ******** length     0 section .text *** removed ***
-start 0000a347 end 0000a356 length    15 section .text
-start ******** end ******** length     0 section .text *** removed ***
-start 0000a356 end 0000a396 length    64 section .text
-start ******** end ******** length     0 section .text *** removed ***
-start 0000a396 end 0000a3d4 length    62 section .text
-start ******** end ******** length     0 section .text *** removed ***
-start 0000a3d4 end 0000a40c length    56 section .text
-start 0000a40c end 0000a457 length    75 section .text
-start 0000a457 end 0000a492 length    59 section .text
-start 0000a492 end 0000a4dd length    75 section .text
-start 0000a4dd end 0000a518 length    59 section .text
+start 0000a2ff end 0000a33e length    63 section .text
 start ******** end ******** length     0 section .text *** removed ***
 start ******** end ******** length     0 section .text *** removed ***
 start ******** end ******** length     0 section .text *** removed ***
 start ******** end ******** length     0 section .text *** removed ***
 start ******** end ******** length     0 section .text *** removed ***
-start 0000a518 end 0000a557 length    63 section .text
+start 0000a33e end 0000a34d length    15 section .text
+start ******** end ******** length     0 section .text *** removed ***
+start 0000a34d end 0000a35c length    15 section .text
+start ******** end ******** length     0 section .text *** removed ***
+start 0000a35c end 0000a39c length    64 section .text
+start ******** end ******** length     0 section .text *** removed ***
+start 0000a39c end 0000a3da length    62 section .text
+start ******** end ******** length     0 section .text *** removed ***
+start 0000a3da end 0000a412 length    56 section .text
+start 0000a412 end 0000a45d length    75 section .text
+start 0000a45d end 0000a498 length    59 section .text
+start 0000a498 end 0000a4e3 length    75 section .text
+start 0000a4e3 end 0000a51e length    59 section .text
 start ******** end ******** length     0 section .text *** removed ***
 start ******** end ******** length     0 section .text *** removed ***
 start ******** end ******** length     0 section .text *** removed ***
-start 0000a557 end 0000a591 length    58 section .text
-start 0000a591 end 0000a5a9 length    24 section .text
 start ******** end ******** length     0 section .text *** removed ***
 start ******** end ******** length     0 section .text *** removed ***
-start 0000a5a9 end 0000a5e1 length    56 section .text
+start 0000a51e end 0000a55d length    63 section .text
 start ******** end ******** length     0 section .text *** removed ***
-start 0000a5e1 end 0000a608 length    39 section .text
 start ******** end ******** length     0 section .text *** removed ***
-start 0000a608 end 0000a62d length    37 section .text
-start 0000a62d end 0000a654 length    39 section .text
+start ******** end ******** length     0 section .text *** removed ***
+start 0000a55d end 0000a597 length    58 section .text
+start 0000a597 end 0000a5af length    24 section .text
+start ******** end ******** length     0 section .text *** removed ***
+start ******** end ******** length     0 section .text *** removed ***
+start 0000a5af end 0000a5e7 length    56 section .text
+start ******** end ******** length     0 section .text *** removed ***
+start 0000a5e7 end 0000a60e length    39 section .text
+start ******** end ******** length     0 section .text *** removed ***
+start 0000a60e end 0000a633 length    37 section .text
+start 0000a633 end 0000a65a length    39 section .text
 
 Debug\uart.o:
 start 00000270 end 00000340 length   208 section .bss
 start 0000a674 end 0000c1d2 length  7006 section .debug
-start 0000a654 end 0000a676 length    34 section .text
-start 0000a676 end 0000a6a8 length    50 section .text
+start 0000a65a end 0000a67c length    34 section .text
+start 0000a67c end 0000a6ae length    50 section .text
 start ******** end ******** length     0 section .text *** removed ***
-start 0000a6a8 end 0000a6b2 length    10 section .text
-start 0000a6b2 end 0000a6c7 length    21 section .text
-start 0000a6c7 end 0000a6dc length    21 section .text
-start 0000a6dc end 0000a718 length    60 section .text
-start 0000a718 end 0000a734 length    28 section .text
-start 0000a734 end 0000a765 length    49 section .text
-start 0000a765 end 0000a8a0 length   315 section .text
-start 0000a8a0 end 0000a909 length   105 section .text
+start 0000a6ae end 0000a6b8 length    10 section .text
+start 0000a6b8 end 0000a6cd length    21 section .text
+start 0000a6cd end 0000a6e2 length    21 section .text
+start 0000a6e2 end 0000a71e length    60 section .text
+start 0000a71e end 0000a73a length    28 section .text
+start 0000a73a end 0000a76b length    49 section .text
+start 0000a76b end 0000a8a6 length   315 section .text
+start 0000a8a6 end 0000a90f length   105 section .text
 start ******** end ******** length     0 section .text *** removed ***
 start ******** end ******** length     0 section .text *** removed ***
 start ******** end ******** length     0 section .text *** removed ***
-start 0000a909 end 0000ae38 length  1327 section .text
-start 0000ae38 end 0000ae86 length    78 section .text
-start 0000ae86 end 0000b5ca length  1860 section .text
-start 0000b5ca end 0000ba4f length  1157 section .text
+start 0000a90f end 0000ae16 length  1287 section .text
+start 0000ae16 end 0000ae64 length    78 section .text
+start 0000ae64 end 0000b586 length  1826 section .text
+start 0000b586 end 0000ba69 length  1251 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libisl0.sm8)abs0.o:
-start 0000ba4f end 0000ba54 length     5 section .text
+start 0000ba69 end 0000ba6e length     5 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libisl0.sm8)rand.o:
-start 0000ba54 end 0000ba7d length    41 section .text
+start 0000ba6e end 0000ba97 length    41 section .text
 start 0000010e end 00000112 length     4 section .data
 start 0000809f end 000080a7 length     8 section .const
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)cmulx.o:
-start 0000ba7d end 0000ba91 length    20 section .text
+start 0000ba97 end 0000baab length    20 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)idiv.o:
-start 0000ba91 end 0000baaf length    30 section .text
+start 0000baab end 0000bac9 length    30 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)imul.o:
-start 0000baaf end 0000bad0 length    33 section .text
+start 0000bac9 end 0000baea length    33 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)itolx.o:
-start 0000bad0 end 0000bade length    14 section .text
+start 0000baea end 0000baf8 length    14 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ladc.o:
-start 0000bade end 0000baef length    17 section .text
+start 0000baf8 end 0000bb09 length    17 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ladd.o:
-start 0000baef end 0000bb07 length    24 section .text
+start 0000bb09 end 0000bb21 length    24 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lcmp.o:
-start 0000bb07 end 0000bb27 length    32 section .text
+start 0000bb21 end 0000bb41 length    32 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lgadd.o:
-start 0000bb27 end 0000bb3e length    23 section .text
+start 0000bb41 end 0000bb58 length    23 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lgmul.o:
-start 0000bb3e end 0000bb46 length     8 section .text
+start 0000bb58 end 0000bb60 length     8 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lgursh.o:
-start 0000bb46 end 0000bb54 length    14 section .text
+start 0000bb60 end 0000bb6e length    14 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)llsh.o:
-start 0000bb54 end 0000bb63 length    15 section .text
+start 0000bb6e end 0000bb7d length    15 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lmul.o:
-start 0000bb63 end 0000bbee length   139 section .text
+start 0000bb7d end 0000bc08 length   139 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lreg.o:
 start 00000026 end 0000002a length     4 section .ubsct
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lsub.o:
-start 0000bbee end 0000bc06 length    24 section .text
+start 0000bc08 end 0000bc20 length    24 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ltor.o:
-start 0000bc06 end 0000bc18 length    18 section .text
+start 0000bc20 end 0000bc32 length    18 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ludiv.o:
-start 0000bc18 end 0000bc2c length    20 section .text
+start 0000bc32 end 0000bc46 length    20 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ldiv.o:
-start 0000bc2c end 0000bd17 length   235 section .text
+start 0000bc46 end 0000bd31 length   235 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lgneg.o:
-start 0000bd17 end 0000bd2a length    19 section .text
+start 0000bd31 end 0000bd44 length    19 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lneg.o:
-start 0000bd2a end 0000bd3f length    21 section .text
+start 0000bd44 end 0000bd59 length    21 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lursh.o:
-start 0000bd3f end 0000bd4e length    15 section .text
+start 0000bd59 end 0000bd68 length    15 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)rtol.o:
-start 0000bd4e end 0000bd60 length    18 section .text
+start 0000bd68 end 0000bd7a length    18 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)sdivx.o:
-start 0000bd60 end 0000bd8b length    43 section .text
+start 0000bd7a end 0000bda5 length    43 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)smul.o:
-start 0000bd8b end 0000bdca length    63 section .text
+start 0000bda5 end 0000bde4 length    63 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)utolx.o:
-start 0000bdca end 0000bdd1 length     7 section .text
+start 0000bde4 end 0000bdeb length     7 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)umul.o:
-start 0000bdd1 end 0000be0d length    60 section .text
+start 0000bdeb end 0000be27 length    60 section .text
 
 (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)xreg.o:
 start 0000002a end 0000002d length     3 section .ubsct
@@ -432,7 +432,7 @@ start 0000002d end 00000030 length     3 section .ubsct
 
 Debug\stm8_interrupt_vector.o:
 start 0000c1d2 end 0000c33d length   363 section .debug
-start 0000be0d end 0000be0e length     1 section .text
+start 0000be27 end 0000be28 length     1 section .text
 start 00008000 end 00008080 length   128 section .const
 
 
@@ -896,304 +896,305 @@ Stack size: 185
  198      + _Task_300ms: (2)
  199      + _UART2_Send_Data_Start --> 184
  200      + _Variable_Init --> 193
- 201      + _enableGestureSensor --> 26
- 202      + _handleGesture: (2)
- 203      |    + _isGestureAvailable: (3)
- 204      |    |    + _wireReadDataByte --> 30
+ 201      + _delay --> 186
+ 202      + _enableGestureSensor --> 26
+ 203      + _handleGesture: (2)
+ 204      |    + _isGestureAvailable: (3)
+ 205      |    |    + _wireReadDataByte --> 30
           |    | 
- 205      |    + _readGesture: (137)
- 206      |    |    + _decodeGesture: (4)
- 207      |    |    |    + _abs: (2)
+ 206      |    + _readGesture: (137)
+ 207      |    |    + _decodeGesture: (4)
+ 208      |    |    |    + _abs: (2)
           |    |    | 
- 208      |    |    + _getMode --> 29
- 209      |    |    + _isGestureAvailable --> 203
- 210      |    |    + _processGestureData: (18)
- 211      |    |    |    + _abs --> 207
+ 209      |    |    + _getMode --> 29
+ 210      |    |    + _isGestureAvailable --> 204
+ 211      |    |    + _processGestureData: (18)
+ 212      |    |    |    + _abs --> 208
           |    |    | 
- 212      |    |    + _resetGestureParameters --> 34
- 213      |    |    + _wireReadDataBlock: (8)
- 214      |    |    |    + _I2C_WriteReadBytes --> 31
+ 213      |    |    + _resetGestureParameters --> 34
+ 214      |    |    + _wireReadDataBlock: (8)
+ 215      |    |    |    + _I2C_WriteReadBytes --> 31
           |    |    | 
- 215      |    |    + _wireReadDataByte --> 30
+ 216      |    |    + _wireReadDataByte --> 30
           |    | 
           | 
- 216      + _init --> 129
- 217      + _send_header_payload_init --> 195
+ 217      + _init --> 129
+ 218      + _send_header_payload_init --> 195
        
- 218 > _srand: (2)
+ 219 > _srand: (2)
 
- 219 > f_I2C_error_Interrupt_Handler: (11)
- 220      + _ErrProc: (2)
+ 220 > f_I2C_error_Interrupt_Handler: (11)
+ 221      + _ErrProc: (2)
        
- 221 > f_NonHandledInterrupt: (5)
+ 222 > f_NonHandledInterrupt: (5)
 
- 222 > f_TIM3InterruptHandle: (6)
+ 223 > f_TIM3InterruptHandle: (6)
 
- 223   _CLK_GetClockFreq --> 51
+ 224   _CLK_GetClockFreq --> 51
 
- 224   _Check_Sum --> 9
+ 225   _Check_Sum --> 9
 
- 225   _EXTI_Config --> 13
+ 226   _EXTI_Config --> 13
 
- 226   _EXTI_DeInit --> 14
+ 227   _EXTI_DeInit --> 14
 
- 227   _EXTI_SetExtIntSensitivity --> 15
+ 228   _EXTI_SetExtIntSensitivity --> 15
 
- 228   _EXTI_SetTLISensitivity --> 16
+ 229   _EXTI_SetTLISensitivity --> 16
 
- 229   _ErrProc --> 220
+ 230   _ErrProc --> 221
 
- 230   _ExtraCode_Init --> 18
+ 231   _ExtraCode_Init --> 18
 
- 231   _ExtraCode_StateMachine --> 22
+ 232   _ExtraCode_StateMachine --> 22
 
- 232   _GPIO_Init --> 17
+ 233   _GPIO_Init --> 17
 
- 233   _GPIO_WriteHigh --> 20
+ 234   _GPIO_WriteHigh --> 20
 
- 234   _GPIO_WriteLow --> 21
+ 235   _GPIO_WriteLow --> 21
 
- 235   _GPIO_WriteReverse --> 24
+ 236   _GPIO_WriteReverse --> 24
 
- 236   _GestureTest --> 25
+ 237   _GestureTest --> 25
 
- 237   _I2C_AcknowledgeConfig --> 135
+ 238   _I2C_AcknowledgeConfig --> 135
 
- 238   _I2C_Cmd --> 132
+ 239   _I2C_Cmd --> 132
 
- 239   _I2C_Config --> 130
+ 240   _I2C_Config --> 130
 
- 240   _I2C_DeInit --> 133
+ 241   _I2C_DeInit --> 133
 
- 241   _I2C_Init --> 134
+ 242   _I2C_Init --> 134
 
- 242   _I2C_SoftwareResetCmd --> 136
+ 243   _I2C_SoftwareResetCmd --> 136
 
- 243   _I2C_WriteBytes --> 33
+ 244   _I2C_WriteBytes --> 33
 
- 244   _I2C_WriteReadBytes --> 31
+ 245   _I2C_WriteReadBytes --> 31
 
- 245   _Init_uart2 --> 46
+ 246   _Init_uart2 --> 46
 
- 246   _KEY_Init --> 52
+ 247   _KEY_Init --> 52
 
- 247   _LED_Init --> 54
+ 248   _LED_Init --> 54
 
- 248   _LED_On --> 19
+ 249   _LED_On --> 19
 
- 249   _LED_Toggle --> 23
+ 250   _LED_Toggle --> 23
 
- 250   _LightTest --> 111
+ 251   _LightTest --> 111
 
- 251   _My_TIM3_Init --> 137
+ 252   _My_TIM3_Init --> 137
 
- 252   _SparkFun_APDS9960 --> 138
+ 253   _SparkFun_APDS9960 --> 138
 
- 253   _Sys_Time_Manage --> 3
+ 254   _Sys_Time_Manage --> 3
 
- 254   _TSL_Action --> 57
+ 255   _TSL_Action --> 57
 
- 255   _TSL_DeltaCalculation --> 59
+ 256   _TSL_DeltaCalculation --> 59
 
- 256   _TSL_ECS --> 58
+ 257   _TSL_ECS --> 58
 
- 257   _TSL_IO_Acquisition --> 62
+ 258   _TSL_IO_Acquisition --> 62
 
- 258   _TSL_IO_Clamp --> 63
+ 259   _TSL_IO_Clamp --> 63
 
- 259   _TSL_IO_Init --> 103
+ 260   _TSL_IO_Init --> 103
 
- 260   _TSL_IO_SW_Burst_Start_Timer --> 64
+ 261   _TSL_IO_SW_Burst_Start_Timer --> 64
 
- 261   _TSL_IO_SW_Burst_Stop_Timer --> 65
+ 262   _TSL_IO_SW_Burst_Stop_Timer --> 65
 
- 262   _TSL_IO_SW_Burst_TestSyncShift --> 66
+ 263   _TSL_IO_SW_Burst_TestSyncShift --> 66
 
- 263   _TSL_IO_SW_Burst_Wait_Vih --> 67
+ 264   _TSL_IO_SW_Burst_Wait_Vih --> 67
 
- 264   _TSL_IO_SW_Burst_Wait_Vil --> 68
+ 265   _TSL_IO_SW_Burst_Wait_Vil --> 68
 
- 265   _TSL_IO_SW_Spread_Spectrum --> 69
+ 266   _TSL_IO_SW_Spread_Spectrum --> 69
 
- 266   _TSL_Init --> 102
+ 267   _TSL_Init --> 102
 
- 267   _TSL_SCKEY_P1_Acquisition --> 61
+ 268   _TSL_SCKEY_P1_Acquisition --> 61
 
- 268   _TSL_SCKey_BackToDetectedState --> 85
+ 269   _TSL_SCKey_BackToDetectedState --> 85
 
- 269   _TSL_SCKey_BackToIdleState --> 75
+ 270   _TSL_SCKey_BackToIdleState --> 75
 
- 270   _TSL_SCKey_CalibrationTreatment --> 73
+ 271   _TSL_SCKey_CalibrationTreatment --> 73
 
- 271   _TSL_SCKey_CheckDisabled --> 76
+ 272   _TSL_SCKey_CheckDisabled --> 76
 
- 272   _TSL_SCKey_CheckEnabled --> 78
+ 273   _TSL_SCKey_CheckEnabled --> 78
 
- 273   _TSL_SCKey_CheckErrorCondition --> 80
+ 274   _TSL_SCKey_CheckErrorCondition --> 80
 
- 274   _TSL_SCKey_DES --> 91
+ 275   _TSL_SCKey_DES --> 91
 
- 275   _TSL_SCKey_DetectedTreatment --> 81
+ 276   _TSL_SCKey_DetectedTreatment --> 81
 
- 276   _TSL_SCKey_DetectionTimeout --> 82
+ 277   _TSL_SCKey_DetectionTimeout --> 82
 
- 277   _TSL_SCKey_IdleTreatment --> 88
+ 278   _TSL_SCKey_IdleTreatment --> 88
 
- 278   _TSL_SCKey_Init --> 105
+ 279   _TSL_SCKey_Init --> 105
 
- 279   _TSL_SCKey_PostDetectTreatment --> 84
+ 280   _TSL_SCKey_PostDetectTreatment --> 84
 
- 280   _TSL_SCKey_PreDetectTreatment --> 89
+ 281   _TSL_SCKey_PreDetectTreatment --> 89
 
- 281   _TSL_SCKey_PreRecalibrationTreatment --> 97
+ 282   _TSL_SCKey_PreRecalibrationTreatment --> 97
 
- 282   _TSL_SCKey_Process --> 71
+ 283   _TSL_SCKey_Process --> 71
 
- 283   _TSL_SCKey_SetCalibrationState --> 79
+ 284   _TSL_SCKey_SetCalibrationState --> 79
 
- 284   _TSL_SCKey_SetDetectedState --> 92
+ 285   _TSL_SCKey_SetDetectedState --> 92
 
- 285   _TSL_SCKey_SetDisabledState --> 77
+ 286   _TSL_SCKey_SetDisabledState --> 77
 
- 286   _TSL_SCKey_SetErrorState --> 100
+ 287   _TSL_SCKey_SetErrorState --> 100
 
- 287   _TSL_SCKey_SetIdleState --> 74
+ 288   _TSL_SCKey_SetIdleState --> 74
 
- 288   _TSL_SCKey_SetPostDetectState --> 87
+ 289   _TSL_SCKey_SetPostDetectState --> 87
 
- 289   _TSL_SCKey_SetPreDetectState --> 93
+ 290   _TSL_SCKey_SetPreDetectState --> 93
 
- 290   _TSL_SCKey_SetPreRecalibrationState --> 94
+ 291   _TSL_SCKey_SetPreRecalibrationState --> 94
 
- 291   _TSL_SetStructPointer --> 60
+ 292   _TSL_SetStructPointer --> 60
 
- 292   _TSL_Timer_Check_100ms_Tick --> 5
+ 293   _TSL_Timer_Check_100ms_Tick --> 5
 
- 293   _TSL_Timer_Check_10ms_Tick --> 4
+ 294   _TSL_Timer_Check_10ms_Tick --> 4
 
- 294   _TSL_Timer_Check_1sec_Tick --> 6
+ 295   _TSL_Timer_Check_1sec_Tick --> 6
 
- 295   _TSL_Timer_Init --> 107
+ 296   _TSL_Timer_Init --> 107
 
- 296   _Task_100ms --> 108
+ 297   _Task_100ms --> 108
 
- 297   _Task_1s --> 109
+ 298   _Task_1s --> 109
 
- 298   _Task_2ms --> 182
+ 299   _Task_2ms --> 182
 
- 299   _Task_300ms --> 198
+ 300   _Task_300ms --> 198
 
- 300   _UART2_Cmd --> 47
+ 301   _UART2_Cmd --> 47
 
- 301   _UART2_DeInit --> 48
+ 302   _UART2_DeInit --> 48
 
- 302   _UART2_ITConfig --> 49
+ 303   _UART2_ITConfig --> 49
 
- 303   _UART2_Init --> 50
+ 304   _UART2_Init --> 50
 
- 304   _UART2_Send_Data_Start --> 184
+ 305   _UART2_Send_Data_Start --> 184
 
- 305   _Variable_Init --> 193
+ 306   _Variable_Init --> 193
 
- 306   _abs --> 207
+ 307   _abs --> 208
 
- 307   _clearAmbientLightInt --> 113
+ 308   _clearAmbientLightInt --> 113
 
- 308   _clear_send_buf --> 185
+ 309   _clear_send_buf --> 185
 
- 309   _clear_sicp_buf --> 194
+ 310   _clear_sicp_buf --> 194
 
- 310   _decodeGesture --> 206
+ 311   _decodeGesture --> 207
 
- 311   _delay --> 186
+ 312   _delay --> 186
 
- 312   _enableGestureSensor --> 26
+ 313   _enableGestureSensor --> 26
 
- 313   _enableLightSensor --> 116
+ 314   _enableLightSensor --> 116
 
- 314   _enablePower --> 27
+ 315   _enablePower --> 27
 
- 315   _gest_confirm --> 187
+ 316   _gest_confirm --> 187
 
- 316   _getLightIntHighThreshold --> 125
+ 317   _getLightIntHighThreshold --> 125
 
- 317   _getLightIntLowThreshold --> 127
+ 318   _getLightIntLowThreshold --> 127
 
- 318   _getMode --> 29
+ 319   _getMode --> 29
 
- 319   _handleGesture --> 202
+ 320   _handleGesture --> 203
 
- 320   _init --> 129
+ 321   _init --> 129
 
- 321   _isGestureAvailable --> 203
+ 322   _isGestureAvailable --> 204
 
- 322   _processGestureData --> 210
+ 323   _processGestureData --> 211
 
- 323   _rand --> 189
+ 324   _rand --> 189
 
- 324   _random --> 188
+ 325   _random --> 188
 
- 325   _readAmbientLight --> 171
+ 326   _readAmbientLight --> 171
 
- 326   _readBlueLight --> 173
+ 327   _readBlueLight --> 173
 
- 327   _readGesture --> 205
+ 328   _readGesture --> 206
 
- 328   _readGreenLight --> 175
+ 329   _readGreenLight --> 175
 
- 329   _readRedLight --> 177
+ 330   _readRedLight --> 177
 
- 330   _resetGestureParameters --> 34
+ 331   _resetGestureParameters --> 34
 
- 331   _rev_deal --> 8
+ 332   _rev_deal --> 8
 
- 332   _rev_header_anaylze --> 190
+ 333   _rev_header_anaylze --> 190
 
- 333   _rev_payload_anaylze --> 191
+ 334   _rev_payload_anaylze --> 191
 
- 334   _reve_analyze_reply --> 183
+ 335   _reve_analyze_reply --> 183
 
- 335   _send_header_payload_init --> 195
+ 336   _send_header_payload_init --> 195
 
- 336   _setAmbientLightGain --> 118
+ 337   _setAmbientLightGain --> 118
 
- 337   _setAmbientLightIntEnable --> 121
+ 338   _setAmbientLightIntEnable --> 121
 
- 338   _setGestureEnterThresh --> 140
+ 339   _setGestureEnterThresh --> 140
 
- 339   _setGestureExitThresh --> 142
+ 340   _setGestureExitThresh --> 142
 
- 340   _setGestureGain --> 144
+ 341   _setGestureGain --> 144
 
- 341   _setGestureIntEnable --> 35
+ 342   _setGestureIntEnable --> 35
 
- 342   _setGestureLEDDrive --> 148
+ 343   _setGestureLEDDrive --> 148
 
- 343   _setGestureMode --> 38
+ 344   _setGestureMode --> 38
 
- 344   _setGestureWaitTime --> 151
+ 345   _setGestureWaitTime --> 151
 
- 345   _setLEDBoost --> 41
+ 346   _setLEDBoost --> 41
 
- 346   _setLEDDrive --> 154
+ 347   _setLEDDrive --> 154
 
- 347   _setLightIntHighThreshold --> 157
+ 348   _setLightIntHighThreshold --> 157
 
- 348   _setLightIntLowThreshold --> 159
+ 349   _setLightIntLowThreshold --> 159
 
- 349   _setMode --> 28
+ 350   _setMode --> 28
 
- 350   _setProxIntHighThresh --> 162
+ 351   _setProxIntHighThresh --> 162
 
- 351   _setProxIntLowThresh --> 164
+ 352   _setProxIntLowThresh --> 164
 
- 352   _setProximityGain --> 166
+ 353   _setProximityGain --> 166
 
- 353   _wireReadDataBlock --> 213
+ 354   _wireReadDataBlock --> 214
 
- 354   _wireReadDataByte --> 30
+ 355   _wireReadDataByte --> 30
 
- 355   _wireWriteDataByte --> 32
+ 356   _wireWriteDataByte --> 32
 
 
 
@@ -1229,7 +1230,7 @@ _CLK_SWIMConfig                        ********   *** removed from Debug\stm8s_c
 _CLK_SYSCLKConfig                      ********   *** removed from Debug\stm8s_clk.o ***
 _CLK_SYSCLKEmergencyClear              ********   *** removed from Debug\stm8s_clk.o ***
 _CLK_SlowActiveHaltWakeUpCmd           ********   *** removed from Debug\stm8s_clk.o ***
-_Check_Sum                             0000a734   defined in Debug\uart.o section .text
+_Check_Sum                             0000a73a   defined in Debug\uart.o section .text
 _CounterStop                           00000016   defined in Debug\stm8_tsl_rc_iodriver.o section .ubsct
 _Delta                                 0000000b   defined in Debug\stm8_tsl_rc_api.o section .ubsct
                                                   used in Debug\stm8_tsl_rc_services.o
@@ -1266,8 +1267,8 @@ _EndDetectionIntegrator                0000011a   defined in Debug\stm8_tsl_rc_a
                                                   used in Debug\stm8_tsl_rc_services.o
                                                           Debug\stm8_tsl_rc_singlechannelkey.o
 _ErrProc                               00009240   defined in Debug\i2c_master_poll.o section .text
-_ExtraCode_Init                        000093bb   defined in Debug\main.o section .text
-_ExtraCode_StateMachine                00009404   defined in Debug\main.o section .text
+_ExtraCode_Init                        000093c1   defined in Debug\main.o section .text
+_ExtraCode_StateMachine                0000940a   defined in Debug\main.o section .text
 _FinalMeasurementValue                 00000018   defined in Debug\stm8_tsl_rc_iodriver.o section .ubsct
 _Flag1_                                00000151   defined in Debug\main.o section .bss
                                                   used in Debug\stm8_tsl_rc_timerdriver.o
@@ -1285,7 +1286,7 @@ _GPIO_WriteLow                         00008297   defined in Debug\stm8s_gpio.o 
                                                   used in Debug\main.o
 _GPIO_WriteReverse                     0000829f   defined in Debug\stm8s_gpio.o section .text
                                                   used in Debug\main.o
-_GestureTest                           000095ff   defined in Debug\main.o section .text
+_GestureTest                           00009605   defined in Debug\main.o section .text
 _HSIDivFactor                          00008080   defined in Debug\stm8s_clk.o section .const
 _I2C_AcknowledgeConfig                 0000842a   defined in Debug\stm8s_i2c.o section .text
 _I2C_CheckEvent                        ********   *** removed from Debug\stm8s_i2c.o ***
@@ -1319,18 +1320,18 @@ _I2C_WriteReadBytes                    00009075   defined in Debug\i2c_master_po
                                                   used in Debug\sparkfun_apds9960.o
 _IT_Sync_Flags                         00000114   defined in Debug\stm8_tsl_rc_api.o section .bss
                                                   used in Debug\stm8_tsl_rc_iodriver.o
-_Init_uart2                            0000a676   defined in Debug\uart.o section .text
+_Init_uart2                            0000a67c   defined in Debug\uart.o section .text
                                                   used in Debug\main.o
-_KEY_Init                              000097ea   defined in Debug\main.o section .text
+_KEY_Init                              000097f0   defined in Debug\main.o section .text
 _KEY_Read                              ********   *** removed from Debug\main.o ***
 _KeyIndex                              0000000d   defined in Debug\stm8_tsl_rc_api.o section .ubsct
                                                   used in Debug\stm8_tsl_rc_services.o
                                                           Debug\stm8_tsl_rc_singlechannelkey.o
-_LED_Init                              000096fc   defined in Debug\main.o section .text
+_LED_Init                              00009702   defined in Debug\main.o section .text
 _LED_Off                               ********   *** removed from Debug\main.o ***
-_LED_On                                00009752   defined in Debug\main.o section .text
-_LED_Toggle                            0000979e   defined in Debug\main.o section .text
-_LightTest                             00009606   defined in Debug\main.o section .text
+_LED_On                                00009758   defined in Debug\main.o section .text
+_LED_Toggle                            000097a4   defined in Debug\main.o section .text
+_LightTest                             0000960c   defined in Debug\main.o section .text
 _Local_TickECS10ms                     00000007   defined in Debug\stm8_tsl_rc_api.o section .ubsct
                                                   used in Debug\stm8_tsl_rc_services.o
 _Local_TickFlag                        00000006   defined in Debug\stm8_tsl_rc_api.o section .ubsct
@@ -1341,7 +1342,7 @@ _PORTD_EXT_ISR                         000092f2   defined in Debug\main.o sectio
 _RecalibrationIntegrator               00000119   defined in Debug\stm8_tsl_rc_api.o section .bss
                                                   used in Debug\stm8_tsl_rc_services.o
 _SamplingShifter                       00000015   defined in Debug\stm8_tsl_rc_iodriver.o section .ubsct
-_SparkFun_APDS9960                     00009837   defined in Debug\sparkfun_apds9960.o section .text
+_SparkFun_APDS9960                     0000983d   defined in Debug\sparkfun_apds9960.o section .text
 _Sys_Time_Manage                       00008e81   defined in Debug\stm8_tsl_rc_timerdriver.o section .text
 _TIM3_tout                             0000014b   defined in Debug\i2c_master_poll.o section .bss
                                                   used in Debug\main.o
@@ -1365,9 +1366,9 @@ _TSL_IO_Init                           0000871f   defined in Debug\stm8_tsl_rc_i
                                                   used in Debug\stm8_tsl_rc_api.o
 _TSL_IO_SW_Burst_Start_Timer           00008754   defined in Debug\stm8_tsl_rc_iodriver.o section .text
 _TSL_IO_SW_Burst_Stop_Timer            00008759   defined in Debug\stm8_tsl_rc_iodriver.o section .text
-_TSL_IO_SW_Burst_TestSyncShift         0000be10   defined in Debug\stm8_tsl_rc_iodriver.o section .TSL_IO_ALCODE
-_TSL_IO_SW_Burst_Wait_Vih              0000be2c   defined in Debug\stm8_tsl_rc_iodriver.o section .TSL_IO_ALCODE
-_TSL_IO_SW_Burst_Wait_Vil              0000be18   defined in Debug\stm8_tsl_rc_iodriver.o section .TSL_IO_ALCODE
+_TSL_IO_SW_Burst_TestSyncShift         0000be28   defined in Debug\stm8_tsl_rc_iodriver.o section .TSL_IO_ALCODE
+_TSL_IO_SW_Burst_Wait_Vih              0000be44   defined in Debug\stm8_tsl_rc_iodriver.o section .TSL_IO_ALCODE
+_TSL_IO_SW_Burst_Wait_Vil              0000be30   defined in Debug\stm8_tsl_rc_iodriver.o section .TSL_IO_ALCODE
 _TSL_IO_SW_Spread_Spectrum             00008700   defined in Debug\stm8_tsl_rc_iodriver.o section .text
 _TSL_Init                              0000866e   defined in Debug\stm8_tsl_rc_api.o section .text
                                                   used in Debug\main.o
@@ -1434,10 +1435,10 @@ _TSL_Timer_Init                        00008e1f   defined in Debug\stm8_tsl_rc_t
                                                   used in Debug\stm8_tsl_rc_api.o
 _Table_SCKEY_BITS                      00008098   defined in Debug\stm8_tsl_rc_iodriver.o section .const
                                                   used in Debug\stm8_tsl_rc_singlechannelkey.o
-_Task_100ms                            00009698   defined in Debug\main.o section .text
-_Task_1s                               000096b0   defined in Debug\main.o section .text
-_Task_2ms                              00009689   defined in Debug\main.o section .text
-_Task_300ms                            000096a4   defined in Debug\main.o section .text
+_Task_100ms                            0000969e   defined in Debug\main.o section .text
+_Task_1s                               000096b6   defined in Debug\main.o section .text
+_Task_2ms                              0000968f   defined in Debug\main.o section .text
+_Task_300ms                            000096aa   defined in Debug\main.o section .text
 _Task_500us                            ********   *** removed from Debug\main.o ***
 _UART1Flag1_                           0000033a   defined in Debug\uart.o section .bss
                                                   used in Debug\main.o
@@ -1466,7 +1467,7 @@ _UART2_IrDAConfig                      ********   *** removed from Debug\stm8s_u
 _UART2_LINBreakDetectionConfig         ********   *** removed from Debug\stm8s_uart2.o ***
 _UART2_LINCmd                          ********   *** removed from Debug\stm8s_uart2.o ***
 _UART2_LINConfig                       ********   *** removed from Debug\stm8s_uart2.o ***
-_UART2_RX_ISR                          0000a718   defined in Debug\uart.o section .text
+_UART2_RX_ISR                          0000a71e   defined in Debug\uart.o section .text
                                                   used in Debug\stm8_interrupt_vector.o
 _UART2_ReceiveData8                    ********   *** removed from Debug\stm8s_uart2.o ***
 _UART2_ReceiveData9                    ********   *** removed from Debug\stm8s_uart2.o ***
@@ -1475,14 +1476,14 @@ _UART2_SendBreak                       ********   *** removed from Debug\stm8s_u
 _UART2_SendData8                       ********   *** removed from Debug\stm8s_uart2.o ***
 _UART2_SendData9                       ********   *** removed from Debug\stm8s_uart2.o ***
 _UART2_Send_Data_Init                  ********   *** removed from Debug\uart.o ***
-_UART2_Send_Data_Start                 0000a6a8   defined in Debug\uart.o section .text
+_UART2_Send_Data_Start                 0000a6ae   defined in Debug\uart.o section .text
                                                   used in Debug\main.o
 _UART2_SetAddress                      ********   *** removed from Debug\stm8s_uart2.o ***
 _UART2_SetGuardTime                    ********   *** removed from Debug\stm8s_uart2.o ***
 _UART2_SetPrescaler                    ********   *** removed from Debug\stm8s_uart2.o ***
 _UART2_SmartCardCmd                    ********   *** removed from Debug\stm8s_uart2.o ***
 _UART2_SmartCardNACKCmd                ********   *** removed from Debug\stm8s_uart2.o ***
-_UART2_TX_ISR                          0000a6dc   defined in Debug\uart.o section .text
+_UART2_TX_ISR                          0000a6e2   defined in Debug\uart.o section .text
                                                   used in Debug\stm8_interrupt_vector.o
 _UART2_WakeUpConfig                    ********   *** removed from Debug\stm8s_uart2.o ***
 _Variable_Init                         000092a5   defined in Debug\main.o section .text
@@ -1503,18 +1504,18 @@ __startmem                             00000340   defined in command file sectio
 __stext                                000080d2   defined in D:\Program Files (x86)\COSMIC\CXSTM8\Lib\crtsi0.sm8 section .text
                                                   used in Debug\stm8_interrupt_vector.o
 __vectab                               00008000   defined in Debug\stm8_interrupt_vector.o section .const
-_abs                                   0000ba4f   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libisl0.sm8)abs0.o section .text
+_abs                                   0000ba69   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libisl0.sm8)abs0.o section .text
                                                   used in Debug\sparkfun_apds9960.o
 _action_ctrl_address                   00000270   defined in Debug\uart.o section .bss
 _action_notify_message_id              000002e2   defined in Debug\uart.o section .bss
 _addNodeToUart2TxSLLast                ********   *** removed from Debug\uart.o ***
-_clearAmbientLightInt                  0000a591   defined in Debug\sparkfun_apds9960.o section .text
+_clearAmbientLightInt                  0000a597   defined in Debug\sparkfun_apds9960.o section .text
                                                   used in Debug\main.o
 _clearProximityInt                     ********   *** removed from Debug\sparkfun_apds9960.o ***
-_clear_send_buf                        0000a6c7   defined in Debug\uart.o section .text
-_clear_sicp_buf                        0000a6b2   defined in Debug\uart.o section .text
-_decodeGesture                         0000a0d0   defined in Debug\sparkfun_apds9960.o section .text
-_delay                                 0000980d   defined in Debug\main.o section .text
+_clear_send_buf                        0000a6cd   defined in Debug\uart.o section .text
+_clear_sicp_buf                        0000a6b8   defined in Debug\uart.o section .text
+_decodeGesture                         0000a0d6   defined in Debug\sparkfun_apds9960.o section .text
+_delay                                 00009813   defined in Debug\main.o section .text
                                                   used in Debug\uart.o
 _deleteNodeFromUart2TxSLHead           ********   *** removed from Debug\uart.o ***
 _device_info_message_id                000002e7   defined in Debug\uart.o section .bss
@@ -1522,16 +1523,16 @@ _disableGestureSensor                  ********   *** removed from Debug\sparkfu
 _disableLightSensor                    ********   *** removed from Debug\sparkfun_apds9960.o ***
 _disablePower                          ********   *** removed from Debug\sparkfun_apds9960.o ***
 _disableProximitySensor                ********   *** removed from Debug\sparkfun_apds9960.o ***
-_enableGestureSensor                   00009ad1   defined in Debug\sparkfun_apds9960.o section .text
+_enableGestureSensor                   00009ad7   defined in Debug\sparkfun_apds9960.o section .text
                                                   used in Debug\main.o
-_enableLightSensor                     00009a8a   defined in Debug\sparkfun_apds9960.o section .text
+_enableLightSensor                     00009a90   defined in Debug\sparkfun_apds9960.o section .text
                                                   used in Debug\main.o
-_enablePower                           00009cb4   defined in Debug\sparkfun_apds9960.o section .text
+_enablePower                           00009cba   defined in Debug\sparkfun_apds9960.o section .text
 _enableProximitySensor                 ********   *** removed from Debug\sparkfun_apds9960.o ***
 _exit                                  0000811b   defined in D:\Program Files (x86)\COSMIC\CXSTM8\Lib\crtsi0.sm8 section .text
 _generate_messageid                    000002d1   defined in Debug\uart.o section .bss
 _gest_cnt                              0000014f   defined in Debug\main.o section .bss
-_gest_confirm                          0000a8a0   defined in Debug\uart.o section .text
+_gest_confirm                          0000a8a6   defined in Debug\uart.o section .text
 _gesture_data_                         000001ec   defined in Debug\sparkfun_apds9960.o section .bss
 _gesture_far_count_                    000001e0   defined in Debug\sparkfun_apds9960.o section .bss
 _gesture_lr_count_                     000001e4   defined in Debug\sparkfun_apds9960.o section .bss
@@ -1554,11 +1555,11 @@ _getGestureMode                        ********   *** removed from Debug\sparkfu
 _getGestureWaitTime                    ********   *** removed from Debug\sparkfun_apds9960.o ***
 _getLEDBoost                           ********   *** removed from Debug\sparkfun_apds9960.o ***
 _getLEDDrive                           ********   *** removed from Debug\sparkfun_apds9960.o ***
-_getLightIntHighThreshold              0000a492   defined in Debug\sparkfun_apds9960.o section .text
+_getLightIntHighThreshold              0000a498   defined in Debug\sparkfun_apds9960.o section .text
                                                   used in Debug\main.o
-_getLightIntLowThreshold               0000a40c   defined in Debug\sparkfun_apds9960.o section .text
+_getLightIntLowThreshold               0000a412   defined in Debug\sparkfun_apds9960.o section .text
                                                   used in Debug\main.o
-_getMode                               00009a04   defined in Debug\sparkfun_apds9960.o section .text
+_getMode                               00009a0a   defined in Debug\sparkfun_apds9960.o section .text
 _getProxGainCompEnable                 ********   *** removed from Debug\sparkfun_apds9960.o ***
 _getProxIntHighThresh                  ********   *** removed from Debug\sparkfun_apds9960.o ***
 _getProxIntLowThresh                   ********   *** removed from Debug\sparkfun_apds9960.o ***
@@ -1568,11 +1569,11 @@ _getProximityIntEnable                 ********   *** removed from Debug\sparkfu
 _getProximityIntHighThreshold          ********   *** removed from Debug\sparkfun_apds9960.o ***
 _getProximityIntLowThreshold           ********   *** removed from Debug\sparkfun_apds9960.o ***
 _gusture                               0000015a   defined in Debug\main.o section .bss
-_handleGesture                         000094de   defined in Debug\main.o section .text
+_handleGesture                         000094e4   defined in Debug\main.o section .text
 _in_range                              000030:1   defined in Debug\main.o section .bit, initialized
-_init                                  00009858   defined in Debug\sparkfun_apds9960.o section .text
+_init                                  0000985e   defined in Debug\sparkfun_apds9960.o section .text
                                                   used in Debug\main.o
-_isGestureAvailable                    00009b67   defined in Debug\sparkfun_apds9960.o section .text
+_isGestureAvailable                    00009b6d   defined in Debug\sparkfun_apds9960.o section .text
                                                   used in Debug\main.o
 _isr_flag                              00000150   defined in Debug\main.o section .bss
 _main                                  000092f9   defined in Debug\main.o section .text
@@ -1595,34 +1596,34 @@ _p_valid                               000030:0   defined in Debug\main.o sectio
 _pad_confirm                           ********   *** removed from Debug\uart.o ***
 _pad_noset_message_id                  000002e4   defined in Debug\uart.o section .bss
 _pad_set_message_id                    000002e3   defined in Debug\uart.o section .bss
-_processGestureData                    00009e19   defined in Debug\sparkfun_apds9960.o section .text
+_processGestureData                    00009e1f   defined in Debug\sparkfun_apds9960.o section .text
 _ptr                                   0000014d   defined in Debug\main.o section .bss
-_rand                                  0000ba54   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libisl0.sm8)rand.o section .text
+_rand                                  0000ba6e   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libisl0.sm8)rand.o section .text
                                                   used in Debug\uart.o
-_random                                0000a654   defined in Debug\uart.o section .text
-_readAmbientLight                      00009cc4   defined in Debug\sparkfun_apds9960.o section .text
+_random                                0000a65a   defined in Debug\uart.o section .text
+_readAmbientLight                      00009cca   defined in Debug\sparkfun_apds9960.o section .text
                                                   used in Debug\main.o
-_readBlueLight                         00009da5   defined in Debug\sparkfun_apds9960.o section .text
+_readBlueLight                         00009dab   defined in Debug\sparkfun_apds9960.o section .text
                                                   used in Debug\main.o
-_readGesture                           00009b90   defined in Debug\sparkfun_apds9960.o section .text
+_readGesture                           00009b96   defined in Debug\sparkfun_apds9960.o section .text
                                                   used in Debug\main.o
-_readGreenLight                        00009d5a   defined in Debug\sparkfun_apds9960.o section .text
+_readGreenLight                        00009d60   defined in Debug\sparkfun_apds9960.o section .text
                                                   used in Debug\main.o
 _readProximity                         ********   *** removed from Debug\sparkfun_apds9960.o ***
-_readRedLight                          00009d0f   defined in Debug\sparkfun_apds9960.o section .text
+_readRedLight                          00009d15   defined in Debug\sparkfun_apds9960.o section .text
                                                   used in Debug\main.o
-_resetGestureParameters                00009df0   defined in Debug\sparkfun_apds9960.o section .text
+_resetGestureParameters                00009df6   defined in Debug\sparkfun_apds9960.o section .text
 _rev_buf                               0000028f   defined in Debug\uart.o section .bss
 _rev_count                             000002cf   defined in Debug\uart.o section .bss
-_rev_deal                              0000a765   defined in Debug\uart.o section .text
-_rev_header_anaylze                    0000ae38   defined in Debug\uart.o section .text
+_rev_deal                              0000a76b   defined in Debug\uart.o section .text
+_rev_header_anaylze                    0000ae16   defined in Debug\uart.o section .text
 _rev_meshid_H                          000002d7   defined in Debug\uart.o section .bss
 _rev_meshid_L                          000002d6   defined in Debug\uart.o section .bss
 _rev_message_id                        000002da   defined in Debug\uart.o section .bss
 _rev_message_length                    000002d8   defined in Debug\uart.o section .bss
 _rev_module_id                         000002d9   defined in Debug\uart.o section .bss
-_rev_payload_anaylze                   0000ae86   defined in Debug\uart.o section .text
-_reve_analyze_reply                    0000b5ca   defined in Debug\uart.o section .text
+_rev_payload_anaylze                   0000ae64   defined in Debug\uart.o section .text
+_reve_analyze_reply                    0000b586   defined in Debug\uart.o section .text
                                                   used in Debug\main.o
 _sSCKeyInfo                            0000011d   defined in Debug\stm8_tsl_rc_api.o section .bss
                                                   used in Debug\stm8_tsl_rc_services.o
@@ -1635,38 +1636,38 @@ _send_cmd                              000002d4   defined in Debug\uart.o sectio
 _send_count                            000002d0   defined in Debug\uart.o section .bss
 _send_failed_count                     000002cb   defined in Debug\uart.o section .bss
 _send_fault_count                      000002cd   defined in Debug\uart.o section .bss
-_send_header_payload_init              0000a909   defined in Debug\uart.o section .text
+_send_header_payload_init              0000a90f   defined in Debug\uart.o section .text
                                                   used in Debug\main.o
 _send_meshid_H                         000002d3   defined in Debug\uart.o section .bss
 _send_meshid_L                         000002d2   defined in Debug\uart.o section .bss
 _send_message_length                   000002d5   defined in Debug\uart.o section .bss
-_setAmbientLightGain                   0000a2c1   defined in Debug\sparkfun_apds9960.o section .text
-_setAmbientLightIntEnable              0000a518   defined in Debug\sparkfun_apds9960.o section .text
+_setAmbientLightGain                   0000a2c7   defined in Debug\sparkfun_apds9960.o section .text
+_setAmbientLightIntEnable              0000a51e   defined in Debug\sparkfun_apds9960.o section .text
                                                   used in Debug\main.o
-_setGestureEnterThresh                 0000a338   defined in Debug\sparkfun_apds9960.o section .text
-_setGestureExitThresh                  0000a347   defined in Debug\sparkfun_apds9960.o section .text
-_setGestureGain                        0000a356   defined in Debug\sparkfun_apds9960.o section .text
-_setGestureIntEnable                   0000a557   defined in Debug\sparkfun_apds9960.o section .text
-_setGestureLEDDrive                    0000a396   defined in Debug\sparkfun_apds9960.o section .text
-_setGestureMode                        0000a5a9   defined in Debug\sparkfun_apds9960.o section .text
-_setGestureWaitTime                    0000a3d4   defined in Debug\sparkfun_apds9960.o section .text
-_setLEDBoost                           0000a2f9   defined in Debug\sparkfun_apds9960.o section .text
-_setLEDDrive                           0000a244   defined in Debug\sparkfun_apds9960.o section .text
-_setLightIntHighThreshold              0000a4dd   defined in Debug\sparkfun_apds9960.o section .text
+_setGestureEnterThresh                 0000a33e   defined in Debug\sparkfun_apds9960.o section .text
+_setGestureExitThresh                  0000a34d   defined in Debug\sparkfun_apds9960.o section .text
+_setGestureGain                        0000a35c   defined in Debug\sparkfun_apds9960.o section .text
+_setGestureIntEnable                   0000a55d   defined in Debug\sparkfun_apds9960.o section .text
+_setGestureLEDDrive                    0000a39c   defined in Debug\sparkfun_apds9960.o section .text
+_setGestureMode                        0000a5af   defined in Debug\sparkfun_apds9960.o section .text
+_setGestureWaitTime                    0000a3da   defined in Debug\sparkfun_apds9960.o section .text
+_setLEDBoost                           0000a2ff   defined in Debug\sparkfun_apds9960.o section .text
+_setLEDDrive                           0000a24a   defined in Debug\sparkfun_apds9960.o section .text
+_setLightIntHighThreshold              0000a4e3   defined in Debug\sparkfun_apds9960.o section .text
                                                   used in Debug\main.o
-_setLightIntLowThreshold               0000a457   defined in Debug\sparkfun_apds9960.o section .text
+_setLightIntLowThreshold               0000a45d   defined in Debug\sparkfun_apds9960.o section .text
                                                   used in Debug\main.o
-_setMode                               00009a1d   defined in Debug\sparkfun_apds9960.o section .text
+_setMode                               00009a23   defined in Debug\sparkfun_apds9960.o section .text
 _setProxGainCompEnable                 ********   *** removed from Debug\sparkfun_apds9960.o ***
-_setProxIntHighThresh                  0000a235   defined in Debug\sparkfun_apds9960.o section .text
-_setProxIntLowThresh                   0000a226   defined in Debug\sparkfun_apds9960.o section .text
+_setProxIntHighThresh                  0000a23b   defined in Debug\sparkfun_apds9960.o section .text
+_setProxIntLowThresh                   0000a22c   defined in Debug\sparkfun_apds9960.o section .text
 _setProxPhotoMask                      ********   *** removed from Debug\sparkfun_apds9960.o ***
-_setProximityGain                      0000a285   defined in Debug\sparkfun_apds9960.o section .text
+_setProximityGain                      0000a28b   defined in Debug\sparkfun_apds9960.o section .text
 _setProximityIntEnable                 ********   *** removed from Debug\sparkfun_apds9960.o ***
 _setProximityIntHighThreshold          ********   *** removed from Debug\sparkfun_apds9960.o ***
 _setProximityIntLowThreshold           ********   *** removed from Debug\sparkfun_apds9960.o ***
 _sicp_buf                              00000271   defined in Debug\uart.o section .bss
-_srand                                 0000ba74   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libisl0.sm8)rand.o section .text
+_srand                                 0000ba8e   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libisl0.sm8)rand.o section .text
 _st1                                   000002e8   defined in Debug\uart.o section .bss
                                                   used in Debug\main.o
 _st1_st_ges_H_temp                     00000334   defined in Debug\uart.o section .bss
@@ -1676,49 +1677,49 @@ _systime_count                         00000152   defined in Debug\main.o sectio
                                                   used in Debug\stm8_tsl_rc_timerdriver.o
 _uart2TxSLHead                         0000033d   defined in Debug\uart.o section .bss
 _uart2TxSLLast                         0000033b   defined in Debug\uart.o section .bss
-_wireReadDataBlock                     0000a62d   defined in Debug\sparkfun_apds9960.o section .text
-_wireReadDataByte                      0000a608   defined in Debug\sparkfun_apds9960.o section .text
+_wireReadDataBlock                     0000a633   defined in Debug\sparkfun_apds9960.o section .text
+_wireReadDataByte                      0000a60e   defined in Debug\sparkfun_apds9960.o section .text
 _wireWriteByte                         ********   *** removed from Debug\sparkfun_apds9960.o ***
 _wireWriteDataBlock                    ********   *** removed from Debug\sparkfun_apds9960.o ***
-_wireWriteDataByte                     0000a5e1   defined in Debug\sparkfun_apds9960.o section .text
-c_cmulx                                0000ba7d   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)cmulx.o section .text
+_wireWriteDataByte                     0000a5e7   defined in Debug\sparkfun_apds9960.o section .text
+c_cmulx                                0000ba97   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)cmulx.o section .text
                                                   used in Debug\stm8_tsl_rc_iodriver.o
-c_divsl                                0000bc2c   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ldiv.o section .text
+c_divsl                                0000bc46   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ldiv.o section .text
                                                   *** not used ***
-c_divul                                0000bc43   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ldiv.o section .text
+c_divul                                0000bc5d   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ldiv.o section .text
                                                   used in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ludiv.o
-c_idiv                                 0000ba91   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)idiv.o section .text
+c_idiv                                 0000baab   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)idiv.o section .text
                                                   used in Debug\sparkfun_apds9960.o
                                                           Debug\uart.o
-c_imul                                 0000baaf   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)imul.o section .text
+c_imul                                 0000bac9   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)imul.o section .text
                                                   used in Debug\sparkfun_apds9960.o
-c_itolx                                0000bad0   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)itolx.o section .text
+c_itolx                                0000baea   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)itolx.o section .text
                                                   used in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libisl0.sm8)rand.o
-c_ladc                                 0000bade   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ladc.o section .text
+c_ladc                                 0000baf8   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ladc.o section .text
                                                   used in Debug\stm8_tsl_rc_services.o
-c_ladd                                 0000baef   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ladd.o section .text
+c_ladd                                 0000bb09   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ladd.o section .text
                                                   used in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libisl0.sm8)rand.o
-c_lcmp                                 0000bb07   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lcmp.o section .text
+c_lcmp                                 0000bb21   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lcmp.o section .text
                                                   used in Debug\stm8s_i2c.o
-c_lgadd                                0000bb27   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lgadd.o section .text
+c_lgadd                                0000bb41   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lgadd.o section .text
                                                   used in Debug\stm8_tsl_rc_iodriver.o
                                                           Debug\stm8_tsl_rc_services.o
-c_lgmul                                0000bb3e   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lgmul.o section .text
+c_lgmul                                0000bb58   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lgmul.o section .text
                                                   used in Debug\stm8_tsl_rc_services.o
-c_lgneg                                0000bd17   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lgneg.o section .text
+c_lgneg                                0000bd31   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lgneg.o section .text
                                                   used in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ldiv.o
-c_lgursh                               0000bb46   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lgursh.o section .text
+c_lgursh                               0000bb60   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lgursh.o section .text
                                                   used in Debug\stm8_tsl_rc_iodriver.o
-c_llsh                                 0000bb54   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)llsh.o section .text
+c_llsh                                 0000bb6e   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)llsh.o section .text
                                                   used in Debug\stm8s_uart2.o
-c_lmul                                 0000bb63   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lmul.o section .text
+c_lmul                                 0000bb7d   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lmul.o section .text
                                                   used in Debug\stm8s_i2c.o
                                                           Debug\stm8_tsl_rc_services.o
                                                           (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libisl0.sm8)rand.o
                                                           (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lgmul.o
-c_lmulc                                0000bb6b   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lmul.o section .text
+c_lmulc                                0000bb85   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lmul.o section .text
                                                   *** not used ***
-c_lneg                                 0000bd2a   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lneg.o section .text
+c_lneg                                 0000bd44   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lneg.o section .text
                                                   used in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ldiv.o
 c_lreg                                 00000026   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lreg.o section .ubsct
                                                   used in Debug\stm8s_clk.o
@@ -1743,21 +1744,21 @@ c_lreg                                 00000026   defined in (D:\Program Files (
                                                           (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)smul.o
                                                           (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)utolx.o
                                                           (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)umul.o
-c_lsub                                 0000bbee   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lsub.o section .text
+c_lsub                                 0000bc08   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lsub.o section .text
                                                   used in Debug\stm8s_uart2.o
-c_ltor                                 0000bc06   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ltor.o section .text
+c_ltor                                 0000bc20   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ltor.o section .text
                                                   used in Debug\stm8s_clk.o
                                                           Debug\stm8s_i2c.o
                                                           Debug\stm8s_uart2.o
                                                           (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libisl0.sm8)rand.o
-c_ludv                                 0000bc18   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ludiv.o section .text
+c_ludv                                 0000bc32   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)ludiv.o section .text
                                                   used in Debug\stm8s_clk.o
                                                           Debug\stm8s_i2c.o
                                                           Debug\stm8s_uart2.o
                                                           Debug\i2c_master_poll.o
-c_lursh                                0000bd3f   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lursh.o section .text
+c_lursh                                0000bd59   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lursh.o section .text
                                                   used in Debug\stm8s_uart2.o
-c_rtol                                 0000bd4e   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)rtol.o section .text
+c_rtol                                 0000bd68   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)rtol.o section .text
                                                   used in Debug\stm8s_clk.o
                                                           Debug\stm8s_i2c.o
                                                           Debug\stm8s_uart2.o
@@ -1765,16 +1766,16 @@ c_rtol                                 0000bd4e   defined in (D:\Program Files (
                                                           Debug\stm8_tsl_rc_services.o
                                                           (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libisl0.sm8)rand.o
                                                           (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)lgmul.o
-c_sdivx                                0000bd66   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)sdivx.o section .text
+c_sdivx                                0000bd80   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)sdivx.o section .text
                                                   used in Debug\stm8s_i2c.o
-c_smodx                                0000bd60   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)sdivx.o section .text
+c_smodx                                0000bd7a   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)sdivx.o section .text
                                                   *** not used ***
-c_smul                                 0000bd8b   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)smul.o section .text
+c_smul                                 0000bda5   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)smul.o section .text
                                                   used in Debug\stm8s_i2c.o
                                                           Debug\stm8s_uart2.o
-c_uitolx                               0000bdca   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)utolx.o section .text
+c_uitolx                               0000bde4   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)utolx.o section .text
                                                   used in Debug\stm8_tsl_rc_iodriver.o
-c_umul                                 0000bdd1   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)umul.o section .text
+c_umul                                 0000bdeb   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)umul.o section .text
                                                   used in Debug\stm8_tsl_rc_iodriver.o
                                                           Debug\stm8_tsl_rc_services.o
 c_x                                    0000002a   defined in (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)xreg.o section .ubsct
@@ -1800,6 +1801,6 @@ c_y                                    0000002d   defined in (D:\Program Files (
                                                           (D:\Program Files (x86)\COSMIC\CXSTM8\Lib\libm0.sm8)umul.o
 f_I2C_error_Interrupt_Handler          00009266   defined in Debug\i2c_master_poll.o section .text
                                                   used in Debug\stm8_interrupt_vector.o
-f_NonHandledInterrupt                  0000be0d   defined in Debug\stm8_interrupt_vector.o section .text
+f_NonHandledInterrupt                  0000be27   defined in Debug\stm8_interrupt_vector.o section .text
 f_TIM3InterruptHandle                  00009282   defined in Debug\i2c_master_poll.o section .text
                                                   used in Debug\stm8_interrupt_vector.o

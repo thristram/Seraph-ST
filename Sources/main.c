@@ -66,6 +66,21 @@ void Variable_Init(void)
 	st1.st_ges3_ctrl_L = 0x11;
 	st1.st_ges4_ctrl_H = 0x11;
 	st1.st_ges4_ctrl_L = 0x11;
+	/*st1.st_pad1_ctrl_action = 0x55;//for test
+	//st1.st_pad1_ctrl_meshid_H = 0x80;
+	//st1.st_pad1_ctrl_meshid_L = 0x01;
+	//st1.st_pad1_ctrl_boardid  = 0x11;
+	st1.st_pad1_ctrl_action_value = 0x63;
+	st1.st_pad2_ctrl_action = 0x55;
+	//st1.st_pad2_ctrl_meshid_H = 0x80;
+	//st1.st_pad2_ctrl_meshid_L = 0x02;
+	//st1.st_pad2_ctrl_boardid  = 0x23;
+	st1.st_pad2_ctrl_action_value = 0x63;
+	st1.st_pad3_ctrl_action = 0x55;
+	//st1.st_pad3_ctrl_meshid_H = 0x80;
+	//st1.st_pad3_ctrl_meshid_L = 0x03;
+	//st1.st_pad3_ctrl_boardid  = 0x33;
+	st1.st_pad3_ctrl_action_value = 0x63;*/
 }
 
 
@@ -179,6 +194,7 @@ loop0:
 		{
 			device_info_sended = 1;
 			rev_bleheartbeat = 0;
+			delay(200);
 			send_header_payload_init(0x86,ns_host_meshid_H,ns_host_meshid_L,12,0xB4);
 			UART2_Send_Data_Start();
 		}
