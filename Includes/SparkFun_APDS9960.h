@@ -10,7 +10,7 @@
  * relies on the Arduino Wire (I2C) library. to use the library, instantiate an
  * APDS9960 object, call init(), and call the appropriate functions.
  */
- 
+
 #ifndef SparkFun_APDS9960_H
 #define SparkFun_APDS9960_H
 
@@ -33,7 +33,7 @@
 
 /* Acceptable device IDs */
 #define APDS9960_ID_1           0xAB
-#define APDS9960_ID_2           0x9C 
+#define APDS9960_ID_2           0x9C
 
 /* Misc parameters */
 #define FIFO_PAUSE_TIME         30      // Wait period (ms) between FIFO reads
@@ -141,7 +141,7 @@
 #define LED_BOOST_100           0
 #define LED_BOOST_150           1
 #define LED_BOOST_200           2
-#define LED_BOOST_300           3    
+#define LED_BOOST_300           3
 
 /* Gesture wait time values */
 #define GWTIME_0MS              0
@@ -183,106 +183,178 @@
 #define DEFAULT_GIEN            0       // Disable gesture interrupts
 
 /* Direction definitions */
-enum {
-  DIR_NONE,
-  DIR_LEFT,
-  DIR_RIGHT,
-  DIR_UP,
-  DIR_DOWN,
-  DIR_NEAR,
-  DIR_FAR,
-  DIR_ALL
+enum
+{
+    DIR_NONE,
+    DIR_LEFT,
+    DIR_RIGHT,
+    DIR_UP,
+    DIR_DOWN,
+    DIR_NEAR,
+    DIR_FAR,
+    DIR_ALL
 };
 
 /* State definitions */
-enum {
-  NA_STATE,
-  NEAR_STATE,
-  FAR_STATE,
-  ALL_STATE
+enum
+{
+    NA_STATE,
+    NEAR_STATE,
+    FAR_STATE,
+    ALL_STATE
 };
 
 /* Container for gesture data */
-typedef struct gesture_data_type {
-    uint8_t u_data[32];
-    uint8_t d_data[32];
-    uint8_t l_data[32];
-    uint8_t r_data[32];
-    uint8_t index;
-    uint8_t total_gestures;
-    uint8_t in_threshold;
-    uint8_t out_threshold;
+typedef struct gesture_data_type
+{
+	uint8_t u_data[32];
+	uint8_t d_data[32];
+	uint8_t l_data[32];
+	uint8_t r_data[32];
+	uint8_t index;
+	uint8_t total_gestures;
+	uint8_t in_threshold;
+	uint8_t out_threshold;
+	
 } gesture_data_type;
 
 
-    /* Initialization methods */
-    void SparkFun_APDS9960(void);
-    uint8_t init(void);
-    uint8_t getMode(void);
-    uint8_t setMode(uint8_t mode, uint8_t enable);
-    
-    /* Turn the APDS-9960 on and off */
-    uint8_t enablePower(void);
-    uint8_t disablePower(void);
-    
-    /* Enable or disable specific sensors */
-    uint8_t enableLightSensor(uint8_t interrupts);
-    uint8_t disableLightSensor(void);
-    uint8_t enableProximitySensor(uint8_t interrupts);
-    uint8_t disableProximitySensor(void);
-    uint8_t enableGestureSensor(uint8_t interrupts);
-    uint8_t disableGestureSensor(void);
-    
-    /* LED drive strength control */
-    uint8_t getLEDDrive(void);
-    uint8_t setLEDDrive(uint8_t drive);
-    uint8_t getGestureLEDDrive(void);
-    uint8_t setGestureLEDDrive(uint8_t drive);
-    
-    /* Gain control */
-    uint8_t getAmbientLightGain(void);
-    uint8_t setAmbientLightGain(uint8_t gain);
-    uint8_t getProximityGain(void);
-    uint8_t setProximityGain(uint8_t gain);
-    uint8_t getGestureGain(void);
-    uint8_t setGestureGain(uint8_t gain);
-    
-    /* Get and set light interrupt thresholds */
-    uint8_t getLightIntLowThreshold(uint16_t *threshold);
-    uint8_t setLightIntLowThreshold(uint16_t threshold);
-    uint8_t getLightIntHighThreshold(uint16_t *threshold);
-    uint8_t setLightIntHighThreshold(uint16_t threshold);
-    
-    /* Get and set proximity interrupt thresholds */
-    uint8_t getProximityIntLowThreshold(uint8_t *threshold);
-    uint8_t setProximityIntLowThreshold(uint8_t threshold);
-    uint8_t getProximityIntHighThreshold(uint8_t *threshold);
-    uint8_t setProximityIntHighThreshold(uint8_t threshold);
-    
-    /* Get and set interrupt enables */
-    uint8_t getAmbientLightIntEnable(void);
-    uint8_t setAmbientLightIntEnable(uint8_t enable);
-    uint8_t getProximityIntEnable(void);
-    uint8_t setProximityIntEnable(uint8_t enable);
-    uint8_t getGestureIntEnable(void);
-    uint8_t setGestureIntEnable(uint8_t enable);
-    
-    /* Clear interrupts */
-    uint8_t clearAmbientLightInt(void);
-    uint8_t clearProximityInt(void);
-    
-    /* Ambient light methods */
-    uint8_t readAmbientLight(uint16_t *val);
-    uint8_t readRedLight(uint16_t *val);
-    uint8_t readGreenLight(uint16_t *val);
-    uint8_t readBlueLight(uint16_t *val);
-    
-    /* Proximity methods */
-    uint8_t readProximity(uint8_t *val);
-    
-    /* Gesture methods */
-    uint8_t isGestureAvailable(void);
-    int readGesture(void);
-    
+typedef struct
+{
+	uint16_t ambient;
+	uint16_t red;
+	uint16_t green;
+	uint16_t blue;
+
+}APDS9960_Light_t;	
+
+
+
+
+
+
+/* Gesture processing */
+void resetGestureParameters(void);
+uint8_t processGestureData(void);
+uint8_t decodeGesture(void);
+
+/* Proximity Interrupt Threshold */
+uint8_t getProxIntLowThresh(void);
+uint8_t setProxIntLowThresh(uint8_t threshold);
+uint8_t getProxIntHighThresh(void);
+uint8_t setProxIntHighThresh(uint8_t threshold);
+
+/* LED Boost Control */
+uint8_t getLEDBoost(void);
+uint8_t setLEDBoost(uint8_t boost);
+
+/* Proximity photodiode select */
+uint8_t getProxGainCompEnable(void);
+uint8_t setProxGainCompEnable(uint8_t enable);
+uint8_t getProxPhotoMask(void);
+uint8_t setProxPhotoMask(uint8_t mask);
+
+/* Gesture threshold control */
+uint8_t getGestureEnterThresh(void);
+uint8_t setGestureEnterThresh(uint8_t threshold);
+uint8_t getGestureExitThresh(void);
+uint8_t setGestureExitThresh(uint8_t threshold);
+
+/* Gesture LED, gain, and time control */
+uint8_t getGestureWaitTime(void);
+uint8_t setGestureWaitTime(uint8_t time);
+
+/* Gesture mode */
+uint8_t getGestureMode(void);
+uint8_t setGestureMode(uint8_t mode);
+
+/* Raw I2C Commands */
+uint8_t wireWriteByte(uint8_t val);
+uint8_t wireWriteDataByte(uint8_t reg, uint8_t val);
+uint8_t wireWriteDataBlock(uint8_t reg, uint8_t *val, unsigned int len);
+uint8_t wireReadDataByte(uint8_t reg, uint8_t *val);
+int wireReadDataBlock(uint8_t reg, uint8_t *val, unsigned int len);
+
+
+
+
+
+/* Initialization methods */
+void SparkFun_APDS9960(void);
+uint8_t init(void);
+uint8_t getMode(void);
+uint8_t setMode(uint8_t mode, uint8_t enable);
+
+/* Turn the APDS-9960 on and off */
+uint8_t enablePower(void);
+uint8_t disablePower(void);
+
+/* Enable or disable specific sensors */
+uint8_t enableLightSensor(uint8_t interrupts);
+uint8_t disableLightSensor(void);
+uint8_t enableProximitySensor(uint8_t interrupts);
+uint8_t disableProximitySensor(void);
+uint8_t enableGestureSensor(uint8_t interrupts);
+uint8_t disableGestureSensor(void);
+
+/* LED drive strength control */
+uint8_t getLEDDrive(void);
+uint8_t setLEDDrive(uint8_t drive);
+uint8_t getGestureLEDDrive(void);
+uint8_t setGestureLEDDrive(uint8_t drive);
+
+/* Gain control */
+uint8_t getAmbientLightGain(void);
+uint8_t setAmbientLightGain(uint8_t gain);
+uint8_t getProximityGain(void);
+uint8_t setProximityGain(uint8_t gain);
+uint8_t getGestureGain(void);
+uint8_t setGestureGain(uint8_t gain);
+
+/* Get and set light interrupt thresholds */
+uint8_t getLightIntLowThreshold(uint16_t *threshold);
+uint8_t setLightIntLowThreshold(uint16_t threshold);
+uint8_t getLightIntHighThreshold(uint16_t *threshold);
+uint8_t setLightIntHighThreshold(uint16_t threshold);
+
+/* Get and set proximity interrupt thresholds */
+uint8_t getProximityIntLowThreshold(uint8_t *threshold);
+uint8_t setProximityIntLowThreshold(uint8_t threshold);
+uint8_t getProximityIntHighThreshold(uint8_t *threshold);
+uint8_t setProximityIntHighThreshold(uint8_t threshold);
+
+/* Get and set interrupt enables */
+uint8_t getAmbientLightIntEnable(void);
+uint8_t setAmbientLightIntEnable(uint8_t enable);
+uint8_t getProximityIntEnable(void);
+uint8_t setProximityIntEnable(uint8_t enable);
+uint8_t getGestureIntEnable(void);
+uint8_t setGestureIntEnable(uint8_t enable);
+
+/* Clear interrupts */
+uint8_t clearAmbientLightInt(void);
+uint8_t clearProximityInt(void);
+
+/* Ambient light methods */
+uint8_t readAmbientLight(uint16_t *val);
+uint8_t readRedLight(uint16_t *val);
+uint8_t readGreenLight(uint16_t *val);
+uint8_t readBlueLight(uint16_t *val);
+
+/* Proximity methods */
+uint8_t readProximity(uint8_t *val);
+
+/* Gesture methods */
+uint8_t isGestureAvailable(void);
+int readGesture(void);
+
+
+
+
+
+uint8_t gesture_read_data(uint8_t *dir);
+
+
+
 
 #endif

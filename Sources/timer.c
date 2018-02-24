@@ -8,61 +8,64 @@
 **/
 
 #define  _TIMER_GLOBAL
+
 #include "stm8s_map.h"
+#include "stm8s_conf.h"
 #include "main.h"
+#include "uart.h"
+#include "stm8s_exti.h"
 #include "timer.h"
+#include "stm8s_tim2.h"
 
 
-/**
-  * @brief  initializion for time3
-  * @param  None.
-  * @retval None
-  */
-void Init_Time3(void)
-{
 
-	TIM3->PSCR = 0x06;//分频值 16M/2^6 = 250K
-	TIM3->IER = 0x01;//使能触发中断
-	TIM3->CNTRH = 0;
-	TIM3->CNTRL = 250;//250*(1/250K) = 0.001s
-	TIM3->CNTRH = 0;
-	TIM3->CNTRL = 250;//自动重装的值
+
+/*----------------------------------------------------------------------------
+	定时10ms
+-----------------------------------------------------------------------------*/
+void timer2_init(void)
+{    
+	TIM2_TimeBaseInit(TIM2_PRESCALER_64, 2500);
+	TIM2_ClearFlag(TIM2_FLAG_UPDATE);
+	TIM2_ITConfig(TIM2_IT_UPDATE, ENABLE);	
+	TIM2_Cmd(ENABLE);	
 	
 }
 
-@interrupt void Tim3_UPD_OVF_BRK_ISR(void)
+/*----------------------------------------------------------------------------
+	Timer2_ISR 10ms
+-----------------------------------------------------------------------------*/
+@far @interrupt void timer2_ISR(void) 
 {
-	TIM3->SR1 = 0x00;//清除中断标志
-	f_1ms = 1;
-	Sys_Time_Manage();
-	
-}
+	static u8	cnt_1s = 0;
+	static u8	cnt_100ms = 0;
 
 
+	/* 清除标志 */
+	TIM2->SR1 = 0;
 
-/**
-  * @brief  System time manage,set all the time flag used
-  * @param  None.
-  * @retval None
-  */
-void Sys_Time_Manage(void)
-{
-	systime_count[0]++;
-	if (systime_count[0] >= 100)
-	{
-		systime_count[0] = 0;
+	cnt_100ms++;
+	cnt_1s++;
+
+	if(cnt_100ms >= 10){			/* 100ms */
+		cnt_100ms = 0;
 		f_100ms = 1;
 	}
-	systime_count[1]++;
-	if (systime_count[1] >= 300)
-	{
-		systime_count[1] = 0;
-		f_300ms = 1;
-	}
-	systime_count[2]++;
-	if (systime_count[2] >= 1000)
-	{
-		systime_count[2] = 0;
+
+	if(cnt_1s >= 100){			/* 1s */
+		cnt_1s = 0;
 		f_1s = 1;
 	}
+
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -46,8 +46,8 @@
 #define SLAVE_ADDRESS  0x50
 #endif
 
-#define	IIC_SUCCESS					0
-#define	IIC_ERROR_TIME_OUT	1
+#define	IIC_SUCCESS				0
+#define	IIC_ERROR_TIME_OUT		1
 #define	IIC_ERROR_BUSY			2
 #define	IIC_ERROR_NOT_ACK		3
 
@@ -56,9 +56,9 @@
 
 // ************************* Function Declaration ***************************
 
+void My_TIM3_Init(void);
 
 uint8_t I2C_Config(void);
-void My_TIM3_Init(void);
 uint8_t I2C_WriteBytes(uint16_t SlaveAddr, uint8_t *pWriteDataBuffer, uint8_t NumByteToWrite, uint8_t TimeOutOfMs);
 uint8_t I2C_ReadBytes(uint16_t SlaveAddr, uint8_t *pReadDataBuffer, uint8_t NumByteToRead, uint8_t TimeOutOfMs);
 uint8_t I2C_WriteReadBytes(uint16_t SlaveAddr, uint8_t *pWriteDataBuffer, uint8_t NumByteToWrite,uint8_t *pReadDataBuffer, uint8_t NumByteToRead, uint8_t TimeOutOfMs);
@@ -66,10 +66,14 @@ void ErrProc(void);
 
 /* flag clearing sequence - uncoment next for peripheral clock under 2MHz */
 #define dead_time() { /* _asm("nop"); _asm("nop"); */ }
-#define delay_ms(a)          { TIM3_tout= a; while(TIM3_tout); }
-#define tout()            (TIM3_tout)
-#define set_tout_ms(a)    { TIM3_tout= a; }
-extern u16 TIM3_tout;
+#define delay_ms(a)          	{ I2CTimeOut = a; while(I2CTimeOut); }
+#define tout()            		(I2CTimeOut)
+#define set_tout_ms(a)    	{ I2CTimeOut = a; }
+
+
+extern u16 GestureTimeOut;
+extern u16 I2CTimeOut;
+
 
 
 // ************************* Interrupt handler Declaration ***************************
@@ -89,7 +93,7 @@ void TIM3InterruptHandle (void) interrupt 23;
 // ************************* I2C Example decalaration ***************************
 
 #define MAX_DUMMY 10
-//#define LED1  0x08
+
 //#define switch_on(msk) GPIOA->ODR |= (msk) ;
 //#define switch_off(msk) GPIOA->ODR &= ~(msk);
 

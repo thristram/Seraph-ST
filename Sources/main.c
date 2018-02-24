@@ -20,25 +20,49 @@
   ******************************************************************************
   */
 #define _MAIN_GLOBAL
-#include "STM8_TSL_RC_API.h"
+
+#include "stm8s_flash.h"
 #include "stm8s_conf.h"
-#include "main.h"
+#include "string.h"
 #include "uart.h"
 #include "stm8s_exti.h"
 #include "i2c_master_poll.h"
 #include "SparkFun_APDS9960.h"
+#include "mpr121.h"
+#include "timer.h"
+#include "main.h"
 
-volatile u8 isr_flag;
-volatile u8 gest_cnt;
+
+volatile u8 GESTURE_ISR_FLAG = 0;
+
+APDS9960_Light_t APDS9960_Light = {0};	
+
+u8 BIT[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+
+
+/*----------------------------------------------------------------------------
+enum
+{
+    DIR_NONE,
+    DIR_LEFT,
+    DIR_RIGHT,
+    DIR_UP,    
+    DIR_DOWN,
+    DIR_NEAR,
+    DIR_FAR,
+    DIR_ALL
+};
+-----------------------------------------------------------------------------*/
+u8 DIR_DATA[8] = {0x00, 0x0E,0x0F,0x0C, 0x0D, 1, 2, 3};
+
+
+
 // Constants
 #define LIGHT_INT_HIGH  1000 // High light level for interrupt
 #define LIGHT_INT_LOW   10   // Low light level for interrupt
 
 
 
-_Bool in_range;
-_Bool p_valid;
-char *ptr;
 
 //--------    SECTION DEFINITION FOR THIS FILE   --------------
 #if defined(__CSMC__) && defined(USE_PRAGMA_SECTION)
@@ -48,768 +72,1074 @@ char *ptr;
 #pragma section const {CONFIG_CONST}
 #endif
 
-void ExtraCode_Init(void);
-void ExtraCode_StateMachine(void);
 
 
-void Variable_Init(void)
+
+
+
+/*----------------------------------------------------------------------------
+   EEPROM中写入一个字节
+   dLocal_Addr:EEPROM中的地址，从0x4000
+   dLocal_Data:要写入EEPOM中的数据
+-----------------------------------------------------------------------------*/
+void MEEPROM_WriteByte(u16 dLocal_Addr, u8 dLocal_Data)
 {
-	st1.st_device_status = 0xFF;
-	st1.st_pad1_status = 0x00;
-	st1.st_pad2_status = 0x00;
-	st1.st_pad3_status = 0x00;
-	st1.st_ges1_ctrl_H = 0x11;//初始化为无效手势
-	st1.st_ges1_ctrl_L = 0x11;
-	st1.st_ges2_ctrl_H = 0x11;
-	st1.st_ges2_ctrl_L = 0x11;
-	st1.st_ges3_ctrl_H = 0x11;
-	st1.st_ges3_ctrl_L = 0x11;
-	st1.st_ges4_ctrl_H = 0x11;
-	st1.st_ges4_ctrl_L = 0x11;
-	/*st1.st_pad1_ctrl_action = 0x55;//for test
-	//st1.st_pad1_ctrl_meshid_H = 0x80;
-	//st1.st_pad1_ctrl_meshid_L = 0x01;
-	//st1.st_pad1_ctrl_boardid  = 0x11;
-	st1.st_pad1_ctrl_action_value = 0x63;
-	st1.st_pad2_ctrl_action = 0x55;
-	//st1.st_pad2_ctrl_meshid_H = 0x80;
-	//st1.st_pad2_ctrl_meshid_L = 0x02;
-	//st1.st_pad2_ctrl_boardid  = 0x23;
-	st1.st_pad2_ctrl_action_value = 0x63;
-	st1.st_pad3_ctrl_action = 0x55;
-	//st1.st_pad3_ctrl_meshid_H = 0x80;
-	//st1.st_pad3_ctrl_meshid_L = 0x03;
-	//st1.st_pad3_ctrl_boardid  = 0x33;
-	st1.st_pad3_ctrl_action_value = 0x63;*/
+   FLASH_Unlock(FLASH_MEMTYPE_DATA);
+   while (FLASH_GetFlagStatus(FLASH_FLAG_DUL) == RESET);
+   
+   FLASH_ProgramByte(FLASH_DATA_START_PHYSICAL_ADDRESS + dLocal_Addr, dLocal_Data);
+   FLASH_Lock(FLASH_MEMTYPE_DATA);
+
 }
 
+ /*----------------------------------------------------------------------------
+	从EEPROM中读取一个字节
+	直接使用FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + dLocal_Addr);
+-----------------------------------------------------------------------------*/
+ u8 MEEPROM_ReadByte(u16 dLocal_Addr)
+ {
+	 u8 dLocal_1;
+	 dLocal_1 = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + dLocal_Addr);
+	 return dLocal_1;
+ }
 
-/**
-  ******************************************************************************
-  * @brief PB2外部中断初始化，下降沿触发
-  * @par Parameters:
-  * None
-  * @retval void None
-  * @par Required preconditions:
-  * None
-  ******************************************************************************
-  */
-	/*
-void PortBInt_Init(void)
+/*----------------------------------------------------------------------------
+	 读取设备信息 
+-----------------------------------------------------------------------------*/
+void MEEPROM_device_info_read(void)
 {
-	disableInterrupts();
-	EXTI_DeInit();
-	GPIO_Init(GPIOB,GPIO_PIN_2,GPIO_MODE_IN_PU_IT);//上拉输入with interrupt
-	EXTI_SetExtIntSensitivity(EXTI_PORT_GPIOD,EXTI_SENSITIVITY_FALL_LOW);//下降沿触发
-	//enableInterrupts();
-}*/
-/**
-  ******************************************************************************
-  * @brief PB2外部中断服务函数
-  * @par Parameters:
-  * None
-  * @retval void None
-  * @par Required preconditions:
-  * None
-  ******************************************************************************
-  */
-	/*
-@interrupt void PORTB_EXT_ISR(void)
-{
-	disableInterrupts();//关中断
-	extisr_flag = 1;
-	LED_Toggle(LED5);
-	enableInterrupts();
-}
-*/
-void EXTI_Config(void)
-{
-	GPIO_Init(GPIOD,GPIO_PIN_0,GPIO_MODE_IN_PU_IT );
-	EXTI_DeInit();
-	EXTI_SetTLISensitivity(EXTI_TLISENSITIVITY_FALL_ONLY);//下降沿触发中断
-	EXTI_SetExtIntSensitivity((EXTI_PORT_GPIOD),EXTI_SENSITIVITY_FALL_ONLY);
-}
+	u8 temp = 0, i;
 
-@interrupt void PORTD_EXT_ISR(void)
-{
-	disableInterrupts();//关中断
-	isr_flag = 1;
-	enableInterrupts();
-}
-/**
-  ******************************************************************************
-  * @brief Main function.
-  * @par Parameters:
-  * None
-  * @retval void None
-  * @par Required preconditions:
-  * None
-  ******************************************************************************
-  */
-void main(void)
-{
+	st1.model = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_MODEL_ADDRESS);
+	st1.firmware_version = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_FW_VERSION_ADDRESS);   
+	if(st1.firmware_version == 1){	   /* 第一版本，device ID 4个字节  */	   
+		   st1.deviceID[0] = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_DEVICEID_ADDRESS + 3);
+		   st1.deviceID[1] = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_DEVICEID_ADDRESS + 2);
+		   st1.deviceID[2] = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_DEVICEID_ADDRESS + 1);
+		   st1.deviceID[3] = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_DEVICEID_ADDRESS + 0);
+	}
+	st1.HW_version = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_HW_VERSION_ADDRESS);
 
-/* Only if _stext routine is not used */
-/*
-#asm
-		sim		// Disable interrupts		
-	// To initialize the page 0
-		clrw	x
-loop0:
-		clr	(x)
-		incw	x
-		cpw	x,#0x05FF
-		jrne	loop0
-#endasm
-*/
-  unsigned char value = 100;
-  in_range = (value >= 10) && (value <= 20);
-  p_valid = ptr;   /* p_valid is true if ptr not 0 */
-	/*CLK->SWCR|=0x02;//时钟切换启动，SWEN=1
-	CLK->SWR=0xB4; //选择目标时钟源，0xB4=HSE
-	while((CLK->SWCR&0x08)==0);//等待切换时间发生，此时 SWIF=1
-	CLK->SWCR&=0xF7;//清除切换标志
-	if(CLK->CMSR==0xB4)//判断主时钟源是否为 HSE
-	{
-		CLK->CKDIVR=0x00; //CPU 时钟频率为主时钟源 16 分频
-	}*/
-	CLK->SWCR |= 0x02; //开启切换
-  CLK->SWR   = 0xb4;       //选择时钟为外部8M
-  while((CLK->SWCR & 0x01)==0x01);
-  CLK->CKDIVR = 0x80;    //不分频
-  CLK->SWCR  &= ~0x02; //关闭切换
-	LED_Init(LED1|LED2|LED3|LED4|LED5);
-	KEY_Init(KEY1|KEY2);
-	Variable_Init();
-	//PortBInt_Init();
-	EXTI_Config();
-	Init_uart2();
-	init();//init apds9960
-	GestureTest();
-	TSL_Init();
-	ExtraCode_Init();	
-  for (;;) {
+	temp = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_BASH_ADDRESS + 0);
+	st1.bash = temp + 256 * FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_BASH_ADDRESS + 1);
+
+	st1.manaYear = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_MANA_YEAR_ADDRESS);
+	st1.manaMonth = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_MANA_MONTH_ADDRESS);
+	st1.manaDay = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_MANA_DAY_ADDRESS);
+
+
+	st1.keypad[0].status = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_CH1_STATUS_ADDRESS);
+	st1.keypad[1].status = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_CH2_STATUS_ADDRESS);
+	st1.keypad[2].status = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_CH3_STATUS_ADDRESS);
+
+	ns_host_meshid_H = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_MESHID_H_ADDRESS);
+	ns_host_meshid_L = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_MESHID_L_ADDRESS);
+
+	st1.keypad[0].actural_val = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_CH1_TARGET_STATUS_ADDRESS);
+	st1.keypad[1].actural_val = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_CH2_TARGET_STATUS_ADDRESS);
+	st1.keypad[2].actural_val = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_CH3_TARGET_STATUS_ADDRESS);
+	st1.keypad[0].actural_val_bak = st1.keypad[0].actural_val;
+	st1.keypad[1].actural_val_bak = st1.keypad[1].actural_val;
+	st1.keypad[2].actural_val_bak = st1.keypad[2].actural_val;
+
+
+	
+	for(i = 0; i < KEYPAY_NUMS; i++){
+
+		st1.keypad[i].meshid_h = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_KEY1_MESHIDH_ADDRESS + EEPROM_ONEKEY_BYTES_USED * i);
+		if(st1.keypad[i].meshid_h){		
+			st1.keypad[i].flag.bit.setted = 1;
+			
+			st1.keypad[i].meshid_l = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_KEY1_MESHIDL_ADDRESS + EEPROM_ONEKEY_BYTES_USED * i);
+			st1.keypad[i].action = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_KEY1_ACTION_ADDRESS + EEPROM_ONEKEY_BYTES_USED * i);
+			st1.keypad[i].boardid = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_KEY1_BOARDID_ADDRESS + EEPROM_ONEKEY_BYTES_USED * i);
+			st1.keypad[i].value = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_KEY1_VALUE_ADDRESS + EEPROM_ONEKEY_BYTES_USED * i);
+			st1.keypad[i].time = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_KEY1_TIME_ADDRESS + EEPROM_ONEKEY_BYTES_USED * i);
+
+		}		
+	}
+
+	for(i = 0; i < GESTURE_NUMS; i++){
 		
-		if((!receipt_device_info1) && (!device_info_sended) && (rev_bleheartbeat) && (rev_host_mesh))
-		{
-			device_info_sended = 1;
-			rev_bleheartbeat = 0;
-			delay(200);
-			send_header_payload_init(0x86,ns_host_meshid_H,ns_host_meshid_L,12,0xB4);
-			UART2_Send_Data_Start();
-		}
-		
-    Task_2ms();
-		Task_100ms();
-		Task_300ms();
-		Task_1s();
-		ExtraCode_StateMachine();			 
-		TSL_Action();
-		/*
-		if(KEY_Read(KEY1))
-		{
-			st1.st_ges_H = 0xEF;
-			st1.st_ges_L = 0xF0;
-			gest1_confirm = 0;
-			gest2_confirm = 0;
-			gest3_confirm = 0;
-			gest4_confirm = 0;
-		}
-		else
-		{
-			st1.st_ges_H = 0x00;
-			st1.st_ges_L = 0x00;
-			gest1_confirm = 0;
-			gest2_confirm = 0;
-			gest3_confirm = 0;
-			gest4_confirm = 0;
-		}
-		if(KEY_Read(KEY2))
-		{
-			gest1_confirm = 1;
-			gest2_confirm = 0;
-			gest3_confirm = 0;
-			gest4_confirm = 0;
-		}
-		else
-		{
-			gest1_confirm = 0;
-			gest2_confirm = 0;
-			gest3_confirm = 0;
-			gest4_confirm = 0;
-		}
-		*/
-		if(isr_flag ==1)
-  	{
-			LED_On(LED5);
-			handleGesture();
-			if((GPIOD->IDR&0x01)==0)
-			{
-				init();
-				enableGestureSensor(1);
+		st1.gesture[i].meshid_h = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_GESTURE1_MESHIDH_ADDRESS + EEPROM_ONEGESTURE_BYTES_USED * i);
+		if(st1.gesture[i].meshid_h){		
+			st1.gesture[i].flag.bit.setted = 1;
+			
+			st1.gesture[i].meshid_l = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_GESTURE1_MESHIDL_ADDRESS + EEPROM_ONEGESTURE_BYTES_USED * i);
+			st1.gesture[i].ges_h = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_GESTURE1_TRIGERH_ADDRESS + EEPROM_ONEGESTURE_BYTES_USED * i);
+			st1.gesture[i].ges_l = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_GESTURE1_TRIGERL_ADDRESS + EEPROM_ONEGESTURE_BYTES_USED * i);
+			st1.gesture[i].action = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_GESTURE1_ACTION_ADDRESS + EEPROM_ONEGESTURE_BYTES_USED * i);
+			st1.gesture[i].boardid = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_GESTURE1_BOARDID_ADDRESS + EEPROM_ONEGESTURE_BYTES_USED * i);
+			st1.gesture[i].value = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_GESTURE1_VALUE_ADDRESS + EEPROM_ONEGESTURE_BYTES_USED * i);
+			st1.gesture[i].time = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_GESTURE1_TIME_ADDRESS + EEPROM_ONEGESTURE_BYTES_USED * i);			
+
+		}			
+	}
+
+	/* 滑动按键 */
+	mpr121_handle.slipLevel = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_NOKEY_SLIPPAD_VALUE);
+	mpr121_handle.slipValue = mpr121_handle.slipLevel + 1;
+	for(i = 0; i < MPR121_KEYPAD_NUMS; i++){
+		mpr121_handle.keylongTouchSlipLevel[i] = FLASH_ReadByte(FLASH_DATA_START_PHYSICAL_ADDRESS + EEPROM_KEY1_SLIPPAD_VALUE + i);
+	}
+
+
+
+}
+
+/*----------------------------------------------------------------------------
+	 设置默认的信息
+-----------------------------------------------------------------------------*/
+void MEEPROM_default_info_set(void)
+{	
+	u8 i;
+
+	FLASH_Unlock(FLASH_MEMTYPE_DATA);
+	while (FLASH_GetFlagStatus(FLASH_FLAG_DUL) == RESET);
+
+	for(i = EEPROM_USER_START_ADDRESS; i <= EEPROM_USER_END_ADDRESS; i++){
+		FLASH_ProgramByte(FLASH_DATA_START_PHYSICAL_ADDRESS + i, 0);
+	}
+
+	FLASH_Lock(FLASH_MEMTYPE_DATA);
+
+}
+
+
+/*----------------------------------------------------------------------------
+	初始化EEPROM
+-----------------------------------------------------------------------------*/
+void MEEPROM_Init(void)
+{
+	u8 temp = 0;
+
+	FLASH_DeInit();
+	temp = MEEPROM_ReadByte(EEPROM_INIT_ADDRESS);
+
+	//初次上电设置默认数据
+	if(temp != EEPROM_INIT_FLAG) {	   
+		   MEEPROM_WriteByte(EEPROM_INIT_ADDRESS, EEPROM_INIT_FLAG);
+		   MEEPROM_default_info_set();
+	}
+
+	MEEPROM_device_info_read();
+
+}
+
+
+
+/*----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------*/
+u8 sicp_get_message_id(void)
+{
+	static u8 id = 0;
+
+	id++;
+
+	if(id == 0) {
+		id = 1;
+	}
+
+	return id;
+}
+
+
+
+/*-----------------------------------------------------------------------------
+    //触摸扫描
+------------------------------------------------------------------------------*/
+void keypad_action(void)
+{
+	u8 i;
+
+	//组合按键检测，处理完后清空按键触发标志
+
+
+	//单按键检测，处理完后清空按键触发标志
+	for(i = 0; i < KEYPAY_NUMS; i++) {
+
+		if(st1.keypad[i].flag.bit.detected) {		//按键触发标志
+
+			st1.keypad[i].flag.bit.detected = 0;
+
+			if(st1.keypad[i].flag.bit.setted) {	//已设置按键指令
+				
+				send_action_ctrl(i, KEYPAD_CTRL);
+//				delay_ms(10); 
+//				send_action_sync(i, KEYPAD_CTRL);
+
+			} else {
+
+				send_action_without_setted(i, KEYPAD_CTRL);
+
 			}
-			isr_flag = 0;	
+			
+			MEEPROM_WriteByte(EEPROM_CH1_STATUS_ADDRESS + i, st1.keypad[i].status);		//保存状态
+
+			
+		}
+
+	}
+	
+
+}
+
+
+/*-----------------------------------------------------------------------------
+    APDS9960 外部中断设置
+------------------------------------------------------------------------------*/
+void gesture_exti_config(void)
+{
+
+	GPIO_Init(GPIOE, GPIO_PIN_3, GPIO_MODE_IN_PU_IT );
+
+//	EXTI_DeInit();
+	EXTI_SetTLISensitivity(EXTI_TLISENSITIVITY_FALL_ONLY);		//下降沿触发中断
+	EXTI_SetExtIntSensitivity((EXTI_PORT_GPIOE), EXTI_SENSITIVITY_FALL_ONLY);
+	
+}
+
+/*----------------------------------------------------------------------------
+	设置LED
+-----------------------------------------------------------------------------*/
+void gesture_led_init(void)
+{
+	// Set GPIO for LED uses 
+  	GPIO_Init(GESTURE_LED_PORT, (GPIO_Pin_TypeDef)GESTURE_LED_PIN, GPIO_MODE_OUT_PP_LOW_FAST); 
+
+}
+
+/*----------------------------------------------------------------------------
+	手势LED显示 
+	100ms执行一次
+-----------------------------------------------------------------------------*/
+void gesture_led_show(void)
+{
+	static u8 ledShowCnt = 0;
+	static u8 ledStatusOld = 0;
+
+	ledShowCnt++;
+
+	if(st1.ges_led_ctrl != ledStatusOld){
+		ledStatusOld = st1.ges_led_ctrl;
+		ledShowCnt = 0;
+	}
+
+	if(st1.ges_led_ctrl == 1){
+
+		if(ledShowCnt < 1){		/* 亮 200ms */
+
+			GESTURE_LED_ON;
+		}else{
+			GESTURE_LED_OFF;
+			st1.ges_led_ctrl = 0;
+		}
+
+	}else if(st1.ges_led_ctrl == 0xff){
+
+		if(ledShowCnt < 30){		/* */
+			GESTURE_LED_ON;
+		}else{
+			GESTURE_LED_OFF;
+			st1.ges_led_ctrl = 0;
+		}
+
+	}else{
+	
+		GESTURE_LED_OFF;
+	}
+
+
+
+
+}
+
+/*-----------------------------------------------------------------------------
+	每n次动作要在多长时间内完成
+------------------------------------------------------------------------------*/
+void gesture_timeout_check(void)
+{
+
+	if(st1.ges_cnt){		//正在检测手势
+		st1.ges_timer++;
+		if(st1.ges_timer >= 30){		//3s
+			st1.ges_timer = 0;
+			st1.ges_cnt = 0;
+			st1.ges_h = 0;
+			st1.ges_l = 0;
 		}
 	}
-  
-}
-
-
-/**
-  ******************************************************************************
-  * @brief Initialize all the keys, I/Os for LED
-  * @par Parameters:
-  * None
-  * @retval void None
-  * @par Required preconditions:
-  * None
-  ******************************************************************************
-  */
-void ExtraCode_Init(void)
-{
-
-  u8 i;
-
-  /* All keys are implemented and enabled */
-
-  for (i = 0; i < NUMBER_OF_SINGLE_CHANNEL_KEYS; i++)
-  {
-    sSCKeyInfo[i].Setting.b.IMPLEMENTED = 1;
-    sSCKeyInfo[i].Setting.b.ENABLED = 1;
-    sSCKeyInfo[i].DESGroup = 0x01; /* Put 0x00 to disable the DES on these pins */
-  }
-
-#if NUMBER_OF_MULTI_CHANNEL_KEYS > 0
-  for (i = 0; i < NUMBER_OF_MULTI_CHANNEL_KEYS; i++)
-  {
-    sMCKeyInfo[i].Setting.b.IMPLEMENTED = 1;
-    sMCKeyInfo[i].Setting.b.ENABLED = 1;
-    sMCKeyInfo[i].DESGroup = 0x01; /* Put 0x00 to disable the DES on these pins */
-  }
-#endif
-
-  /* Init I/O in Output Push-Pull to drive the LED */
-	LED_On(LED1);
-	LED_On(LED2);
-	LED_On(LED3);
-  LED_On(LED5);
-  enableInterrupts();
-
-}
-
-
-/**
-  ******************************************************************************
-  * @brief Example of LED switching using touch sensing keys
-  * @par Parameters:
-  * None
-  * @retval void None
-  * @par Required preconditions:
-  * None
-  ******************************************************************************
-  */
-void ExtraCode_StateMachine(void)
-{
-	if ((TSL_GlobalSetting.b.CHANGED) && (TSLState == TSL_IDLE_STATE))
-  {
-   
-		TSL_GlobalSetting.b.CHANGED = 0;
-    
-    if (sSCKeyInfo[0].Setting.b.DETECTED) /* KEY 1 touched */
-    {
-			LED_Toggle(LED1);
-			st_pad1_ctrl = 1;
-			if ((st1.st_pad1_ctrl_meshid_H != 0x00) && (st1.st_pad1_ctrl_meshid_L != 0x00) && (st1.st_pad1_ctrl_boardid != 0x00))
-			{
-				st_pad1_confirm = 1;
-				st1.st_ctrl_address = 0x01;
-			}
-			//else
-			//{
-			//	st_pad1_confirm = 0;
-			//	st1.st_ctrl_address = 0x00;
-			//}
 			
-			if (st1.st_pad1_status == 0x00)
-			{
-				st1.st_pad1_status = 0x63;
-			}
-			else if (st1.st_pad1_status == 0x63)
-			{
-				st1.st_pad1_status = 0x00;
-			}
-    }
-   
-    if (sSCKeyInfo[1].Setting.b.DETECTED) /* KEY 2 touched */
-    {
-			LED_Toggle(LED2);
-			st_pad2_ctrl = 1;
-			if ((st1.st_pad2_ctrl_meshid_H != 0x00) && (st1.st_pad2_ctrl_meshid_L != 0x00) && (st1.st_pad2_ctrl_boardid != 0x00))
-			{
-				st_pad2_confirm = 1;
-				st1.st_ctrl_address = 0x02;
-			}
-			//else
-			//{
-			//	st_pad2_confirm = 0;
-			//	st1.st_ctrl_address = 0x00;
-			//}
-			if (st1.st_pad2_status == 0x00)
-			{
-				st1.st_pad2_status = 0x63;
-			}
-			else if (st1.st_pad2_status == 0x63)
-			{
-				st1.st_pad2_status = 0x00;
-			}
-    }
-    
-    if (sSCKeyInfo[2].Setting.b.DETECTED) /* KEY 3 touched */
-    {
-      LED_Toggle(LED3);
-			st_pad3_ctrl = 1;
-			if ((st1.st_pad3_ctrl_meshid_H != 0x00) && (st1.st_pad3_ctrl_meshid_L != 0x00) && (st1.st_pad3_ctrl_boardid != 0x00))
-			{
-				st_pad3_confirm = 1;
-				st1.st_ctrl_address = 0x04;
-			}
-			//else
-			//{
-			//	st_pad3_confirm = 0;
-			//	st1.st_ctrl_address = 0x00;
-			//}
-			if (st1.st_pad3_status == 0x00)
-			{
-				st1.st_pad3_status = 0x63;
-			}
-			else if (st1.st_pad3_status == 0x63)
-			{
-				st1.st_pad3_status = 0x00;
-			}
-    }
-  }
 }
 
-void handleGesture(void) {
-    if ( isGestureAvailable() ) {
-			/*send_buf[0] = 0x00;
-			send_buf[1] = 0x00;
-			send_buf[2] = 0x00;
-			send_buf[3] = 0x00;
-			send_buf[4] = 0x00;
-			send_buf[5] = 0x08;
-			send_buf[6] = 0x00;//ns_own_meshid_H;
-			send_buf[7] = 0x00;//ns_own_meshid_L;
-			send_buf[8] = 0x00;//ns_own_meshid_H;
-			send_buf[9] = 0x00;//ns_own_meshid_L;*/
-			gest_cnt++;					
-    switch ( readGesture() ) {
-      case DIR_UP:
-        //printf("UP\n");
-				if(gest_cnt == 1)				st1.st_ges_H |= 0xC0;
-				else if(gest_cnt == 2)	st1.st_ges_H |= 0x0C;
-				else if(gest_cnt == 3)	{st1.st_ges_L |= 0xC0;gest_cnt = 0;gest_detect = 1;}
-				//send_buf[0] = 0x01;
-        break;
-      case DIR_DOWN:
-        //printf("DOWN\n");
-				//send_buf[1] = 0x01;
-				if(gest_cnt == 1)				st1.st_ges_H |= 0xD0;
-				else if(gest_cnt == 2)	st1.st_ges_H |= 0x0D;
-				else if(gest_cnt == 3)	{st1.st_ges_L |= 0xD0;gest_cnt = 0;gest_detect = 1;}
-        break;
-      case DIR_LEFT:
-        //printf("LEFT\n");
-				//send_buf[2] = 0x01;
-				if(gest_cnt == 1)		st1.st_ges_H |= 0xE0;
-				else if(gest_cnt == 2)	st1.st_ges_H |= 0x0E;
-				else if(gest_cnt == 3)	{st1.st_ges_L |= 0xE0;gest_cnt = 0;gest_detect = 1;}
-        break;
-      case DIR_RIGHT:
-        //printf("RIGHT\n");
-				if(gest_cnt == 1)		st1.st_ges_H |= 0xF0;
-				else if(gest_cnt == 2)	st1.st_ges_H |= 0x0F;
-				else if(gest_cnt == 3)	{st1.st_ges_L |= 0xF0;gest_cnt = 0;gest_detect = 1;}
-				//send_buf[3] = 0x01;
-        break;
-      case DIR_NEAR:
-        //printf("NEAR\n");
-				//send_buf[6] = 0x01;
-        break;
-      case DIR_FAR:
-        //printf("FAR\n");
-				//send_buf[7] = 0x01;
-        break;
-      default:
-        //printf("NONE\n");
-				//send_buf[8] = 0x01;
-				break;
-    }
-		/*send_buf[8] = st1.st_ges_H;
-		send_buf[9] = st1.st_ges_L;
-		send_buf[10] = Check_Sum(send_buf,send_buf[5]+2);
-		UART2_Send_Data_Start();*/
-  }
-}
 
-void GestureTest(void)
+
+/*-----------------------------------------------------------------------------
+    手势动作
+------------------------------------------------------------------------------*/
+void gesture_action(void)
 {
-  // Initialize APDS-9960 (configure I2C and initial values)
-  /*if ( init() ) {
-  //  //printf("APDS-9960 initialization complete\n");
-  } else {
-    //printf("Something went wrong during APDS-9960 init!\n");
-		LED_On(LED5);
-  }
-  */
-  // Start running the APDS-9960 gesture sensor engine
-  if ( enableGestureSensor(1) ) {
-    //printf("Gesture sensor is now running\n");
-  } else {
-    //printf("Something went wrong during gesture sensor init!\n");
-		
-  }
-	//while(1)
+	u8 num;
+
+	num = get_gesture_num(st1.ges_h, st1.ges_l, GET_SETTED_NUM);		//判断是否已保存过相同手势
+
+	if(num != GET_GESTURE_ERROR){		//有相同手势
+
+		send_action_ctrl(num, GESTURE_CTRL);
+//		delay_ms(10); 
+//		send_action_sync(num, GESTURE_CTRL);
+
+	}else{						//没有相同手势
+
+		send_action_without_setted(num, GESTURE_CTRL);
+	
+	}
+
+
+
+
+
 }
 
-void LightTest(void)
+/*-----------------------------------------------------------------------------
+    手势分析 检测三个手势
+------------------------------------------------------------------------------*/
+void gesture_analyze(u8 motion)
+{
+	u8 reset = 0;
+
+	st1.ges_cnt++;
+
+	if((st1.ges_led_ctrl != 0xff) && motion){		/* 上次的保持时间已经结束 */
+
+		st1.ges_led_ctrl = 1;
+
+		if(st1.ges_cnt == 1) {
+			
+			st1.ges_timer = 0;
+//			st1.ges_h |= DIR_DATA[motion] << 4;
+			st1.ges_h |= motion << 4;
+			
+		} else if(st1.ges_cnt == 2) {
+		
+//			st1.ges_h |= DIR_DATA[motion];
+			st1.ges_h |= motion;
+		
+		} else if(st1.ges_cnt == 3) {
+		
+//			st1.ges_l |= DIR_DATA[motion] << 4;
+			st1.ges_l |= motion << 4;
+					
+			st1.ges_led_ctrl = 0xff;
+			gesture_action();
+			reset = 1;
+
+		}else{
+			reset = 1;
+		}
+
+	}else{
+		reset = 1;
+	}
+
+	if(reset == 1){
+		st1.ges_timer = 0;
+		st1.ges_cnt = 0;
+		st1.ges_l = 0;
+		st1.ges_h = 0;
+	}
+
+}
+
+
+
+/*-----------------------------------------------------------------------------
+    手势检测
+------------------------------------------------------------------------------*/
+void gesture_detect(void)
+{
+	static GESTURE_DETECT_STATUS status = GESTURE_IDLE;
+	u8 ret, motion = 0;
+
+	switch(status){
+		
+		case GESTURE_IDLE:
+			if(GESTURE_ISR_FLAG){		//有中断
+				status = GESTURE_CHECK;			
+				GESTURE_ISR_FLAG = 0;
+			}
+			break;
+
+		case GESTURE_CHECK:
+			 /* Make sure that power and gesture is on and data is valid */
+			if(isGestureAvailable() && (getMode() & 0x41)){
+				resetGestureParameters();
+//				GestureTimeOut = 150;
+				GestureTimeOut = 30;
+				
+				status = GESTURE_WAIT;
+				
+			}else{
+				status = GESTURE_IDLE;
+				GESTURE_ISR_FLAG = 0;
+			}
+
+			break;
+	
+		case GESTURE_WAIT:			 /* Wait some time to collect next batch of FIFO data */
+			if(GestureTimeOut == 0){
+				status = GESTURE_GET;
+			}
+			break;
+
+		case GESTURE_GET:
+
+			ret = gesture_read_data(&motion);
+			if(ret == 1){				//结束
+				
+				status = GESTURE_IDLE;
+				GESTURE_ISR_FLAG = 0;
+				
+				gesture_analyze(motion);
+				
+//				if((GPIOD->IDR & 0x01) == 0) {
+//					init();
+//					enableGestureSensor(1);
+//				}
+
+			}else if(ret == 0xff){		//未结束
+//				GestureTimeOut = 100;
+				GestureTimeOut = 30;			/* 30 */			
+				status = GESTURE_WAIT;	
+
+			}else{					//失败
+				status = GESTURE_IDLE;
+				GESTURE_ISR_FLAG = 0;
+			}		
+			break;
+	
+		default:
+			status = GESTURE_IDLE;
+			GESTURE_ISR_FLAG = 0;
+			break;
+
+	}
+
+}
+
+
+/*-----------------------------------------------------------------------------
+    用来检测环境光亮度
+------------------------------------------------------------------------------*/
+void gesture_lightCheck(void)
 {
 	static uint16_t ambient_light = 0;
 	static uint16_t red_light = 0;
 	static uint16_t green_light = 0;
 	static uint16_t blue_light = 0;
 	static uint16_t threshold = 0;
-  // Initialize APDS-9960 (configure I2C and initial values)
-  if ( init() ) {
-    //printf("APDS-9960 initialization complete\n");
-		//
-  } else {
-    //printf("Something went wrong during APDS-9960 init!\n");
-		LED_Toggle(LED5);
+
+	// Initialize APDS-9960 (configure I2C and initial values)
+	//fyl
+	if ( !init() ) {
 		return;
-		
-  }
-  // Set high and low interrupt thresholds
-  if ( !setLightIntLowThreshold(LIGHT_INT_LOW) ) {
-    //printf("Error writing low threshold\n");
-		return;
-  }
-  if ( !setLightIntHighThreshold(LIGHT_INT_HIGH) ) {
-    //printf("Error writing high threshold\n");
-		return;
-  }
-	
-  // Start running the APDS-9960 light sensor (no interrupts)
-  if ( enableLightSensor(0) ) {
-    //printf("Light sensor is now running\n");
-  } else {
-    //printf("Something went wrong during light sensor init!\n");
-		return;
-  }
-  
-  // Read high and low interrupt thresholds
-  if ( !getLightIntLowThreshold(&threshold) ) {
-    //printf("Error reading low threshold\n");
-		return;
-  } else {
-    //printf("Low Threshold: %d\n",threshold);
-  }
-  if ( !getLightIntHighThreshold(&threshold) ) {
-    //printf("Error reading high threshold\n");
-		return;
-  } else {
-    //printf("High Threshold: %d\n",threshold);
-  }
-  
-	if ( setAmbientLightIntEnable(0) ) {
+
 	}
-	else{
+
+	// Set high and low interrupt thresholds
+	if ( !setLightIntLowThreshold(LIGHT_INT_LOW) ) {
+		//printf("Error writing low threshold\n");
 		return;
 	}
-  // Enable interrupts
-  //if ( !setAmbientLightIntEnable(1) ) {
-    //printf("Error enabling interrupts\n");
-		
-  //}
-  // Wait for initialization and calibration to finish
-  delay_ms(200);
-	//while(1)
-	//{
-	//	if(isr_flag ==1)
-  	{
-			// Read the light levels (ambient, red, green, blue) and print
-			if (  !readAmbientLight(&ambient_light) ||
-						!readRedLight(&red_light) ||
-						!readGreenLight(&green_light) ||
-						!readBlueLight(&blue_light) ) {
-				//printf("Error reading light values");
-				return;
-			} else {
-				//printf("Interrupt! Ambient: %d\n",ambient_light);
-				//printf(" R: %d\n",red_light);
-				//printf(" G: %d\n",green_light);
-				//printf(" B: %d\n",blue_light);
-				/*send_buf[0] = (u8)(ambient_light>>8);
-				send_buf[1] = (u8)ambient_light;
-				send_buf[2] = (u8)(red_light>>8);
-				send_buf[3] = (u8)red_light;
-				send_buf[4] = 0x00;
-				send_buf[5] = 0x08;
-				send_buf[6] = (u8)(green_light>>8);//ns_own_meshid_H;
-				send_buf[7] = (u8)green_light;//ns_own_meshid_L;
-				send_buf[8] = (u8)(blue_light>>8);//ns_own_meshid_H;
-				send_buf[9] = (u8)blue_light;//ns_own_meshid_L;
-				st1.st_ambient_light = (u8)ambient_light;
-				st1.st_color_sense_H = (u8)(red_light/4);
-				st1.st_color_sense_M = (u8)(green_light/4);
-				st1.st_color_sense_L = (u8)(blue_light/4);
-				send_buf[10] = Check_Sum(send_buf,send_buf[5]+2);
-				UART2_Send_Data_Start();*/
-			}
-			//delay_ms(500);
-			// Reset flag and clear APDS-9960 interrupt (IMPORTANT!)
-			//isr_flag = 0;
-			if ( !clearAmbientLightInt() ) {
-				//printf("Error clearing interrupt\n");
-				return;
-			}
-			enableGestureSensor(1);
-		}
-	//}
+	if ( !setLightIntHighThreshold(LIGHT_INT_HIGH) ) {
+		//printf("Error writing high threshold\n");
+		return;
+	}
+
+	// Start running the APDS-9960 light sensor (no interrupts)
+	if ( enableLightSensor(0) ) {
+		//printf("Light sensor is now running\n");
+	} else {
+		//printf("Something went wrong during light sensor init!\n");
+		return;
+	}
+
+	// Read high and low interrupt thresholds
+	if ( !getLightIntLowThreshold(&threshold) ) {
+		//printf("Error reading low threshold\n");
+		return;
+	} else {
+		//printf("Low Threshold: %d\n",threshold);
+	}
+	if ( !getLightIntHighThreshold(&threshold) ) {
+		//printf("Error reading high threshold\n");
+		return;
+	}
+
+	if ( !setAmbientLightIntEnable(0) ) {
+		return;
+	}
+
+	// Read the light levels (ambient, red, green, blue) and print
+	if (  !readAmbientLight(&ambient_light) ||
+	        !readRedLight(&red_light) ||
+	        !readGreenLight(&green_light) ||
+	        !readBlueLight(&blue_light) ) {
+		//printf("Error reading light values");
+		return;
+	}
+
+	// Reset flag and clear APDS-9960 interrupt (IMPORTANT!)
+	if ( !clearAmbientLightInt() ) {
+		//printf("Error clearing interrupt\n");
+		return;
+	}
+	enableGestureSensor(1);
+
 }
 
 
-
-
-/**
-  * @brief f_1ms task
-  * @param None
-  * @retval None
-  */
-void Task_500us(void)
+/*-----------------------------------------------------------------------------
+    检测环境光亮度 初始化 
+------------------------------------------------------------------------------*/
+void APDS9960_Light_init(void)
 {
-	if(f_500us)
-	{
-		f_500us = 0;
-		
+	static uint16_t threshold = 0;
+
+	// Set high and low interrupt thresholds
+	if ( !setLightIntLowThreshold(LIGHT_INT_LOW) ) {
+		//printf("Error writing low threshold\n");
+		return;
 	}
+	if ( !setLightIntHighThreshold(LIGHT_INT_HIGH) ) {
+		//printf("Error writing high threshold\n");
+		return;
+	}
+
+	// Start running the APDS-9960 light sensor (no interrupts)
+	if ( enableLightSensor(0) ) {
+		//printf("Light sensor is now running\n");
+	} else {
+		//printf("Something went wrong during light sensor init!\n");
+		return;
+	}
+
+	// Read high and low interrupt thresholds
+	if ( !getLightIntLowThreshold(&threshold) ) {
+		//printf("Error reading low threshold\n");
+		return;
+	} else {
+		//printf("Low Threshold: %d\n",threshold);
+	}
+	if ( !getLightIntHighThreshold(&threshold) ) {
+		//printf("Error reading high threshold\n");
+		return;
+	}
+
+	if ( !setAmbientLightIntEnable(0) ) {
+		return;
+	}
+
+	// Read the light levels (ambient, red, green, blue) and print
+	if (  !readAmbientLight(&APDS9960_Light.ambient) ||
+			!readRedLight(&APDS9960_Light.red) ||
+			!readGreenLight(&APDS9960_Light.green) ||
+			!readBlueLight(&APDS9960_Light.blue) ) {
+		return;
+	}
+
+	// Reset flag and clear APDS-9960 interrupt (IMPORTANT!)
+	if ( !clearAmbientLightInt() ) {
+		//printf("Error clearing interrupt\n");
+		return;
+	}
+
+
+	
 }
 
-/**
-  * @brief f_1ms task
-  * @param None
-  * @retval None
-  */
+/*-----------------------------------------------------------------------------
+    获取环境光亮度 颜色
+------------------------------------------------------------------------------*/
+void APDS9960_Light_read(void)
+{
+
+	// Read the light levels (ambient, red, green, blue) and print
+	if (  !readAmbientLight(&APDS9960_Light.ambient) ||
+			!readRedLight(&APDS9960_Light.red) ||
+			!readGreenLight(&APDS9960_Light.green) ||
+			!readBlueLight(&APDS9960_Light.blue) ) {
+		return;
+	}
+
+	// Reset flag and clear APDS-9960 interrupt (IMPORTANT!)
+	if ( !clearAmbientLightInt() ) {
+		return;
+	}
+
+
+	BLE_uart.txBuf[0] = (u8)(APDS9960_Light.ambient >> 8);
+	BLE_uart.txBuf[1] = (u8)APDS9960_Light.ambient;
+	BLE_uart.txBuf[2] = (u8)(APDS9960_Light.red >> 8);
+	BLE_uart.txBuf[3] = (u8)APDS9960_Light.red;
+	BLE_uart.txBuf[4] = (u8)(APDS9960_Light.green >> 8);
+	BLE_uart.txBuf[5] = (u8)APDS9960_Light.green;
+	BLE_uart.txBuf[6] = (u8)(APDS9960_Light.blue >> 8);
+	BLE_uart.txBuf[7] = (u8)APDS9960_Light.blue;
+
+	BLE_uart.txCnt = 1;
+	BLE_uart.txLen = 8;
+
+	BLE_UART->DR = BLE_uart.txBuf[0];
+
+	while(BLE_uart.txCnt);		//等待发送结束 
+
+}
+
+void KEYPAD_LED_REVERSE(u8 i)
+{
+	if(i == 0) KEYPAD1_LED_REVERSE; 
+	if(i == 1) KEYPAD2_LED_REVERSE; 
+	if(i == 2) KEYPAD3_LED_REVERSE;
+
+}
+void KEYPAD_LED_ON(u8 i)
+{
+	if(i == 0) KEYPAD1_LED_ON; 
+	if(i == 1) KEYPAD2_LED_ON; 
+	if(i == 2) KEYPAD3_LED_ON;
+
+}
+void KEYPAD_LED_OFF(u8 i)
+{
+	if(i == 0) KEYPAD1_LED_OFF; 
+	if(i == 1) KEYPAD2_LED_OFF; 
+	if(i == 2) KEYPAD3_LED_OFF;
+
+}
+/*----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------*/
+void keypad_led_show(void)
+{
+	u8 i;
+	
+	for(i = 0; i < MPR121_KEYPAD_NUMS; i++){
+
+		if(mpr121_handle.keyLEDStatus[i] == 0){
+			KEYPAD_LED_OFF(i);
+			
+		}else if(mpr121_handle.keyLEDStatus[i] == 1){
+			KEYPAD_LED_ON(i);
+			
+		}else if(mpr121_handle.keyLEDStatus[i] == 2){
+			if(mpr121_handle.keyLEDCnt[i] >= MPR121_KEYPAD_RELEASE_LED_DELAY){
+				KEYPAD_LED_OFF(i);
+				mpr121_handle.keyLEDStatus[i] = 0;				
+			}
+
+		}else if(mpr121_handle.keyLEDStatus[i] == 3){			/* 长按等待，时间由longTouch控制  */
+			if(((mpr121_handle.keyLEDCnt[i] /3) % 2) == 0){		/* 每0.5s一个单位，先灭再亮 */
+				KEYPAD_LED_OFF(i);
+			}else{		/* 亮 */				
+				KEYPAD_LED_ON(i);
+			}
+
+		}else{			
+			mpr121_handle.keyLEDStatus[i] = 0;				
+		}
+		
+	}
+
+
+}
+
+/*----------------------------------------------------------------------------
+	
+-----------------------------------------------------------------------------*/
+void keypad_led_init(void)
+{
+	// Set GPIO for LED uses 
+  	GPIO_Init(KEYPAD1_LED_PORT, (GPIO_Pin_TypeDef)KEYPAD1_LED_PIN, GPIO_MODE_OUT_PP_LOW_FAST); 
+  	GPIO_Init(KEYPAD2_LED_PORT, (GPIO_Pin_TypeDef)KEYPAD2_LED_PIN, GPIO_MODE_OUT_PP_LOW_FAST); 
+  	GPIO_Init(KEYPAD3_LED_PORT, (GPIO_Pin_TypeDef)KEYPAD3_LED_PIN, GPIO_MODE_OUT_PP_LOW_FAST); 
+
+}
+
+
+void SLIPPAD_LED_ON(u8 i)
+{
+	if(i == 1) SLIPPAD_LED1_ON; 
+	if(i == 2) SLIPPAD_LED2_ON; 
+	if(i == 3) SLIPPAD_LED3_ON; 
+	if(i == 4) SLIPPAD_LED4_ON; 
+	if(i == 5) SLIPPAD_LED5_ON; 
+	if(i == 6) SLIPPAD_LED6_ON; 
+	if(i == 7) SLIPPAD_LED7_ON; 
+	if(i == 8) SLIPPAD_LED8_ON; 
+
+}
+void SLIPPAD_LED_OFF(u8 i)
+{
+	if(i == 1) SLIPPAD_LED1_OFF; 
+	if(i == 2) SLIPPAD_LED2_OFF; 
+	if(i == 3) SLIPPAD_LED3_OFF; 
+	if(i == 4) SLIPPAD_LED4_OFF; 
+	if(i == 5) SLIPPAD_LED5_OFF; 
+	if(i == 6) SLIPPAD_LED6_OFF; 
+	if(i == 7) SLIPPAD_LED7_OFF; 
+	if(i == 8) SLIPPAD_LED8_OFF; 
+
+}
+/*-----------------------------------------------------------------------------
+    onNum = 0...8
+------------------------------------------------------------------------------*/
+void slippad_led_show(void)
+{
+	u8 i, onoff;
+	
+	onoff = 1;		/* 开启  */
+		
+	if(mpr121_handle.longTouchSlipConfirm){		/* 屏蔽按键时闪烁 */
+		if(mpr121_handle.longTouchHoldCnt < MPR121_LONG_TOUCH_CONFIRM_CNT){
+			if(((mpr121_handle.longTouchHoldCnt /3) % 2) == 0){		/* 每0.5s一个单位，先灭再亮 */
+				onoff = 0;
+			}
+
+		}else{
+			mpr121_handle.slipValue = mpr121_handle.slipLevel + 1;				/* 滑动LED 恢复原滑动值 */		
+			mpr121_handle.keyLEDStatus[mpr121_handle.longTouchSlipConfirm -1] = 0;	/* 按键LED */		
+			mpr121_handle.longTouchSlipConfirm = 0;		/* 结束屏蔽 */
+		}
+	}
+
+	if(onoff){
+		
+		if(mpr121_handle.slipValue == 1){			/* 关闭 */
+			SLIPPAD_LED0_ON;
+		}else{								/* 有调光 */
+			SLIPPAD_LED0_OFF;
+		}
+		
+		for(i = 1; i < MPR121_SLIPPAD_LEVELS_NUM; i++){
+		
+			if(i < mpr121_handle.slipValue){
+				SLIPPAD_LED_ON(i);
+			}else{
+				SLIPPAD_LED_OFF(i);
+			}
+		}
+
+	}else{
+		SLIPPAD_LED0_OFF;		
+		for(i = 1; i < MPR121_SLIPPAD_LEVELS_NUM; i++){		
+			SLIPPAD_LED_OFF(i);
+		}
+	}
+
+}
+
+/*-----------------------------------------------------------------------------
+    滑块LED初始化
+------------------------------------------------------------------------------*/
+void slippad_led_init(void)
+{
+
+	GPIO_Init(SLIPPAD_LED8_PORT, (GPIO_Pin_TypeDef)SLIPPAD_LED8_PIN, GPIO_MODE_OUT_PP_LOW_FAST); 
+	GPIO_Init(SLIPPAD_LED7_PORT, (GPIO_Pin_TypeDef)SLIPPAD_LED7_PIN, GPIO_MODE_OUT_PP_LOW_FAST); 
+	GPIO_Init(SLIPPAD_LED6_PORT, (GPIO_Pin_TypeDef)SLIPPAD_LED6_PIN, GPIO_MODE_OUT_PP_LOW_FAST); 
+	GPIO_Init(SLIPPAD_LED5_PORT, (GPIO_Pin_TypeDef)SLIPPAD_LED5_PIN, GPIO_MODE_OUT_PP_LOW_FAST); 
+	GPIO_Init(SLIPPAD_LED4_PORT, (GPIO_Pin_TypeDef)SLIPPAD_LED4_PIN, GPIO_MODE_OUT_PP_LOW_FAST); 
+	GPIO_Init(SLIPPAD_LED3_PORT, (GPIO_Pin_TypeDef)SLIPPAD_LED3_PIN, GPIO_MODE_OUT_PP_LOW_FAST); 
+	GPIO_Init(SLIPPAD_LED2_PORT, (GPIO_Pin_TypeDef)SLIPPAD_LED2_PIN, GPIO_MODE_OUT_PP_LOW_FAST); 
+	GPIO_Init(SLIPPAD_LED1_PORT, (GPIO_Pin_TypeDef)SLIPPAD_LED1_PIN, GPIO_MODE_OUT_PP_LOW_FAST); 
+	GPIO_Init(SLIPPAD_LED0_PORT, (GPIO_Pin_TypeDef)SLIPPAD_LED0_PIN, GPIO_MODE_OUT_PP_LOW_FAST); 
+
+}
+
+
+
+
+/*-----------------------------------------------------------------------------
+
+------------------------------------------------------------------------------*/
 void Task_2ms(void)
 {
-	if(f_2ms)
-	{
+	if(f_2ms) {
 		f_2ms = 0;
-		reve_analyze_reply();
+		
 	}
 }
 
-/**
-  * @brief f_100ms task
-  * @param None
-  * @retval None
-  */
+
+/*-----------------------------------------------------------------------------
+
+------------------------------------------------------------------------------*/
 void Task_100ms(void)
 {
-	if(f_100ms)
-	{
+	if(f_100ms) {
 		f_100ms = 0;
+		
+		gesture_timeout_check();
+		gesture_led_show();
+
+		MPR121_keyPad_hold_time_count();
+		
+		MPR121_keyPad_slipPad_post();
+		
 	}
 }
 
-/**
-  * @brief f_300ms task
-  * @param None
-  * @retval None
-  */
-void Task_300ms(void)
-{
-	if(f_300ms)
-	{
-		f_300ms = 0;
-	}
-}
 
-/**
-  * @brief f_1s task
-  * @param None
-  * @retval None
-  */
+/*-----------------------------------------------------------------------------
+
+------------------------------------------------------------------------------*/
 void Task_1s(void)
 {
-	static int i = 0;
-	static int j = 0;
-	if(f_1s)
-	{
+	static u8 cnt_5s = 0;
+
+	if(f_1s) {
+
 		f_1s = 0;
-		i++;
-		j++;
-		if(i >= 5)	{i = 0;LightTest();}
-		LED_Toggle(LED4);
-		//每300ms重新获取手势
-		if(j >= 3)	{j = 0;gest_cnt = 0;st1.st_ges_H = 0x00;st1.st_ges_L = 0x00;}
-		/*
-		send_buf[0] = 0x01;
-		send_buf[1] = 0x01;
-		send_buf[2] = 0x01;
-		send_buf[3] = 0x01;
-		send_buf[4] = 0x01;
-		send_buf[5] = 0x08;
-		send_buf[6] = ns_own_meshid_H;
-		send_buf[7] = ns_own_meshid_L;
-		send_buf[8] = ns_own_meshid_H;
-		send_buf[9] = ns_own_meshid_L;
-		send_buf[10] = Check_Sum(send_buf,send_buf[5]+2);
-		UART2_Send_Data_Start();
-		*/
+		
+		SYSTEM_LED_REVERSE;
+
+		if(rev_ssbroadcast == 0){		/* 还没发送deviceinfo */
+			if(send_device_info_active()){
+				rev_ssbroadcast = 1;
+			}						
+		}
+
+
+
+//		APDS9960_Light_read();
+
+
+
+		cnt_5s++;
+		if(cnt_5s >= 5) {
+			cnt_5s = 0;
+//			APDS9960_Light_read();
+		}
+
 	}
+
+}
+
+
+
+/*----------------------------------------------------------------------------
+	设置系统时钟
+-----------------------------------------------------------------------------*/
+void system_clock_set(void)
+{
+
+	//CLK->CKDIVR = 0;				  // sys clock /1
+	CLK->SWCR |= 0x02; //开启切换
+
+	CLK->SWR   = 0xb4;		 //选择时钟为外部16M
+	while((CLK->SWCR & 0x01) == 0x01);
+	CLK->CKDIVR = 0x80;    //不分频
+
+	CLK->SWCR  &= ~0x02; //关闭切换
+
+}
+
+
+/*----------------------------------------------------------------------------
+	设置LED
+-----------------------------------------------------------------------------*/
+void system_led_init(void)
+{
+	// Set GPIO for LED uses 
+  	GPIO_Init(SYSTEM_LED_PORT, (GPIO_Pin_TypeDef)SYSTEM_LED_PIN, GPIO_MODE_OUT_PP_LOW_FAST); 
+
+}
+
+
+/*-----------------------------------------------------------------------------
+
+------------------------------------------------------------------------------*/
+void system_variable_init(void)
+{
+
+	memset(&st1, 0, sizeof(st1));
+
+	st1.HWTtest = 0;
+
+	rev_ssbroadcast = 0;
 	
+	ns_own_meshid_H = 0;
+	ns_own_meshid_L = 0;
+
 }
 
 
-void LED_Init(u8 LedNum)
+/*----------------------------------------------------------------------------
+	设置中断优先级
+-----------------------------------------------------------------------------*/
+void system_interrupt_priority_set(void)
 {
-	if(LedNum & LED1)//LED1
-	{
-		GPIO_Init(LED_PORT, (GPIO_Pin_TypeDef)LED1, GPIO_MODE_OUT_PP_LOW_FAST);
-	}
-	if(LedNum & LED2)//LED2
-	{
-		GPIO_Init(LED_PORT, (GPIO_Pin_TypeDef)LED2, GPIO_MODE_OUT_PP_LOW_FAST);
-	}
-	if(LedNum & LED3)//LED3
-	{
-		GPIO_Init(LED_PORT, (GPIO_Pin_TypeDef)LED3, GPIO_MODE_OUT_PP_LOW_FAST);
-	}
-	if(LedNum & LED4)//LED4
-	{
-		GPIO_Init(LED_PORT, (GPIO_Pin_TypeDef)LED4, GPIO_MODE_OUT_PP_LOW_FAST);
-	}
-	if(LedNum & LED5)//LED5
-	{
-		GPIO_Init(LED_PORT, (GPIO_Pin_TypeDef)LED5, GPIO_MODE_OUT_PP_LOW_FAST);
-	}
+
+	//	//中断优先级设置
+//	disableInterrupts();
+//
+//	ITC_DeInit();
+//
+//	ITC_SetSoftwarePriority(ITC_IRQ_TIM4_OVF, ITC_PRIORITYLEVEL_3);
+//	ITC_SetSoftwarePriority(ITC_IRQ_TIM3_OVF, ITC_PRIORITYLEVEL_3);
+//
+//	ITC_SetSoftwarePriority(ITC_IRQ_UART2_TX, ITC_PRIORITYLEVEL_2);
+//	ITC_SetSoftwarePriority(ITC_IRQ_UART2_RX, ITC_PRIORITYLEVEL_2);
+
+	/* Enable general interrupts */
+
+	enableInterrupts();
+
 }
 
-void LED_On(u8 LedNum)
+
+/*-----------------------------------------------------------------------------
+
+------------------------------------------------------------------------------*/
+@interrupt void PORTE_EXT_ISR(void)
 {
-	if(LedNum & LED1)//LED1
-	{
-		GPIO_WriteHigh(LED_PORT, LED1);
-	}
-	if(LedNum & LED2)//LED2
-	{
-		GPIO_WriteHigh(LED_PORT, LED2);
-	}
-	if(LedNum & LED3)//LED3
-	{
-		GPIO_WriteHigh(LED_PORT, LED3);
-	}
-	if(LedNum & LED4)//LED4
-	{
-		GPIO_WriteLow(LED_PORT, LED4);
-	}
-	if(LedNum & LED5)//LED5
-	{
-		GPIO_WriteLow(LED_PORT, LED5);
-	}
+
+//	disableInterrupts();//关中断
+	GESTURE_ISR_FLAG = 1;
+//	enableInterrupts();
 }
+/*-----------------------------------------------------------------------------
 
-
-void LED_Off(u8 LedNum)
+------------------------------------------------------------------------------*/
+@interrupt void PORTA_EXT_ISR(void)
 {
-	if(LedNum & LED1)//LED1
-	{
-		GPIO_WriteLow(LED_PORT, LED1);
-	}
-	if(LedNum & LED2)//LED2
-	{
-		GPIO_WriteLow(LED_PORT, LED2);
-	}
-	if(LedNum & LED3)//LED3
-	{
-		GPIO_WriteLow(LED_PORT, LED3);
-	}
-	if(LedNum & LED4)//LED4
-	{
-		GPIO_WriteLow(LED_PORT, LED4);
-	}
-	if(LedNum & LED5)//LED5
-	{
-		GPIO_WriteLow(LED_PORT, LED5);
-	}
+
+//	disableInterrupts();//关中断
+	MPR121_ISR_FLAG = 1;
+//	enableInterrupts();
 }
 
-void LED_Toggle(u8 LedNum)
+/*-----------------------------------------------------------------------------
+    
+------------------------------------------------------------------------------*/
+void LED_detect(void)
 {
-	if(LedNum & LED1)//LED1
-	{
-		GPIO_WriteReverse(LED_PORT, LED1);
-	}
-	if(LedNum & LED2)//LED2
-	{
-		GPIO_WriteReverse(LED_PORT, LED2);
-	}
-	if(LedNum & LED3)//LED3
-	{
-		GPIO_WriteReverse(LED_PORT, LED3);
-	}
-	if(LedNum & LED4)//LED4
-	{
-		GPIO_WriteReverse(LED_PORT, LED4);
-	}
-	if(LedNum & LED5)//LED5
-	{
-		GPIO_WriteReverse(LED_PORT, LED5);
-	}
+	SYSTEM_LED_ON;
+	GESTURE_LED_ON;
+	mpr121_handle.slipValue = 9;
+	slippad_led_show();
+	SLIPPAD_LED0_ON;
+
+	KEYPAD1_LED_ON;	
+	KEYPAD2_LED_ON;
+	KEYPAD3_LED_ON;
+
+	delay_ms(1000); /* 点亮所有的灯 */
+
+	SYSTEM_LED_OFF;
+	GESTURE_LED_OFF;
+	mpr121_handle.slipValue = 1;
+	slippad_led_show();
+	SLIPPAD_LED0_OFF;
+
+	KEYPAD1_LED_OFF; 
+	KEYPAD2_LED_OFF;
+	KEYPAD3_LED_OFF;
+
 }
 
-void KEY_Init(u8 KeyNum)
+
+/*-------------------------------------------------------------------------
+  * @brief Main function.
+  * @par Parameters:
+  * None
+  * @retval void None
+  * @par Required preconditions:
+-------------------------------------------------------------------------*/
+void main(void)
 {
-	if(KeyNum & KEY1)//LED1
-	{
-		GPIO_Init(KEY_PORT, (GPIO_Pin_TypeDef)KEY1, GPIO_MODE_IN_PU_NO_IT);
+	u8 ret = 0;
+
+	system_clock_set();
+	system_led_init();
+	timer2_init();
+	EXTI_DeInit();
+
+	system_variable_init();
+
+	/*----------- APDS9960 -------- start ------------------------------*/
+	gesture_exti_config();
+
+	ret = init();
+	if(ret){
+//		APDS9960_Light_init();
 	}
-	if(KeyNum & KEY2)//LED2
-	{
-		GPIO_Init(KEY_PORT, (GPIO_Pin_TypeDef)KEY2, GPIO_MODE_IN_PU_NO_IT);
+
+//	while(!ret) {
+
+//		delay_ms(200); 
+//		ret = init();
+
+//	}
+
+	enableGestureSensor(1); 		// Start running the APDS-9960 gesture sensor engine
+
+	gesture_led_init();
+	
+	/*----------- APDS9960 -------- end --------------------------------*/
+
+
+	/*----------- MPR121 -------- start --------------------------------*/
+
+	MPR121_init();
+	
+	MPR121_exti_config();
+
+	slippad_led_init();
+	keypad_led_init();
+
+	/*----------- MPR121 -------- end ----------------------------------*/
+
+	BLE_uart_init();
+
+	system_interrupt_priority_set();
+	
+	LED_detect();
+
+	MEEPROM_Init();
+	
+	for (;;) {
+
+		Task_100ms();
+		Task_1s();
+
+		recv_analyze_reply();
+
+		/* 手势 */
+		gesture_detect();
+
+		/* 按键 */
+		MPR121_detect();
+		keypad_led_show();
+		slippad_led_show();
+
 	}
+
 }
 
-bool KEY_Read(u8 KeyNum)
-{
-	if(KeyNum & KEY1)//LED1
-	{
-		if((GPIO_ReadInputData(KEY_PORT) & 0x01) == 0x00)
-			return TRUE;
-		else
-			return FALSE;
-	}
-	if(KeyNum & KEY2)//LED2
-	{
-		if((GPIO_ReadInputData(KEY_PORT) & 0x02) == 0x00)
-			return TRUE;
-		else
-			return FALSE;
-	}
-}
 
-/****************************************************************/
-//延时函数delay()，有形参Count用于控制延时函数执行次数，无返回值
-/****************************************************************/
-void delay(u16 Count)
-{
-  u8 i,j;
-  while (Count--)//Count形参控制延时次数
-  {
-    for(i=0;i<100;i++)
-    for(j=0;j<50;j++);
-  }
-}
+
+
+
+
+
+
+
+
+
+
+
 
 /****************** (c) 2009  STMicroelectronics ******************************/

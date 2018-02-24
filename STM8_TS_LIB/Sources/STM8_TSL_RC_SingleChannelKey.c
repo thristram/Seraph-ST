@@ -231,7 +231,7 @@ void TSL_SCKey_Process(void)
 
   TSL_TempGlobalSetting.whole |= pKeyStruct->Setting.whole;
   TSL_TempGlobalState.whole |= pKeyStruct->State.whole;
-  pKeyStruct->Setting.b.CHANGED = 0;
+//  pKeyStruct->Setting.b.CHANGED = 0;		//fyl
   
 }
 

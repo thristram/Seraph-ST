@@ -24,6 +24,8 @@
 #ifndef __TSL_CONFIGURATION__
 #define __TSL_CONFIGURATION__
 
+#include "stm8s_gpio.h"
+
 
 //==============================================================================
 //
@@ -88,9 +90,11 @@
 // Set the pin mask
 //==============================================================================
 
+//PB3
 #define LOADREF_PORT_ADDR  (GPIOB_BaseAddress)  /**< LOADREF pin GPIO base address */
 
-#define LOADREF_BIT        (0x08)               /**< LOADREF pin mask */
+#define LOADREF_BIT        (GPIO_PIN_3)               /**< LOADREF pin mask */
+
 
 
 //==============================================================================
@@ -117,7 +121,8 @@
 #define SCKEY_P1_G  (0)     /**< Single channel key Port 1: 7th key mask */
 #define SCKEY_P1_H  (0)     /**< Single channel key Port 1: 8th key mask */
 
-#define SCKEY_P1_DRIVEN_SHIELD_MASK (0x80)
+#define SCKEY_P1_DRIVEN_SHIELD_MASK (0)
+//#define SCKEY_P1_DRIVEN_SHIELD_MASK (0x80)
 
 
 //==============================================================================

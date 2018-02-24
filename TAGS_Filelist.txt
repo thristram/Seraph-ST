@@ -2,6 +2,7 @@ stm8s_standard_peripherals_lib\sources\stm8s_clk.c
 stm8s_standard_peripherals_lib\sources\stm8s_exti.c
 stm8s_standard_peripherals_lib\sources\stm8s_gpio.c
 stm8s_standard_peripherals_lib\sources\stm8s_i2c.c
+stm8s_standard_peripherals_lib\sources\stm8s_tim2.c
 stm8s_standard_peripherals_lib\sources\stm8s_uart2.c
 stm8_ts_lib\sources\stm8_tsl_rc_api.c
 stm8_ts_lib\sources\stm8_tsl_rc_iodriver.c
@@ -12,6 +13,7 @@ stm8_ts_lib\sources\stm8_tsl_rc_timerdriver.c
 sources\i2c_master_poll.c
 sources\main.c
 sources\sparkfun_apds9960.c
+sources\timer.c
 sources\uart.c
 stm8_interrupt_vector.c
 stm8s_standard_peripherals_lib\includes\stm8s_lib.h
@@ -32,11 +34,12 @@ includes\main.h
 includes\sparkfun_apds9960.h
 includes\stm8_tsl_rc_configuration.h
 includes\stm8s_conf.h
+includes\timer.h
 includes\uart.h
-..\..\program files (x86)\cosmic\cxstm8\hstm8\math.h
-..\..\program files (x86)\cosmic\cxstm8\hstm8\modsl0.h
-..\..\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h
-..\..\program files (x86)\cosmic\cxstm8\hstm8\string.h
+c:\program files (x86)\cosmic\cxstm8\hstm8\math.h
+c:\program files (x86)\cosmic\cxstm8\hstm8\modsl0.h
+c:\program files (x86)\cosmic\cxstm8\hstm8\stdlib.h
+c:\program files (x86)\cosmic\cxstm8\hstm8\string.h
 stm8s_standard_peripherals_lib\includes\stm8s_adc1.h
 stm8s_standard_peripherals_lib\includes\stm8s_adc2.h
 stm8s_standard_peripherals_lib\includes\stm8s_awu.h

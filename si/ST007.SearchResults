@@ -1,0 +1,8 @@
+---- ALS Matches (7 in 2 files) ----
+SparkFun_APDS9960.c (d:\fyl\wp\stm8s\st_stm8s007\sources): * @brief Returns LED drive strength for proximity and ALS
+SparkFun_APDS9960.c (d:\fyl\wp\stm8s\st_stm8s007\sources): * @brief Sets the LED drive strength for proximity and ALS
+SparkFun_APDS9960.c (d:\fyl\wp\stm8s\st_stm8s007\sources): * @brief Returns receiver gain for the ambient light sensor (ALS)
+SparkFun_APDS9960.c (d:\fyl\wp\stm8s\st_stm8s007\sources): * @return the value of the ALS gain. 0xFF on failure.
+SparkFun_APDS9960.c (d:\fyl\wp\stm8s\st_stm8s007\sources): * @brief Sets the receiver gain for the ambient light sensor (ALS)
+SparkFun_APDS9960.h (d:\fyl\wp\stm8s\st_stm8s007\includes):/* ALS Gain (AGAIN) values */
+SparkFun_APDS9960.h (d:\fyl\wp\stm8s\st_stm8s007\includes):#define DEFAULT_PERS            0x11    // 2 consecutive prox or ALS for int.

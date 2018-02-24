@@ -9,8 +9,14 @@
 
 
 
-TIEMR_EXT void Init_Time3(void);
-TIEMR_EXT void Sys_Time_Manage(void);
-@interrupt void Tim3_UPD_OVF_BRK_ISR(void);
+
+
+void timer2_init(void);
+
+
+@far @interrupt void timer2_ISR(void);
+
+
+
 
 #endif

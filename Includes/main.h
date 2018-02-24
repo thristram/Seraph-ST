@@ -7,58 +7,236 @@
 #define MAIN_EXT
 #endif
 
+#include "stm8s_type.h"
+
+/*----------------------------------------------------------------------------
+	LED 系统运行指示
+-----------------------------------------------------------------------------*/
+
+#define SYSTEM_LED_PORT  		(GPIOD)
+#define SYSTEM_LED_PIN  		(GPIO_PIN_7)
+#define SYSTEM_LED_OFF 		(SYSTEM_LED_PORT->ODR &= (u8)(~SYSTEM_LED_PIN))
+#define SYSTEM_LED_ON 		(SYSTEM_LED_PORT->ODR |= SYSTEM_LED_PIN)
+#define SYSTEM_LED_REVERSE 	(SYSTEM_LED_PORT->ODR ^= SYSTEM_LED_PIN)
+
+//#define SYSTEM_LED_OFF 		GPIO_WriteLow(SYSTEM_LED_PORT, (GPIO_Pin_TypeDef)SYSTEM_LED_PIN)
+//#define SYSTEM_LED_ON 		GPIO_WriteHigh(SYSTEM_LED_PORT, (GPIO_Pin_TypeDef)SYSTEM_LED_PIN)
+//#define SYSTEM_LED_REVERSE 	GPIO_WriteReverse(SYSTEM_LED_PORT, (GPIO_Pin_TypeDef)SYSTEM_LED_PIN)
 
 
-/* LED on STM8S EVALBOARD */
-#define LED_GPIO_PINS  (GPIO_PIN_3)
-#define LED_PORT			 (GPIOC)
-#define LED1					 (GPIO_PIN_3)
-#define LED2					 (GPIO_PIN_4)
-#define LED3					 (GPIO_PIN_5)
-#define LED4					 (GPIO_PIN_2)
-#define LED5					 (GPIO_PIN_1)
 
-#define KEY_PORT			 (GPIOB)
-#define KEY1					 (GPIO_PIN_0)
-#define KEY2					 (GPIO_PIN_1)
 
-MAIN_EXT int gusture;
+
+/*----------------------------------------------------------------------------
+	LED 控制
+-----------------------------------------------------------------------------*/
+
+/* 手势LED */
+#define GESTURE_LED_PORT  	(GPIOC)
+#define GESTURE_LED_PIN  		(GPIO_PIN_4)
+#define GESTURE_LED_OFF 		(GESTURE_LED_PORT->ODR &= (u8)(~GESTURE_LED_PIN))
+#define GESTURE_LED_ON 		(GESTURE_LED_PORT->ODR |= GESTURE_LED_PIN)
+#define GESTURE_LED_REVERSE 	(GESTURE_LED_PORT->ODR ^= GESTURE_LED_PIN)
+
+/* 滑动按键LED */
+#define SLIPPAD_LED8_PORT  		(GPIOB)
+#define SLIPPAD_LED8_PIN  		(GPIO_PIN_5)
+#define SLIPPAD_LED8_OFF 			(SLIPPAD_LED8_PORT->ODR &= (u8)(~SLIPPAD_LED8_PIN))
+#define SLIPPAD_LED8_ON 			(SLIPPAD_LED8_PORT->ODR |= SLIPPAD_LED8_PIN)
+#define SLIPPAD_LED8_REVERSE 	(SLIPPAD_LED8_PORT->ODR ^= SLIPPAD_LED8_PIN)
+
+#define SLIPPAD_LED7_PORT  		(GPIOB)
+#define SLIPPAD_LED7_PIN  		(GPIO_PIN_4)
+#define SLIPPAD_LED7_OFF 			(SLIPPAD_LED7_PORT->ODR &= (u8)(~SLIPPAD_LED7_PIN))
+#define SLIPPAD_LED7_ON 			(SLIPPAD_LED7_PORT->ODR |= SLIPPAD_LED7_PIN)
+#define SLIPPAD_LED7_REVERSE 	(SLIPPAD_LED7_PORT->ODR ^= SLIPPAD_LED7_PIN)
+
+#define SLIPPAD_LED6_PORT  		(GPIOB)
+#define SLIPPAD_LED6_PIN  		(GPIO_PIN_3)
+#define SLIPPAD_LED6_OFF 			(SLIPPAD_LED6_PORT->ODR &= (u8)(~SLIPPAD_LED6_PIN))
+#define SLIPPAD_LED6_ON 			(SLIPPAD_LED6_PORT->ODR |= SLIPPAD_LED6_PIN)
+#define SLIPPAD_LED6_REVERSE 	(SLIPPAD_LED6_PORT->ODR ^= SLIPPAD_LED6_PIN)
+
+#define SLIPPAD_LED5_PORT  		(GPIOB)
+#define SLIPPAD_LED5_PIN  		(GPIO_PIN_2)
+#define SLIPPAD_LED5_OFF 			(SLIPPAD_LED5_PORT->ODR &= (u8)(~SLIPPAD_LED5_PIN))
+#define SLIPPAD_LED5_ON 			(SLIPPAD_LED5_PORT->ODR |= SLIPPAD_LED5_PIN)
+#define SLIPPAD_LED5_REVERSE 	(SLIPPAD_LED5_PORT->ODR ^= SLIPPAD_LED5_PIN)
+
+#define SLIPPAD_LED4_PORT  		(GPIOB)
+#define SLIPPAD_LED4_PIN  		(GPIO_PIN_1)
+#define SLIPPAD_LED4_OFF 			(SLIPPAD_LED4_PORT->ODR &= (u8)(~SLIPPAD_LED4_PIN))
+#define SLIPPAD_LED4_ON 			(SLIPPAD_LED4_PORT->ODR |= SLIPPAD_LED4_PIN)
+#define SLIPPAD_LED4_REVERSE 	(SLIPPAD_LED4_PORT->ODR ^= SLIPPAD_LED4_PIN)
+
+#define SLIPPAD_LED3_PORT  		(GPIOB)
+#define SLIPPAD_LED3_PIN  		(GPIO_PIN_0)
+#define SLIPPAD_LED3_OFF 			(SLIPPAD_LED3_PORT->ODR &= (u8)(~SLIPPAD_LED3_PIN))
+#define SLIPPAD_LED3_ON 			(SLIPPAD_LED3_PORT->ODR |= SLIPPAD_LED3_PIN)
+#define SLIPPAD_LED3_REVERSE 	(SLIPPAD_LED3_PORT->ODR ^= SLIPPAD_LED3_PIN)
+
+#define SLIPPAD_LED2_PORT  		(GPIOE)
+#define SLIPPAD_LED2_PIN  		(GPIO_PIN_7)
+#define SLIPPAD_LED2_OFF 			(SLIPPAD_LED2_PORT->ODR &= (u8)(~SLIPPAD_LED2_PIN))
+#define SLIPPAD_LED2_ON 			(SLIPPAD_LED2_PORT->ODR |= SLIPPAD_LED2_PIN)
+#define SLIPPAD_LED2_REVERSE 	(SLIPPAD_LED2_PORT->ODR ^= SLIPPAD_LED2_PIN)
+
+#define SLIPPAD_LED1_PORT  		(GPIOE)
+#define SLIPPAD_LED1_PIN  		(GPIO_PIN_6)
+#define SLIPPAD_LED1_OFF 			(SLIPPAD_LED1_PORT->ODR &= (u8)(~SLIPPAD_LED1_PIN))
+#define SLIPPAD_LED1_ON 			(SLIPPAD_LED1_PORT->ODR |= SLIPPAD_LED1_PIN)
+#define SLIPPAD_LED1_REVERSE 	(SLIPPAD_LED1_PORT->ODR ^= SLIPPAD_LED1_PIN)
+
+#define SLIPPAD_LED0_PORT  		(GPIOE)
+#define SLIPPAD_LED0_PIN  		(GPIO_PIN_5)
+#define SLIPPAD_LED0_OFF 			(SLIPPAD_LED0_PORT->ODR &= (u8)(~SLIPPAD_LED0_PIN))
+#define SLIPPAD_LED0_ON 			(SLIPPAD_LED0_PORT->ODR |= SLIPPAD_LED0_PIN)
+#define SLIPPAD_LED0_REVERSE 	(SLIPPAD_LED0_PORT->ODR ^= SLIPPAD_LED0_PIN)
+
+
+
+
+
+
+/* 独立按键LED */
+#define KEYPAD1_LED_PORT  		(GPIOC)
+#define KEYPAD1_LED_PIN  			(GPIO_PIN_3)
+#define KEYPAD1_LED_OFF 			(KEYPAD1_LED_PORT->ODR &= (u8)(~KEYPAD1_LED_PIN))
+#define KEYPAD1_LED_ON 			(KEYPAD1_LED_PORT->ODR |= KEYPAD1_LED_PIN)
+#define KEYPAD1_LED_REVERSE 		(KEYPAD1_LED_PORT->ODR ^= KEYPAD1_LED_PIN)
+
+#define KEYPAD2_LED_PORT  		(GPIOC)
+#define KEYPAD2_LED_PIN  			(GPIO_PIN_2)
+#define KEYPAD2_LED_OFF 			(KEYPAD2_LED_PORT->ODR &= (u8)(~KEYPAD2_LED_PIN))
+#define KEYPAD2_LED_ON 			(KEYPAD2_LED_PORT->ODR |= KEYPAD2_LED_PIN)
+#define KEYPAD2_LED_REVERSE 		(KEYPAD2_LED_PORT->ODR ^= KEYPAD2_LED_PIN)
+
+#define KEYPAD3_LED_PORT  		(GPIOC)
+#define KEYPAD3_LED_PIN  			(GPIO_PIN_1)
+#define KEYPAD3_LED_OFF 			(KEYPAD3_LED_PORT->ODR &= (u8)(~KEYPAD3_LED_PIN))
+#define KEYPAD3_LED_ON 			(KEYPAD3_LED_PORT->ODR |= KEYPAD3_LED_PIN)
+#define KEYPAD3_LED_REVERSE 		(KEYPAD3_LED_PORT->ODR ^= KEYPAD3_LED_PIN)
+
+
+
+
+
+
+
+
+/*----------------------------------------------------------------------------
+	EEPROM
+-----------------------------------------------------------------------------*/
+
+//必须要先烧写EEPROM在烧写程序，否则若烧写完程序再给板子上电后则烧写EEPROM失败
+//#define EEPROM_INIT_FLAG				0x55
+#define EEPROM_INIT_FLAG				0
+
+
+#define EEPROM_INIT_ADDRESS			0
+#define EEPROM_DEVICEID_ADDRESS		1
+#define EEPROM_MODEL_ADDRESS		11
+
+#define EEPROM_FW_VERSION_ADDRESS	13
+#define EEPROM_HW_VERSION_ADDRESS	15
+
+#define EEPROM_BASH_ADDRESS			17
+
+
+#define EEPROM_MANA_YEAR_ADDRESS	19
+#define EEPROM_MANA_MONTH_ADDRESS	20
+#define EEPROM_MANA_DAY_ADDRESS	21
+
+
+#define EEPROM_USER_START_ADDRESS	45
+#define EEPROM_USER_END_ADDRESS	120
+
+
+#define EEPROM_CH1_STATUS_ADDRESS	45
+#define EEPROM_CH2_STATUS_ADDRESS	46
+#define EEPROM_CH3_STATUS_ADDRESS	47
+#define EEPROM_CH4_STATUS_ADDRESS	48
+
+#define EEPROM_MESHID_H_ADDRESS	49
+#define EEPROM_MESHID_L_ADDRESS	50
+
+#define EEPROM_CH1_TARGET_STATUS_ADDRESS	45
+#define EEPROM_CH2_TARGET_STATUS_ADDRESS	46
+#define EEPROM_CH3_TARGET_STATUS_ADDRESS	47
+#define EEPROM_CH4_TARGET_STATUS_ADDRESS	48
+
+
+#define EEPROM_ONEKEY_BYTES_USED			7
+#define EEPROM_KEY1_MESHIDH_ADDRESS		57
+#define EEPROM_KEY1_MESHIDL_ADDRESS		58
+#define EEPROM_KEY1_ACTION_ADDRESS			59
+#define EEPROM_KEY1_BOARDID_ADDRESS		60
+#define EEPROM_KEY1_VALUE_ADDRESS			61
+#define EEPROM_KEY1_TIME_ADDRESS			62
+
+
+#define EEPROM_ONEGESTURE_BYTES_USED			9
+#define EEPROM_GESTURE1_TRIGERH_ADDRESS		78
+#define EEPROM_GESTURE1_TRIGERL_ADDRESS		79
+#define EEPROM_GESTURE1_MESHIDH_ADDRESS		80
+#define EEPROM_GESTURE1_MESHIDL_ADDRESS		81
+#define EEPROM_GESTURE1_ACTION_ADDRESS			82
+#define EEPROM_GESTURE1_BOARDID_ADDRESS		83
+#define EEPROM_GESTURE1_VALUE_ADDRESS			84
+#define EEPROM_GESTURE1_TIME_ADDRESS			85
+
+#define EEPROM_NOKEY_SLIPPAD_VALUE				114
+#define EEPROM_KEY1_SLIPPAD_VALUE				115
+#define EEPROM_KEY2_SLIPPAD_VALUE				116
+#define EEPROM_KEY3_SLIPPAD_VALUE				117
 
 
 /*
 *  System time variable
 */
-MAIN_EXT u16 systime_count[4];
-MAIN_EXT union  FLAG 		Flag1_;
-#define Flag1 					Flag1_._flag_byte;
-#define f_500us					Flag1_._flag_bit.bit0
-#define f_2ms						Flag1_._flag_bit.bit1
-#define f_100ms					Flag1_._flag_bit.bit2
-#define f_300ms					Flag1_._flag_bit.bit3
-#define f_1s						Flag1_._flag_bit.bit4
-#define extisr_flag			Flag1_._flag_bit.bit5
-#define device_info_sended	Flag1_._flag_bit.bit6
-
-MAIN_EXT void Task_500us(void);
-MAIN_EXT void Task_2ms(void);
-MAIN_EXT void Task_100ms(void);
-MAIN_EXT void Task_300ms(void);
-MAIN_EXT void Task_1s(void);
-MAIN_EXT void delay(u16 Count);
+MAIN_EXT union  FLAG 		baseTimeFlag;
+#define baseTimeFlag_byte 	baseTimeFlag._flag_byte
+#define f_2ms				baseTimeFlag._flag_bit.bit0
+#define f_100ms			baseTimeFlag._flag_bit.bit1
+#define f_1s				baseTimeFlag._flag_bit.bit2
 
 
-MAIN_EXT void LED_Init(u8 LedNum);
-MAIN_EXT void LED_On(u8 LedNum);
-MAIN_EXT void LED_Off(u8 LedNum);
-MAIN_EXT void LED_Toggle(u8 LedNum);
-MAIN_EXT void KEY_Init(u8 KeyNum);
-MAIN_EXT bool KEY_Read(u8 KeyNum);
 
-MAIN_EXT void Variable_Init(void);
-@interrupt void PORTB_EXT_ISR(void);
-@interrupt void PORTD_EXT_ISR(void);
-MAIN_EXT void handleGesture(void);
-MAIN_EXT void GestureTest(void);
-MAIN_EXT void LightTest(void);
+
+
+
+typedef enum {
+
+	GESTURE_CHECK = 1,	
+	GESTURE_WAIT,
+	GESTURE_GET,
+	GESTURE_IDLE,
+	GESTURE_HOLD
+	
+}GESTURE_DETECT_STATUS;
+
+
+
+
+extern u8 BIT[8];
+
+u8 sicp_get_message_id(void);
+
+
+
+
+void LED_On(u8 LedNum);
+void LED_Off(u8 LedNum);
+void LED_Toggle(u8 LedNum);
+
+
+@interrupt void PORTE_EXT_ISR(void);
+@interrupt void PORTA_EXT_ISR(void);
+
+void MEEPROM_WriteByte(u16 dLocal_Addr, u8 dLocal_Data);
+
+u8 MEEPROM_ReadByte(u16 dLocal_Addr);
+
+
 
 #endif

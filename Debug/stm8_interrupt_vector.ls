@@ -1,10 +1,10 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
    2                     ; Generator V4.2.4 - 19 Dec 2007
-  34                     ; 18 @far @interrupt void NonHandledInterrupt (void)
-  34                     ; 19 {
+  34                     ; 17 @far @interrupt void NonHandledInterrupt (void)
+  34                     ; 18 {
   35                     .text:	section	.text,new
   36  0000               f_NonHandledInterrupt:
-  41                     ; 23 	return;
+  41                     ; 22 	return;
   44  0000 80            	iret
   46                     .const:	section	.text
   47  0000               __vectab:
@@ -24,8 +24,8 @@
   66  0011 00            	dc.b	page(f_NonHandledInterrupt)
   67  0012 0000          	dc.w	f_NonHandledInterrupt
   68  0014 82            	dc.b	130
-  70  0015 00            	dc.b	page(f_NonHandledInterrupt)
-  71  0016 0000          	dc.w	f_NonHandledInterrupt
+  70  0015 00            	dc.b	page(_PORTA_EXT_ISR)
+  71  0016 0000          	dc.w	_PORTA_EXT_ISR
   72  0018 82            	dc.b	130
   74  0019 00            	dc.b	page(f_NonHandledInterrupt)
   75  001a 0000          	dc.w	f_NonHandledInterrupt
@@ -33,11 +33,11 @@
   78  001d 00            	dc.b	page(f_NonHandledInterrupt)
   79  001e 0000          	dc.w	f_NonHandledInterrupt
   80  0020 82            	dc.b	130
-  82  0021 00            	dc.b	page(_PORTD_EXT_ISR)
-  83  0022 0000          	dc.w	_PORTD_EXT_ISR
+  82  0021 00            	dc.b	page(f_NonHandledInterrupt)
+  83  0022 0000          	dc.w	f_NonHandledInterrupt
   84  0024 82            	dc.b	130
-  86  0025 00            	dc.b	page(f_NonHandledInterrupt)
-  87  0026 0000          	dc.w	f_NonHandledInterrupt
+  86  0025 00            	dc.b	page(_PORTE_EXT_ISR)
+  87  0026 0000          	dc.w	_PORTE_EXT_ISR
   88  0028 82            	dc.b	130
   90  0029 00            	dc.b	page(f_NonHandledInterrupt)
   91  002a 0000          	dc.w	f_NonHandledInterrupt
@@ -54,8 +54,8 @@
  106  0039 00            	dc.b	page(f_NonHandledInterrupt)
  107  003a 0000          	dc.w	f_NonHandledInterrupt
  108  003c 82            	dc.b	130
- 110  003d 00            	dc.b	page(f_NonHandledInterrupt)
- 111  003e 0000          	dc.w	f_NonHandledInterrupt
+ 110  003d 00            	dc.b	page(f_timer2_ISR)
+ 111  003e 0000          	dc.w	f_timer2_ISR
  112  0040 82            	dc.b	130
  114  0041 00            	dc.b	page(f_NonHandledInterrupt)
  115  0042 0000          	dc.w	f_NonHandledInterrupt
@@ -66,26 +66,26 @@
  122  0049 00            	dc.b	page(f_NonHandledInterrupt)
  123  004a 0000          	dc.w	f_NonHandledInterrupt
  124  004c 82            	dc.b	130
- 126  004d 00            	dc.b	page(f_NonHandledInterrupt)
- 127  004e 0000          	dc.w	f_NonHandledInterrupt
+ 126  004d 00            	dc.b	page(_BLE_UART_TX_ISR)
+ 127  004e 0000          	dc.w	_BLE_UART_TX_ISR
  128  0050 82            	dc.b	130
- 130  0051 00            	dc.b	page(f_NonHandledInterrupt)
- 131  0052 0000          	dc.w	f_NonHandledInterrupt
+ 130  0051 00            	dc.b	page(_BLE_UART_RX_ISR)
+ 131  0052 0000          	dc.w	_BLE_UART_RX_ISR
  132  0054 82            	dc.b	130
  134  0055 00            	dc.b	page(f_I2C_error_Interrupt_Handler)
  135  0056 0000          	dc.w	f_I2C_error_Interrupt_Handler
  136  0058 82            	dc.b	130
- 138  0059 00            	dc.b	page(_UART2_TX_ISR)
- 139  005a 0000          	dc.w	_UART2_TX_ISR
+ 138  0059 00            	dc.b	page(f_NonHandledInterrupt)
+ 139  005a 0000          	dc.w	f_NonHandledInterrupt
  140  005c 82            	dc.b	130
- 142  005d 00            	dc.b	page(_UART2_RX_ISR)
- 143  005e 0000          	dc.w	_UART2_RX_ISR
+ 142  005d 00            	dc.b	page(f_NonHandledInterrupt)
+ 143  005e 0000          	dc.w	f_NonHandledInterrupt
  144  0060 82            	dc.b	130
  146  0061 00            	dc.b	page(f_NonHandledInterrupt)
  147  0062 0000          	dc.w	f_NonHandledInterrupt
  148  0064 82            	dc.b	130
- 150  0065 00            	dc.b	page(_TSL_Timer_ISR)
- 151  0066 0000          	dc.w	_TSL_Timer_ISR
+ 150  0065 00            	dc.b	page(f_NonHandledInterrupt)
+ 151  0066 0000          	dc.w	f_NonHandledInterrupt
  152  0068 82            	dc.b	130
  154  0069 00            	dc.b	page(f_NonHandledInterrupt)
  155  006a 0000          	dc.w	f_NonHandledInterrupt
@@ -107,10 +107,11 @@
  226                     	xdef	__vectab
  227                     	xref	__stext
  228                     	xdef	f_NonHandledInterrupt
- 229                     	xref	f_TIM3InterruptHandle
- 230                     	xref	f_I2C_error_Interrupt_Handler
- 231                     	xref	_UART2_RX_ISR
- 232                     	xref	_UART2_TX_ISR
- 233                     	xref	_PORTD_EXT_ISR
- 234                     	xref	_TSL_Timer_ISR
- 253                     	end
+ 229                     	xref	f_timer2_ISR
+ 230                     	xref	f_TIM3InterruptHandle
+ 231                     	xref	f_I2C_error_Interrupt_Handler
+ 232                     	xref	_BLE_UART_RX_ISR
+ 233                     	xref	_BLE_UART_TX_ISR
+ 234                     	xref	_PORTA_EXT_ISR
+ 235                     	xref	_PORTE_EXT_ISR
+ 254                     	end

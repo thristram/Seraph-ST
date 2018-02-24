@@ -27,9 +27,8 @@
 # Segment configuration - section reserved for STVD
 #<BEGIN SEGMENT_CONF>
 # Segment Code,Constants:
-+seg .const -b 0x8080 -m 0x7f80 -n .const -it
++seg .const -b 0x8080 -m 0xff80 -n .const -it
 +seg .text -a .const -n .text
-+seg .TSL_IO_ALCODE -a .text -n .TSL_IO_ALCODE -r2
 # Segment Eeprom:
 +seg .eeprom -b 0x4000 -m 0x80 -n .eeprom
 # Segment Zero Page:
@@ -38,7 +37,7 @@
 +seg .bit -a .ubsct -n .bit -id
 +seg .share -a .bit -n .share -is
 # Segment Ram:
-+seg .data -b 0x100 -m 0x500 -n .data
++seg .data -b 0x100 -m 0x1300 -n .data
 +seg .bss -a .data -n .bss
 #<END SEGMENT_CONF>
 
@@ -53,18 +52,16 @@ crtsi0.sm8
 #<BEGIN OBJECT_FILES>
 Debug\stm8s_clk.o
 Debug\stm8s_exti.o
+Debug\stm8s_flash.o
 Debug\stm8s_gpio.o
 Debug\stm8s_i2c.o
-Debug\stm8s_uart2.o
-Debug\stm8_tsl_rc_api.o
-Debug\stm8_tsl_rc_iodriver.o
-Debug\stm8_tsl_rc_multichannelkey.o
-Debug\stm8_tsl_rc_services.o
-Debug\stm8_tsl_rc_singlechannelkey.o
-Debug\stm8_tsl_rc_timerdriver.o
+Debug\stm8s_tim2.o
+Debug\stm8s_uart1.o
 Debug\i2c_master_poll.o
 Debug\main.o
+Debug\mpr121.o
 Debug\sparkfun_apds9960.o
+Debug\timer.o
 Debug\uart.o
 #<END OBJECT_FILES>
 
@@ -87,6 +84,6 @@ Debug\stm8_interrupt_vector.o
 +def __endzp=@.ubsct			# end of uninitialized zpage
 +def __memory=@.bss				# end of bss segment
 +def __startmem=@.bss
-+def __endmem=0x5ff
-+def __stack=0x7ff
++def __endmem=0x13ff
++def __stack=0x17ff
 #<END DEFINED_VARIABLES>

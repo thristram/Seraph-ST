@@ -27,6 +27,7 @@
 #include "STM8_TSL_RC_MultiChannelKey.h"
 #include "STM8_TSL_RC_Services.h"
 
+
 //--------    SECTION DEFINITION FOR THIS FILE   --------------
 #if defined(__CSMC__) && defined(USE_PRAGMA_SECTION)
 #pragma section [TSL_RAM]
@@ -133,35 +134,37 @@ s16 @tiny Delta3;
   */
 void TSL_Init(void)
 {
+	u8 i;
+	
+	disableInterrupts();
 
-  disableInterrupts();
+	DetectionIntegrator = DETECTION_INTEGRATOR_DEFAULT;
+	EndDetectionIntegrator = END_DETECTION_INTEGRATOR_DEFAULT;
+	ECSTimeStep = ECS_TIME_STEP_DEFAULT;
+	ECSTemporization = ECS_TEMPO_DEFAULT;
+	RecalibrationIntegrator = RECALIBRATION_INTEGRATOR_DEFAULT;
+	DetectionTimeout = DTO_DEFAULT;
 
-  DetectionIntegrator = DETECTION_INTEGRATOR_DEFAULT;
-  EndDetectionIntegrator = END_DETECTION_INTEGRATOR_DEFAULT;
-  ECSTimeStep = ECS_TIME_STEP_DEFAULT;
-  ECSTemporization = ECS_TEMPO_DEFAULT;
-  RecalibrationIntegrator = RECALIBRATION_INTEGRATOR_DEFAULT;
-  DetectionTimeout = DTO_DEFAULT;
+	ECS_K_Fast = ECS_IIR_KFAST_DEFAULT;
+	ECS_K_Slow = ECS_IIR_KSLOW_DEFAULT;
+	ECSTimeStepCounter = ECSTimeStep;
+	ECSTempoCounter = 0;
+	ECSTempoPrescaler = 0;
 
-  ECS_K_Fast = ECS_IIR_KFAST_DEFAULT;
-  ECS_K_Slow = ECS_IIR_KSLOW_DEFAULT;
-  ECSTimeStepCounter = ECSTimeStep;
-  ECSTempoCounter = 0;
-  ECSTempoPrescaler = 0;
+	TSL_IO_Init();
 
-  TSL_IO_Init();
+	TSL_Timer_Init();
 
-  TSL_Timer_Init();
-  
-  TSL_SCKey_Init();
-  
+	TSL_SCKey_Init();
+
 #if NUMBER_OF_MULTI_CHANNEL_KEYS > 0
-  TSL_MCKey_Init();
+	TSL_MCKey_Init();
 #endif
 
-  enableInterrupts();
+	enableInterrupts();
 
-  TSLState = TSL_IDLE_STATE;
+	TSLState = TSL_IDLE_STATE;
+
 
 }
 
@@ -296,7 +299,9 @@ void TSL_Action(void)
       {
         // Wait for Watchdog reset ...
       }
+	  
   }
+  
 }
 
 /*********************** (c) 2009 STMicroelectronics **************************/

@@ -60,27 +60,27 @@ TimerFlag_T @tiny TSL_Tick_Flags;
 void TSL_Timer_Init(void)
 {
 
-  TSL_Tick_100ms = 0;
-  TSL_Tick_10ms = 0;
-  TSL_Tick_Base = 0;
-  TSL_TickCount_ECS_10ms = 0;
-  TSL_Tick_Flags.whole = 0;
+	TSL_Tick_100ms = 0;
+	TSL_Tick_10ms = 0;
+	TSL_Tick_Base = 0;
+	TSL_TickCount_ECS_10ms = 0;
+	TSL_Tick_Flags.whole = 0;
 
-  TIMTICK->SR1 = 0;       // clear overflow flag
+	TIMTICK->SR1 = 0;       // clear overflow flag
 
-  if ( CLK->CKDIVR == 0x00 ) // Max CPU freq = 16 MHz
-  {
-    TIMTICK->PSCR = 6;     // Prescaler to divide Fcpu by 64: 4 us clock.
+	if ( CLK->CKDIVR == 0x00 ) // Max CPU freq = 16 MHz
+	{
+		TIMTICK->PSCR = 6;     // Prescaler to divide Fcpu by 64: 4 us clock.
 		//TIMTICK->PSCR = 5;			 //MCU freq=8MHz,8M/2^5=250K,1/250K = 0.000004s
-  }
-  else
-  {
-    TIMTICK->PSCR = 7;     // Prescaler to divide Fcpu by 128: x.xx us clock.
-  }
-  
-  TIMTICK->ARR = 124;      // 125 * 4 us = 500 us.
-  TIMTICK->IER = 0x01;     // Enable interrupt
-  TIMTICK->CR1 = 0x01;     // Start timer
+	}
+	else
+	{
+		TIMTICK->PSCR = 7;     // Prescaler to divide Fcpu by 128: x.xx us clock.
+	}
+
+	TIMTICK->ARR = 124;      // 125 * 4 us = 500 us.
+	TIMTICK->IER = 0x01;     // Enable interrupt
+	TIMTICK->CR1 = 0x01;     // Start timer
 
 }
 
@@ -97,12 +97,12 @@ void TSL_Timer_Init(void)
   */
 void TSL_Timer_Check_1sec_Tick(void)
 {
-  if ( TSL_Tick_100ms >= 10 )
-  {
-    TSL_Tick_100ms -= 10;
-    TSL_Tick_Flags.b.DTO_1sec = 1;  // Tick Flag for Max On Duration set every second.
+	if ( TSL_Tick_100ms >= 10 )
+	{
+		TSL_Tick_100ms -= 10;
+		TSL_Tick_Flags.b.DTO_1sec = 1;  // Tick Flag for Max On Duration set every second.
 
-  }
+	}
 }
 
 
@@ -118,12 +118,12 @@ void TSL_Timer_Check_1sec_Tick(void)
   */
 void TSL_Timer_Check_100ms_Tick(void)
 {
-  if ( TSL_Tick_10ms >= 10 )
-  {
-    TSL_Tick_10ms -= 10;
-    TSL_Tick_100ms++;
-    TSL_Timer_Check_1sec_Tick();
-  }
+	if ( TSL_Tick_10ms >= 10 )
+	{
+		TSL_Tick_10ms -= 10;
+		TSL_Tick_100ms++;
+		TSL_Timer_Check_1sec_Tick();
+	}
 }
 
 
@@ -139,13 +139,13 @@ void TSL_Timer_Check_100ms_Tick(void)
   */
 void TSL_Timer_Check_10ms_Tick(void)
 {
-  if ( TSL_Tick_Base >= TICK_FACTOR_10MS )
-  {
-    TSL_Tick_Base -= TICK_FACTOR_10MS;
-    TSL_Tick_10ms++;
-    TSL_TickCount_ECS_10ms++;   // Tick Flag for Drift increment every 10 ms.
-    TSL_Timer_Check_100ms_Tick();
-  }
+	if ( TSL_Tick_Base >= TICK_FACTOR_10MS )
+	{
+		TSL_Tick_Base -= TICK_FACTOR_10MS;
+		TSL_Tick_10ms++;
+		TSL_TickCount_ECS_10ms++;   // Tick Flag for Drift increment every 10 ms.
+		TSL_Timer_Check_100ms_Tick();
+	}
 }
 
 /**
@@ -155,31 +155,28 @@ void TSL_Timer_Check_10ms_Tick(void)
   */
 void Sys_Time_Manage(void)
 {
-	systime_count[0]++;
-	if (systime_count[0] >= 4)
-	{
-		systime_count[0] = 4;
-		f_2ms = 1;
+	static u8 cnt_2ms = 0;
+	static u8 cnt_100ms = 0;
+	static u16 cnt_1s = 0;
+
+	cnt_2ms++;
+	if(cnt_2ms >= 4){
+		cnt_2ms = 0;
+		f_2ms = 1;		
 	}
-	systime_count[1]++;
-	if (systime_count[1] >= 200)
-	{
-		systime_count[1] = 0;
-		f_100ms = 1;
+
+	cnt_100ms++;
+	if(cnt_100ms >= 200){
+		cnt_100ms = 0;
+		f_100ms = 1;		
+	}
+
+	cnt_1s++;
+	if(cnt_1s >= 2000){
+		cnt_1s = 0;
+		f_1s = 1;		
 	}
 	
-	systime_count[2]++;
-	if (systime_count[2] >= 600)
-	{
-		systime_count[2] = 0;
-		f_300ms = 1;
-	}
-	systime_count[3]++;
-	if (systime_count[3] >= 2000)
-	{
-		systime_count[3] = 0;
-		f_1s = 1;
-	}
 }
 
 
@@ -197,27 +194,28 @@ void Sys_Time_Manage(void)
 @interrupt void TSL_Timer_ISR(void)
 {
 
-  TIMTICK->SR1 = 0;      // clear overflow flag
+	TIMTICK->SR1 = 0;      // clear overflow flag
+
 	f_500us = 1;
 	Sys_Time_Manage();
-  TSL_Tick_Base++;
-  TSL_Timer_Check_10ms_Tick();
+	TSL_Tick_Base++;
+	TSL_Timer_Check_10ms_Tick();
 
-  if (TSL_Tick_Flags.b.User_Start_100ms) /* Application request */
-  {
-    TSL_Tick_Flags.b.User_Start_100ms = 0;
-    TSL_Tick_Flags.b.User_Flag_100ms = 0;
-    TSL_Tick_User = (TICK_FACTOR_10MS * 10);
-  }
-  
-  if (TSL_Tick_User > 0)
-  {
-    TSL_Tick_User--;
-    if (TSL_Tick_User == 0)
-    {
-      TSL_Tick_Flags.b.User_Flag_100ms = 1; /* Give information to Application */
-    }
-  }
+	if (TSL_Tick_Flags.b.User_Start_100ms) 		/* Application request */
+	{
+		TSL_Tick_Flags.b.User_Start_100ms = 0;
+		TSL_Tick_Flags.b.User_Flag_100ms = 0;
+		TSL_Tick_User = (TICK_FACTOR_10MS * 10);
+	}
+
+	if (TSL_Tick_User > 0)
+	{
+		TSL_Tick_User--;
+		if (TSL_Tick_User == 0)
+		{
+			TSL_Tick_Flags.b.User_Flag_100ms = 1; /* Give information to Application */
+		}
+	}
 
 }
 
@@ -237,27 +235,38 @@ void Sys_Time_Manage(void)
 void TSL_Timer_Adjust(u16 Delay)
 {
 
-  disableInterrupts();
+	disableInterrupts();
 
-  do
-  {
-    if (Delay > TICK_FACTOR_10MS) /* delay > 10ms */
-    {
-      TSL_Tick_Base += TICK_FACTOR_10MS;
-      Delay -= TICK_FACTOR_10MS;
-      TSL_Timer_Check_10ms_Tick();
-    }
-    else
-    {
-      TSL_Tick_Base++;
-      Delay--;
-      TSL_Timer_Check_10ms_Tick();
-    }
-  }
-  while ( Delay );
+	do
+	{
+		if (Delay > TICK_FACTOR_10MS) 			/* delay > 10ms */
+		{
+			TSL_Tick_Base += TICK_FACTOR_10MS;
+			Delay -= TICK_FACTOR_10MS;
+			TSL_Timer_Check_10ms_Tick();
+		}
+		else
+		{
+			TSL_Tick_Base++;
+			Delay--;
+			TSL_Timer_Check_10ms_Tick();
+		}
+	}
+	while ( Delay );
 
-  enableInterrupts();
-  
+	enableInterrupts();
+
 }
+
+
+
+
+
+
+
+
+
+
+
 
 /*********************** (c) 2009 STMicroelectronics **************************/

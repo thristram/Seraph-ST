@@ -27,18 +27,18 @@
 # Segment configuration - section reserved for STVD
 #<BEGIN SEGMENT_CONF>
 # Segment Code,Constants:
-+seg .const -b 0x8080 -m 0x7f80  -n .const -it 
-+seg .text -a .const  -n .text 
++seg .const -b 0x8080 -m 0xff80 -n .const -it 
++seg .text -a .const -n .text 
 # Segment Eeprom:
-+seg .eeprom -b 0x4000 -m 0x80  -n .eeprom 
++seg .eeprom -b 0x4000 -m 0x80 -n .eeprom 
 # Segment Zero Page:
-+seg .bsct -b 0x0 -m 0x100  -n .bsct 
-+seg .ubsct -a .bsct  -n .ubsct 
-+seg .bit -a .ubsct  -n .bit -id 
-+seg .share -a .bit  -n .share -is 
++seg .bsct -b 0x0 -m 0x100 -n .bsct 
++seg .ubsct -a .bsct -n .ubsct 
++seg .bit -a .ubsct -n .bit -id 
++seg .share -a .bit -n .share -is 
 # Segment Ram:
-+seg .data -b 0x100 -m 0x500  -n .data 
-+seg .bss -a .data  -n .bss 
++seg .data -b 0x100 -m 0x1300 -n .data 
++seg .bss -a .data -n .bss
 #<END SEGMENT_CONF>
 
 
@@ -52,18 +52,16 @@ crtsi0.sm8
 #<BEGIN OBJECT_FILES>
 Release\stm8s_clk.o
 Release\stm8s_exti.o
+Release\stm8s_flash.o
 Release\stm8s_gpio.o
 Release\stm8s_i2c.o
-Release\stm8s_uart2.o
-Release\stm8_tsl_rc_api.o
-Release\stm8_tsl_rc_iodriver.o
-Release\stm8_tsl_rc_multichannelkey.o
-Release\stm8_tsl_rc_services.o
-Release\stm8_tsl_rc_singlechannelkey.o
-Release\stm8_tsl_rc_timerdriver.o
+Release\stm8s_tim2.o
+Release\stm8s_uart1.o
 Release\i2c_master_poll.o
 Release\main.o
+Release\mpr121.o
 Release\sparkfun_apds9960.o
+Release\timer.o
 Release\uart.o
 #<END OBJECT_FILES>
 
@@ -86,6 +84,6 @@ Release\stm8_interrupt_vector.o
 +def __endzp=@.ubsct			# end of uninitialized zpage
 +def __memory=@.bss				# end of bss segment
 +def __startmem=@.bss
-+def __endmem=0x5ff
-+def __stack=0x7ff
++def __endmem=0x13ff
++def __stack=0x17ff
 #<END DEFINED_VARIABLES>
